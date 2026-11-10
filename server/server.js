@@ -268,7 +268,7 @@ async function prepareRemoteWhatsapp(session, phone) {
     await sleep(3500);
 
     session.status='opening_phone_link';
-    const linkClicked = await clickText(page, ['link with phone number','log in with phone number'], 30000);
+    const linkClicked = await clickText(page, ['log in with phone number'], 30000);
     if (!linkClicked) {
       session.screenshot = await sessionScreenshot(session);
       throw new Error('WhatsApp Web did not expose the phone-number linking option in the remote desktop session');
