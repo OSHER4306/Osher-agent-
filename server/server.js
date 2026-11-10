@@ -66,6 +66,11 @@ function metaSession(req) {
   if (data.expires_at && Date.now() > data.expires_at) return null;
   return data;
 }
+function metaConfig(req) {
+  if (env.META_APP_ID && env.META_APP_SECRET) return { appId: env.META_APP_ID, appSecret: env.META_APP_SECRET };
+  const cfg = unseal(cookieMap(req).oa_meta_cfg);
+  return cfg?.appId && cfg?.appSecret ? cfg : null;
+}
 
 async function graph(path, token, opts = {}) {
   const url = `https://graph.facebook.com/${V}/${path}${path.includes('?') ? '&' : '?'}access_token=${encodeURIComponent(token || '')}`;
@@ -83,17 +88,33 @@ async function getPages(token) {
 app.get('/health', (req, res) => res.json({
   ok: true,
   service: 'osher-agent',
-  metaOAuthConfigured: Boolean(env.META_APP_ID && env.META_APP_SECRET)
+  metaOAuthConfigured: Boolean(metaConfig(req))
 }));
 
+app.post('/api/meta/config', auth, (req, res) => {
+  const appId = String(req.body?.appId || '').trim();
+  const appSecret = String(req.body?.appSecret || '').trim();
+  if (!/^\d{5,30}$/.test(appId)) return res.status(400).json({ error:'Invalid Meta App ID' });
+  if (appSecret.length < 16 || appSecret.length > 200) return res.status(400).json({ error:'Invalid Meta App Secret' });
+  setEncryptedCookie(res, 'oa_meta_cfg', { appId, appSecret }, 31536000);
+  res.json({ ok:true });
+});
+
+app.post('/api/meta/config/clear', auth, (req, res) => {
+  clearCookie(res, 'oa_meta_cfg');
+  clearCookie(res, 'oa_meta');
+  res.json({ ok:true });
+});
+
 app.get('/connect/meta', (req, res) => {
-  if (!env.META_APP_ID || !env.META_APP_SECRET) {
-    return res.status(503).send('Meta OAuth is ready in OSHER AGENT, but META_APP_ID / META_APP_SECRET still need to be configured.');
+  const cfg = metaConfig(req);
+  if (!cfg) {
+    return res.redirect(APP_ORIGIN + '/?connect_error=' + encodeURIComponent('Meta App ID / Secret are not configured yet'));
   }
   const state = seal({ type:'meta-oauth', expires_at: Date.now() + 10 * 60 * 1000 });
   const redirectUri = API_ORIGIN + '/oauth/meta/callback';
   const params = new URLSearchParams({
-    client_id: env.META_APP_ID,
+    client_id: cfg.appId,
     redirect_uri: redirectUri,
     state,
     response_type: 'code',
@@ -111,13 +132,15 @@ app.get('/connect/meta', (req, res) => {
 
 app.get('/oauth/meta/callback', async (req, res) => {
   try {
+    const cfg = metaConfig(req);
+    if (!cfg) throw new Error('Meta app configuration was not found');
     if (req.query.error) throw new Error(String(req.query.error_description || req.query.error));
     const state = unseal(req.query.state);
     if (!state || state.type !== 'meta-oauth' || Date.now() > state.expires_at) throw new Error('Invalid or expired OAuth state');
     const redirectUri = API_ORIGIN + '/oauth/meta/callback';
     const shortParams = new URLSearchParams({
-      client_id: env.META_APP_ID,
-      client_secret: env.META_APP_SECRET,
+      client_id: cfg.appId,
+      client_secret: cfg.appSecret,
       redirect_uri: redirectUri,
       code: String(req.query.code || '')
     });
@@ -127,8 +150,8 @@ app.get('/oauth/meta/callback', async (req, res) => {
 
     const longParams = new URLSearchParams({
       grant_type: 'fb_exchange_token',
-      client_id: env.META_APP_ID,
-      client_secret: env.META_APP_SECRET,
+      client_id: cfg.appId,
+      client_secret: cfg.appSecret,
       fb_exchange_token: shortJson.access_token
     });
     const longResp = await fetch('https://graph.facebook.com/' + V + '/oauth/access_token?' + longParams.toString());
@@ -149,7 +172,7 @@ app.get('/oauth/meta/callback', async (req, res) => {
 
 app.get('/api/connections', auth, async (req, res) => {
   const out = {
-    metaOAuthConfigured: Boolean(env.META_APP_ID && env.META_APP_SECRET),
+    metaOAuthConfigured: Boolean(metaConfig(req)),
     facebook: { connected: false },
     instagram: { connected: false },
     whatsapp: { connected: Boolean(env.WHATSAPP_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID), mode: env.WHATSAPP_TOKEN ? 'cloud-api' : 'web-link' }
