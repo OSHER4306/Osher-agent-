@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.2.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.2.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -58,7 +58,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><div class="row"><button id="infoAction" class="primary" style="display:none">פתח</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
 
 <script>
-const $ = s => document.querySelector(s); const $ = s => [...document.querySelectorAll(s)];
+const $ = s => document.querySelector(s); const qsa = s => [...document.querySelectorAll(s)];
 window.addEventListener('error',e=>{try{document.getElementById('log').textContent='שגיאת ממשק: '+e.message+'\n'+document.getElementById('log').textContent}catch{}});
 window.addEventListener('unhandledrejection',e=>{try{document.getElementById('log').textContent='שגיאה: '+(e.reason?.message||e.reason||'Unknown')+'\n'+document.getElementById('log').textContent}catch{}});
 const state={queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),server:localStorage.getItem('oa_server')||'https://osher-agent-api.onrender.com',key:localStorage.getItem('oa_key')||''};const pair=new URLSearchParams(location.search).get('key');if(pair){state.key=pair;localStorage.setItem('oa_key',pair);history.replaceState({},'',location.pathname);}
@@ -97,7 +97,7 @@ function openWhatsAppWeb(mode){
     info('חיבור עם מספר טלפון + קוד','1. פתח WhatsApp Web ולחץ <b>Link with phone number</b>.<br>2. בחר ישראל והכנס את מספר ה‑WhatsApp שלך.<br>3. WhatsApp Web יציג קוד חד‑פעמי בן 8 תווים.<br>4. באייפון: WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead.<br>5. אשר את המכשיר והקלד את הקוד.<br><br>זהו קוד קישור מכשיר, לא קוד SMS לרישום החשבון.','פתח WhatsApp Web','https://web.whatsapp.com/');
   }
 }
-$('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
+qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
 $('#connectFacebook').onclick=connectMeta;
@@ -105,7 +105,7 @@ $('#connectInstagram').onclick=connectMeta;
 $('#run').onclick=()=>{const p=parse($('#command').value);if(!p)return;if(p.instant)p.instant();if(p.queue)add(p.queue);$('#command').value=''};
 $('#command').addEventListener('keydown',e=>{if(e.key==='Enter')$('#run').click()});
 $('#queue').onclick=e=>{if(e.target.dataset.approve!==undefined)approve(+e.target.dataset.approve);if(e.target.dataset.reject!==undefined){state.queue.splice(+e.target.dataset.reject,1);save();render();log('הפעולה נדחתה')}};
-$$('[data-info]').forEach(b=>b.onclick=()=>info('חיבור '+b.dataset.info,'החיבור האוטומטי מתבצע דרך הרשאות Meta רשמיות בצד השרת. באייפון ניתן גם לפתוח את האפליקציה המקורית ישירות.'));
+qsa('[data-info]').forEach(b=>b.onclick=()=>info('חיבור '+b.dataset.info,'החיבור האוטומטי מתבצע דרך הרשאות Meta רשמיות בצד השרת. באייפון ניתן גם לפתוח את האפליקציה המקורית ישירות.'));
 $('#settings').onclick=()=>{$('#serverUrl').value=state.server;$('#agentKey').value=state.key;$('#metaAppId').value='';$('#metaAppSecret').value='';$('#settingsDialog').showModal()};
 $('#openMetaDev').onclick=()=>window.open('https://developers.facebook.com/apps/','_blank','noopener,noreferrer');
 $('#saveMeta').onclick=async()=>{
@@ -125,7 +125,7 @@ $('#saveMeta').onclick=async()=>{
 $('#saveSettings').onclick=()=>{state.server=$('#serverUrl').value.trim();state.key=$('#agentKey').value.trim();localStorage.setItem('oa_server',state.server);localStorage.setItem('oa_key',state.key);$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';$('#settingsDialog').close();toast('נשמר')};
 $('#install').onclick=()=>info('התקנה באייפון','פתח את האתר ב‑<b>Safari</b> → שיתוף → <b>הוסף למסך הבית</b>. לאחר מכן OSHER AGENT נפתח בחלון עצמאי.');
 $('#security').onclick=()=>info('אבטחה','סודות Meta אינם נשמרים בדפדפן. iOS לא מאפשר לאפליקציה אחת לשלוט שרירותית בממשק של אפליקציה אחרת; אוטומציה אמינה משתמשת ב‑APIs רשמיים, Shortcuts וקישורים מאושרים.');
-$('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+$('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';qsa('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 const qp=new URLSearchParams(location.search);
 if(qp.get('connected')==='meta'){toast('Meta חובר בהצלחה');log('Facebook / Instagram אושרו דרך Meta');history.replaceState({},'',location.pathname)}
