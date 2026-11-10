@@ -28,12 +28,44 @@ button{width:100%;border:0;border-radius:15px;padding:14px;font-size:16px;font-w
 <div class="step"><span class="num">5</span>באייפון: WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead → אשר והקלד את הקוד.</div>
 </div>
 <button id="open">פתח WhatsApp Web הרשמי</button>
+<button id="copy" style="margin-top:10px;background:#181d27;border:1px solid #303747">העתק קישור למכשיר מרוחק</button>
 <div class="warn">לעולם אל תמסור את קוד הקישור לאדם אחר. המכשיר המרוחק יקבל גישה לחשבון לאחר שתאשר אותו באייפון.</div>
 </div>
 <script>
 const q=new URLSearchParams(location.search),phone=(q.get('phone')||'').replace(/[^+\d]/g,'');
+const mobile=/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
 document.getElementById('phone').textContent=phone||'לא הוזן מספר';
-document.getElementById('open').onclick=()=>location.href='https://web.whatsapp.com/';
+
+const open=document.getElementById('open');
+const copy=document.getElementById('copy');
+
+async function shareToDesktop(){
+  const url=location.href;
+  try{
+    if(navigator.share){
+      await navigator.share({title:'OSHER AGENT · WhatsApp Remote Device',text:'פתח את הקישור הזה במחשב:',url});
+      return;
+    }
+  }catch(e){}
+  try{
+    await navigator.clipboard.writeText(url);
+    copy.textContent='הקישור הועתק ✓';
+  }catch(e){
+    copy.textContent='העתק מהשורת כתובת';
+  }
+}
+
+if(mobile){
+  open.textContent='שתף את החיבור למחשב';
+  open.onclick=shareToDesktop;
+  document.querySelector('.muted').innerHTML='העמוד נפתח במובייל. כדי לקבל קוד קישור בן 8 תווים צריך לפתוח אותו <b>במחשב/דפדפן שולחני</b>.';
+}else{
+  open.onclick=()=>location.href='https://web.whatsapp.com/';
+}
+copy.onclick=async()=>{
+  try{await navigator.clipboard.writeText(location.href);copy.textContent='הקישור הועתק ✓';}
+  catch(e){copy.textContent='העתק מהשורת כתובת';}
+};
 </script>
 </body>
 </html>
