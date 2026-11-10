@@ -112,46 +112,59 @@ function normalizeRemotePhone(raw) {
 }
 
 async function clickText(page, patterns, timeoutMs = 25000) {
-  const started = Date.now();
-  while (Date.now() - started < timeoutMs) {
-    const hit = await page.evaluate((patterns) => {
-      const norm = v => String(v || '').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
-      const pats = patterns.map(norm);
-      const nodes = [...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
-      const candidates = [];
-      for (const node of nodes) {
-        const r = node.getBoundingClientRect?.();
-        if (!r || r.width < 2 || r.height < 2) continue;
-        const raw = [
-          node.innerText || node.textContent || '',
-          node.getAttribute?.('aria-label') || '',
-          node.getAttribute?.('title') || ''
-        ].join(' ');
-        const txt = norm(raw);
-        if (!txt) continue;
-        let score = null;
-        for (const p of pats) {
-          if (txt === p) score = Math.min(score ?? 1e9, 0);
-          else if (txt.startsWith(p) && txt.length <= p.length + 12) score = Math.min(score ?? 1e9, 5 + txt.length);
-          else if (txt.includes(p)) score = Math.min(score ?? 1e9, 1000 + txt.length);
-        }
-        if (score !== null) candidates.push({node, r, score});
-      }
-      candidates.sort((a,b)=>a.score-b.score || (a.r.width*a.r.height)-(b.r.width*b.r.height));
-      const best=candidates[0];
-      if(!best) return null;
-      return {
-        x:best.r.left+best.r.width/2,
-        y:best.r.top+best.r.height/2,
-        text:norm(best.node.innerText||best.node.textContent||''),
-        tag:best.node.tagName
-      };
-    }, patterns).catch(() => null);
+  const canonical = pattern => {
+    const p=String(pattern||'').toLowerCase();
+    if(p.includes('link with phone number')) return ['Link with phone number instead.','Link with phone number instead'];
+    if(p.includes('log in with phone number')) return ['Log in with phone number','Log in with phone number instead'];
+    if(p==='next') return ['Next'];
+    return [String(pattern||'')];
+  };
 
-    if (hit) {
-      await page.mouse.move(hit.x, hit.y).catch(()=>{});
-      await page.mouse.click(hit.x, hit.y, {delay:100}).catch(()=>{});
-      await sleep(800);
+  const started=Date.now();
+  while(Date.now()-started<timeoutMs){
+    for(const pattern of patterns){
+      for(const text of canonical(pattern)){
+        const escaped=text.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+        const selector='::-p-text("'+escaped+'")';
+        try{
+          const handle=await page.$(selector);
+          if(handle){
+            await handle.click({delay:100});
+            await sleep(900);
+            await handle.dispose().catch(()=>{});
+            return true;
+          }
+        }catch{}
+      }
+    }
+
+    // Fallback for UI text that changes slightly.
+    const hit=await page.evaluate((patterns)=>{
+      const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
+      const pats=patterns.map(norm);
+      const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
+      const candidates=[];
+      for(const node of nodes){
+        const r=node.getBoundingClientRect?.();
+        if(!r||r.width<2||r.height<2) continue;
+        const txt=norm([
+          node.innerText||node.textContent||'',
+          node.getAttribute?.('aria-label')||'',
+          node.getAttribute?.('title')||''
+        ].join(' '));
+        if(!txt) continue;
+        for(const p of pats){
+          if(txt===p) candidates.push({x:r.left+r.width/2,y:r.top+r.height/2,area:r.width*r.height,score:0});
+          else if(txt.startsWith(p)&&txt.length<=p.length+12) candidates.push({x:r.left+r.width/2,y:r.top+r.height/2,area:r.width*r.height,score:10+txt.length});
+        }
+      }
+      candidates.sort((a,b)=>a.score-b.score||a.area-b.area);
+      return candidates[0]||null;
+    },patterns).catch(()=>null);
+
+    if(hit){
+      await page.mouse.click(hit.x,hit.y,{delay:100}).catch(()=>{});
+      await sleep(900);
       return true;
     }
     await sleep(700);
