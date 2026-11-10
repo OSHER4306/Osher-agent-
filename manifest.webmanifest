@@ -1,0 +1,1 @@
+{"name":"Osher Agent","short_name":"Agent","description":"מרכז שליטה לפקודות WhatsApp, Facebook ו-Instagram","start_url":"./","scope":"./","display":"standalone","background_color":"#07080b","theme_color":"#090b10","dir":"rtl","lang":"he","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
