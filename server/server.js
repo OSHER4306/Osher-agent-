@@ -535,7 +535,9 @@ app.listen(env.PORT || 8787, () => {
       const page=await browser.newPage();
       await page.setViewport({width:1280,height:800});
       await page.goto('https://web.whatsapp.com/',{waitUntil:'domcontentloaded',timeout:45000});
-      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url()}));
+      await sleep(3000);
+      const phoneLinkVisible=await clickText(page,['link with phone number','log in with phone number'],15000);
+      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible}));
     }catch(error){
       console.error('REMOTE_BROWSER_SELFTEST_FAILED', error.message);
     }finally{
