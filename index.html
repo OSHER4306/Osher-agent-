@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.1.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -58,7 +58,9 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><div class="row"><button id="infoAction" class="primary" style="display:none">פתח</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
 
 <script>
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+window.addEventListener('error',e=>{try{document.getElementById('log').textContent='שגיאת ממשק: '+e.message+'\n'+document.getElementById('log').textContent}catch{}});
+window.addEventListener('unhandledrejection',e=>{try{document.getElementById('log').textContent='שגיאה: '+(e.reason?.message||e.reason||'Unknown')+'\n'+document.getElementById('log').textContent}catch{}});
 const state={queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),server:localStorage.getItem('oa_server')||'https://osher-agent-api.onrender.com',key:localStorage.getItem('oa_key')||''};const pair=new URLSearchParams(location.search).get('key');if(pair){state.key=pair;localStorage.setItem('oa_key',pair);history.replaceState({},'',location.pathname);}
 const save=()=>localStorage.setItem('oa_queue',JSON.stringify(state.queue));
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
