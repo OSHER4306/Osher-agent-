@@ -537,7 +537,17 @@ app.listen(env.PORT || 8787, () => {
       await page.goto('https://web.whatsapp.com/',{waitUntil:'domcontentloaded',timeout:45000});
       await sleep(3000);
       const phoneLinkVisible=await clickText(page,['link with phone number','log in with phone number'],15000);
-      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible}));
+      const diagnostic=await page.evaluate(()=>{
+        const body=(document.body?.innerText||'').replace(/\s+/g,' ').slice(0,1800);
+        const controls=[...document.querySelectorAll('button,a,[role="button"],[aria-label]')].slice(0,120).map(el=>({
+          tag:el.tagName,
+          text:(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim().slice(0,120),
+          aria:(el.getAttribute('aria-label')||'').slice(0,120),
+          title:(el.getAttribute('title')||'').slice(0,120)
+        })).filter(x=>x.text||x.aria||x.title);
+        return {body,controls};
+      }).catch(()=>({body:'',controls:[]}));
+      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible,diagnostic}));
     }catch(error){
       console.error('REMOTE_BROWSER_SELFTEST_FAILED', error.message);
     }finally{
