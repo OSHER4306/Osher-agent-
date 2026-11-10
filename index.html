@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.2.2</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -36,6 +36,14 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
   <div class="actions" style="margin-top:12px">
     <button id="waQr">📷 חיבור QR / Web</button>
     <button id="waPhone">🔢 מספר + קוד</button>
+  </div>
+  <div class="field" style="margin-top:12px">
+    <label>חיבור כמכשיר מרוחק</label>
+    <div class="row">
+      <input id="remotePhone" inputmode="tel" placeholder="+9725XXXXXXXX" style="flex:1">
+      <button id="remoteDevice" class="primary">צור חיבור</button>
+    </div>
+    <small class="hint" style="display:block;margin-top:7px">יוצר קישור לפתיחה במחשב/דפדפן המרוחק. הקוד עצמו מתקבל רק מ‑WhatsApp Web הרשמי.</small>
   </div>
 </div>
 <div class="card conn"><div class="left"><div class="appicon">📸</div><div><b>Instagram</b><small id="igSub">Professional דרך Meta</small></div></div><button id="connectInstagram" class="status">חבר חשבון</button></div>
@@ -103,6 +111,13 @@ function openWhatsAppWeb(mode){
 }
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
+$('#remoteDevice').onclick=()=>{
+  const phone=$('#remotePhone').value.trim().replace(/[^+\d]/g,'');
+  if(!phone)return toast('הכנס מספר WhatsApp');
+  const url=location.origin+'/remote.html?phone='+encodeURIComponent(phone);
+  info('מכשיר מרוחק','פתח את הקישור הבא במחשב או בדפדפן המרוחק. שם תעבור ל‑WhatsApp Web הרשמי ותבחר <b>Link with phone number</b>.<br><br><code style="word-break:break-all">'+url+'</code>','פתח כאן לבדיקה',url);
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>toast('קישור המכשיר המרוחק הועתק'));
+};
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
 $('#connectFacebook').onclick=connectMeta;
