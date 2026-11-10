@@ -544,6 +544,17 @@ app.listen(env.PORT || 8787, () => {
       await page.goto('https://web.whatsapp.com/',{waitUntil:'domcontentloaded',timeout:45000});
       await sleep(3000);
       const phoneLinkVisible=await clickText(page,['link with phone number','log in with phone number'],15000);
+      if(phoneLinkVisible) await sleep(1400);
+      const phoneInputDiagnostic=await page.evaluate(()=>{
+        const inputs=[...document.querySelectorAll('input')].map(el=>({
+          type:el.type||'',
+          placeholder:el.placeholder||'',
+          aria:el.getAttribute('aria-label')||'',
+          value:el.value||'',
+          visible:!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)
+        }));
+        return {inputs, visibleInput:inputs.some(x=>x.visible)};
+      }).catch(()=>({inputs:[],visibleInput:false}));
       const diagnostic=await page.evaluate(()=>{
         const body=(document.body?.innerText||'').replace(/\s+/g,' ').slice(0,1800);
         const controls=[...document.querySelectorAll('button,a,[role="button"],[aria-label]')].slice(0,120).map(el=>({
@@ -554,7 +565,7 @@ app.listen(env.PORT || 8787, () => {
         })).filter(x=>x.text||x.aria||x.title);
         return {body,controls};
       }).catch(()=>({body:'',controls:[]}));
-      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible,diagnostic}));
+      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible,phoneInputVisible:phoneInputDiagnostic.visibleInput,phoneInputs:phoneInputDiagnostic.inputs,diagnostic}));
     }catch(error){
       console.error('REMOTE_BROWSER_SELFTEST_FAILED', error.message);
     }finally{
