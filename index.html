@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -146,7 +146,10 @@ $('#saveSettings').onclick=()=>{state.server=$('#serverUrl').value.trim();state.
 $('#install').onclick=()=>info('התקנה באייפון','פתח את האתר ב‑<b>Safari</b> → שיתוף → <b>הוסף למסך הבית</b>. לאחר מכן OSHER AGENT נפתח בחלון עצמאי.');
 $('#security').onclick=()=>info('אבטחה','סודות Meta אינם נשמרים בדפדפן. iOS לא מאפשר לאפליקציה אחת לשלוט שרירותית בממשק של אפליקציה אחרת; אוטומציה אמינה משתמשת ב‑APIs רשמיים, Shortcuts וקישורים מאושרים.');
 $('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';qsa('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
+  caches?.keys?.().then(keys=>keys.forEach(k=>caches.delete(k))).catch?.(()=>{});
+}
 const qp=new URLSearchParams(location.search);
 if(qp.get('connected')==='meta'){toast('Meta חובר בהצלחה');log('Facebook / Instagram אושרו דרך Meta');history.replaceState({},'',location.pathname)}
 if(qp.get('connect_error')){toast('החיבור לא הושלם');log('שגיאת חיבור: '+qp.get('connect_error'));history.replaceState({},'',location.pathname)}
