@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
-import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'crypto';
+import puppeteer from 'puppeteer';
+import { createHash, createCipheriv, createDecipheriv, randomBytes, randomUUID } from 'crypto';
 
 const app = express();
 const env = process.env;
@@ -87,10 +88,225 @@ async function getPages(token) {
   return result.data || [];
 }
 
+const waRemoteSessions = new Map();
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+function normalizeRemotePhone(raw) {
+  const original = String(raw || '').trim();
+  const digits = original.replace(/\D/g, '');
+  if (digits.length < 8 || digits.length > 15) throw new Error('Enter a valid international WhatsApp number, for example +9725XXXXXXXX');
+  const known = [
+    { code:'972', country:'Israel' },
+    { code:'1', country:'United States' },
+    { code:'44', country:'United Kingdom' },
+    { code:'33', country:'France' },
+    { code:'49', country:'Germany' },
+    { code:'39', country:'Italy' },
+    { code:'34', country:'Spain' }
+  ].find(x => digits.startsWith(x.code));
+  return {
+    e164:'+' + digits,
+    country:known?.country || null,
+    local:known ? digits.slice(known.code.length).replace(/^0+/, '') : digits
+  };
+}
+
+async function clickText(page, patterns, timeoutMs = 25000) {
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    const clicked = await page.evaluate((patterns) => {
+      const nodes = [...document.querySelectorAll('button,a,[role="button"],div,span')];
+      for (const node of nodes) {
+        const txt = (node.innerText || node.textContent || '').trim().toLowerCase();
+        if (!txt) continue;
+        if (patterns.some(p => txt.includes(p.toLowerCase()))) {
+          const target = node.closest('button,a,[role="button"]') || node;
+          try { target.click(); return true; } catch {}
+        }
+      }
+      return false;
+    }, patterns).catch(() => false);
+    if (clicked) return true;
+    await sleep(700);
+  }
+  return false;
+}
+
+async function selectCountryIfPossible(page, country) {
+  if (!country) return;
+  const opened = await page.evaluate(() => {
+    const nodes = [...document.querySelectorAll('button,[role="button"],div')];
+    const node = nodes.find(el => {
+      const text = (el.innerText || '').trim();
+      const aria = el.getAttribute('aria-label') || '';
+      return /country|united states|\+1/i.test(text + ' ' + aria);
+    });
+    if (!node) return false;
+    const target = node.closest('button,[role="button"]') || node;
+    try { target.click(); return true; } catch { return false; }
+  }).catch(() => false);
+  if (!opened) return;
+  await sleep(800);
+  await clickText(page, [country], 6000);
+  await sleep(500);
+}
+
+async function fillPhoneInput(page, localNumber, e164) {
+  const handles = await page.$('input');
+  let chosen = null;
+  for (const h of handles) {
+    const meta = await h.evaluate(el => ({
+      type:el.type || '',
+      placeholder:el.placeholder || '',
+      aria:el.getAttribute('aria-label') || '',
+      visible:!!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)
+    })).catch(() => null);
+    if (!meta?.visible) continue;
+    const hay = (meta.type + ' ' + meta.placeholder + ' ' + meta.aria).toLowerCase();
+    if (/tel|phone|number/.test(hay)) { chosen = h; break; }
+    if (!chosen) chosen = h;
+  }
+  if (!chosen) throw new Error('WhatsApp phone-number input was not found');
+  await chosen.click({clickCount:3}).catch(()=>{});
+  await page.keyboard.press('Backspace').catch(()=>{});
+  await chosen.type(localNumber || e164.replace(/^\+/, ''), {delay:35});
+}
+
+function extractPairingCode(text) {
+  const lines = String(text || '').split(/\n+/).map(x => x.trim()).filter(Boolean);
+  for (const line of lines) {
+    const compact = line.replace(/[\s-]/g, '');
+    if (/^[A-Z0-9]{8}$/i.test(compact) && !/^\d{8}$/.test(compact)) return compact.toUpperCase();
+  }
+  const mixed = String(text || '').match(/\b[A-Z0-9]{4}[\s-]?[A-Z0-9]{4}\b/i);
+  if (mixed) return mixed[0].replace(/[\s-]/g,'').toUpperCase();
+  const digits = String(text || '').match(/\b\d{4}[\s-]?\d{4}\b/);
+  if (digits) return digits[0].replace(/[\s-]/g,'');
+  return null;
+}
+
+async function sessionScreenshot(session) {
+  if (!session?.page || session.page.isClosed()) return null;
+  const buf = await session.page.screenshot({type:'png', fullPage:false}).catch(()=>null);
+  return buf ? 'data:image/png;base64,' + buf.toString('base64') : null;
+}
+
+async function prepareRemoteWhatsapp(session, phone) {
+  try {
+    session.status='launching';
+    const browser = await puppeteer.launch({
+      headless:true,
+      args:[
+        '--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage',
+        '--disable-gpu','--no-first-run','--no-default-browser-check','--lang=en-US'
+      ]
+    });
+    session.browser=browser;
+    const page=await browser.newPage();
+    session.page=page;
+    await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
+    await page.setExtraHTTPHeaders({'Accept-Language':'en-US,en;q=0.9'});
+    session.status='opening_whatsapp_web';
+    await page.goto('https://web.whatsapp.com/', {waitUntil:'domcontentloaded', timeout:70000});
+    await sleep(3500);
+
+    session.status='opening_phone_link';
+    const linkClicked = await clickText(page, ['link with phone number','log in with phone number'], 30000);
+    if (!linkClicked) {
+      session.screenshot = await sessionScreenshot(session);
+      throw new Error('WhatsApp Web did not expose the phone-number linking option in the remote desktop session');
+    }
+    await sleep(1800);
+
+    await selectCountryIfPossible(page, phone.country);
+    session.status='entering_phone';
+    await fillPhoneInput(page, phone.local, phone.e164);
+    await sleep(400);
+
+    const nextClicked = await clickText(page, ['next'], 8000);
+    if (!nextClicked) {
+      session.screenshot = await sessionScreenshot(session);
+      throw new Error('WhatsApp Next button was not found after entering the phone number');
+    }
+
+    session.status='waiting_for_code';
+    const started=Date.now();
+    while(Date.now()-started < 45000){
+      const bodyText=await page.evaluate(()=>document.body.innerText).catch(()=> '');
+      const code=extractPairingCode(bodyText);
+      if(code){
+        session.code=code;
+        session.status='code_ready';
+        session.screenshot=await sessionScreenshot(session);
+        break;
+      }
+      await sleep(1000);
+    }
+    if(!session.code){
+      session.screenshot=await sessionScreenshot(session);
+      throw new Error('WhatsApp did not return an 8-character pairing code');
+    }
+
+    // Keep the browser alive and watch for successful linking.
+    while(session.browser && session.status==='code_ready'){
+      const linked=await page.evaluate(()=>{
+        return !!document.querySelector('#pane-side,[data-testid="chat-list"],[aria-label="Chat list"]') ||
+          /\bchats\b/i.test((document.body.innerText||'').slice(0,1200));
+      }).catch(()=>false);
+      if(linked){
+        session.status='linked';
+        session.linkedAt=Date.now();
+        session.screenshot=await sessionScreenshot(session);
+        break;
+      }
+      await sleep(1800);
+    }
+  } catch (error) {
+    session.error=error.message;
+    session.status='error';
+    if(!session.screenshot) session.screenshot=await sessionScreenshot(session);
+  }
+}
+
+app.post('/api/whatsapp/remote/start', auth, async (req,res)=>{
+  try{
+    const phone=normalizeRemotePhone(req.body?.phone);
+    const id=randomUUID();
+    const session={id,phone:phone.e164,status:'starting',createdAt:Date.now(),code:null,error:null,screenshot:null,browser:null,page:null};
+    waRemoteSessions.set(id,session);
+    prepareRemoteWhatsapp(session,phone);
+    res.json({ok:true,id,status:session.status,phone:phone.e164});
+  }catch(error){
+    res.status(400).json({error:error.message});
+  }
+});
+
+app.get('/api/whatsapp/remote/:id', auth, async (req,res)=>{
+  const session=waRemoteSessions.get(req.params.id);
+  if(!session) return res.status(404).json({error:'Remote WhatsApp session not found'});
+  const withScreenshot=req.query.screenshot==='1';
+  if(withScreenshot && !session.screenshot) session.screenshot=await sessionScreenshot(session);
+  res.json({
+    ok:true,id:session.id,phone:session.phone,status:session.status,
+    code:session.code,error:session.error,
+    screenshot:withScreenshot ? session.screenshot : undefined,
+    linkedAt:session.linkedAt || null
+  });
+});
+
+app.post('/api/whatsapp/remote/:id/close', auth, async (req,res)=>{
+  const session=waRemoteSessions.get(req.params.id);
+  if(!session) return res.json({ok:true});
+  try{await session.browser?.close();}catch{}
+  waRemoteSessions.delete(req.params.id);
+  res.json({ok:true});
+});
+
 app.get('/health', (req, res) => res.json({
   ok: true,
   service: 'osher-agent',
-  metaOAuthConfigured: Boolean(metaConfig(req))
+  metaOAuthConfigured: Boolean(metaConfig(req)),
+  remoteBrowserPairing: true
 }));
 
 app.post('/api/meta/config', auth, (req, res) => {
