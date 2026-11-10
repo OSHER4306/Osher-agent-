@@ -38,8 +38,8 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
     <button id="waPhone">🔢 מספר + קוד</button>
   </div>
 </div>
-<div class="card conn"><div class="left"><div class="appicon">📸</div><div><b>Instagram</b><small>Professional דרך Meta</small></div></div><button class="status" data-info="Instagram">הגדר</button></div>
-<div class="card conn"><div class="left"><div class="appicon">🔵</div><div><b>Facebook</b><small>Page דרך Graph API</small></div></div><button class="status" data-info="Facebook">הגדר</button></div>
+<div class="card conn"><div class="left"><div class="appicon">📸</div><div><b>Instagram</b><small id="igSub">Professional דרך Meta</small></div></div><button id="connectInstagram" class="status">חבר חשבון</button></div>
+<div class="card conn"><div class="left"><div class="appicon">🔵</div><div><b>Facebook</b><small id="fbSub">Page דרך Graph API</small></div></div><button id="connectFacebook" class="status">חבר חשבון</button></div>
 </div></section>
 <section><div class="head"><h2>תור אישורים</h2><span id="count" class="hint">0 ממתינות</span></div><div id="queue" class="queue"></div></section>
 <section><div class="head"><h2>יומן סוכן</h2><button id="clear" class="pill">נקה</button></div><div id="log" class="card log">מוכן לפקודה.</div></section>
@@ -59,7 +59,24 @@ function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':
 function render(){const q=$('#queue');q.innerHTML='';$('#count').textContent=state.queue.length+' ממתינות';if(!state.queue.length)q.innerHTML='<div class="card hint">אין פעולות שממתינות לאישור.</div>';state.queue.forEach((x,i)=>{const d=document.createElement('div');d.className='card item';d.innerHTML='<div class="top"><b>'+escapeHtml(x.title)+'</b><span class="meta">'+escapeHtml(x.channel)+'</span></div><p>'+escapeHtml(x.description)+'</p><div class="actions"><button class="approve" data-approve="'+i+'">אשר ובצע</button><button data-reject="'+i+'">דחה</button></div>';q.appendChild(d)})}
 function openApp(k){const u={wa:'https://wa.me/',ig:'https://www.instagram.com/',fb:'https://www.facebook.com/'};log('פותח '+k.toUpperCase());location.href=u[k]}
 function add(x){state.queue.unshift(x);save();render();toast('נוסף לאישורים');log('הוכנה פעולה: '+x.title)}
-async function api(body){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+'/api/action',{method:'POST',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
+async function api(body){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+'/api/action',{method:'POST',credentials:'include',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
+async function loadConnections(){
+  if(!state.server||!state.key)return;
+  try{
+    const r=await fetch(state.server.replace(/\/$/,'')+'/api/connections',{credentials:'include',headers:{'x-agent-key':state.key}});
+    const j=await r.json();
+    if(!r.ok)throw Error(j.error||'Connection status failed');
+    const fb=$('#connectFacebook'),ig=$('#connectInstagram');
+    if(j.facebook?.connected){fb.textContent='מחובר ✓';fb.style.color='#9ff2bd';fb.style.borderColor='#285f40';fb.style.background='#153724';$('#fbSub').textContent=(j.facebook.pages||[]).map(x=>x.name).join(', ')||'Facebook מחובר'}
+    else{fb.textContent=j.metaOAuthConfigured?'חבר חשבון':'צריך Meta App';}
+    if(j.instagram?.connected){ig.textContent='מחובר ✓';ig.style.color='#9ff2bd';ig.style.borderColor='#285f40';ig.style.background='#153724';$('#igSub').textContent=(j.instagram.accounts||[]).map(x=>'@'+(x.username||x.pageName)).join(', ')||'Instagram מחובר'}
+    else{ig.textContent=j.metaOAuthConfigured?'חבר חשבון':'צריך Meta App';}
+  }catch(e){log('בדיקת חיבורים: '+e.message)}
+}
+function connectMeta(){
+  if(!state.server)return toast('לא הוגדר שרת');
+  location.href=state.server.replace(/\/$/,'')+'/connect/meta';
+}
 function parse(t){t=t.trim();const l=t.toLowerCase();if(!t)return null;if(l.includes('פתח וואט')||l==='וואטסאפ')return{instant:()=>openApp('wa')};if(l.includes('פתח אינסט')||l==='אינסטגרם')return{instant:()=>openApp('ig')};if(l.includes('פתח פייס')||l==='פייסבוק')return{instant:()=>openApp('fb')};let m=t.match(/שלח(?: הודעת)? וואטסאפ ל[\s:]*([+\d\- ]+)[\s,:-]+(.+)/i);if(m){const phone=m[1].replace(/\D/g,'');return{queue:{title:'שליחת WhatsApp ל‑'+phone,channel:'WhatsApp',description:m[2].trim(),action:{type:'whatsapp_send',phone,message:m[2].trim()}}}};m=t.match(/(?:פרסם|העלה)(?: פוסט)? (?:ב|ל)?פייסבוק[\s:,-]+(.+)/i);if(m)return{queue:{title:'פרסום בפייסבוק',channel:'Facebook',description:m[1],action:{type:'facebook_post',message:m[1]}}};return{queue:{title:'פקודת סוכן',channel:'Agent',description:t,action:{type:'command',command:t}}}}
 async function approve(i){const x=state.queue[i];try{if(x.action.type==='whatsapp_send'&&!state.server){location.href='https://wa.me/'+x.action.phone+'?text='+encodeURIComponent(x.action.message)}else if(!state.server){throw Error('לפעולה הזאת צריך לחבר שרת Meta')}else{await api(x.action);toast('בוצע')}log('בוצע: '+x.title);state.queue.splice(i,1);save();render()}catch(e){toast(e.message);log('שגיאה: '+e.message)}}
 function info(t,html,actionLabel='',actionUrl=''){const a=$('#infoAction');$('#infoTitle').textContent=t;$('#infoText').innerHTML=html;if(actionUrl){a.style.display='block';a.textContent=actionLabel||'פתח';a.onclick=()=>window.open(actionUrl,'_blank','noopener,noreferrer')}else{a.style.display='none';a.onclick=null}$('#infoDialog').showModal()}
@@ -73,6 +90,8 @@ function openWhatsAppWeb(mode){
 $('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
+$('#connectFacebook').onclick=connectMeta;
+$('#connectInstagram').onclick=connectMeta;
 $('#run').onclick=()=>{const p=parse($('#command').value);if(!p)return;if(p.instant)p.instant();if(p.queue)add(p.queue);$('#command').value=''};
 $('#command').addEventListener('keydown',e=>{if(e.key==='Enter')$('#run').click()});
 $('#queue').onclick=e=>{if(e.target.dataset.approve!==undefined)approve(+e.target.dataset.approve);if(e.target.dataset.reject!==undefined){state.queue.splice(+e.target.dataset.reject,1);save();render();log('הפעולה נדחתה')}};
@@ -83,6 +102,9 @@ $('#install').onclick=()=>info('התקנה באייפון','פתח את האתר
 $('#security').onclick=()=>info('אבטחה','סודות Meta אינם נשמרים בדפדפן. iOS לא מאפשר לאפליקציה אחת לשלוט שרירותית בממשק של אפליקציה אחרת; אוטומציה אמינה משתמשת ב‑APIs רשמיים, Shortcuts וקישורים מאושרים.');
 $('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
-$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';render();
+const qp=new URLSearchParams(location.search);
+if(qp.get('connected')==='meta'){toast('Meta חובר בהצלחה');log('Facebook / Instagram אושרו דרך Meta');history.replaceState({},'',location.pathname)}
+if(qp.get('connect_error')){toast('החיבור לא הושלם');log('שגיאת חיבור: '+qp.get('connect_error'));history.replaceState({},'',location.pathname)}
+$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';render();loadConnections();
 </script>
 </body></html>
