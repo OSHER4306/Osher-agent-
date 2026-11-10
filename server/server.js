@@ -523,4 +523,23 @@ app.post('/api/action', auth, async (req, res) => {
   }
 });
 
-app.listen(env.PORT || 8787, () => console.log('Osher Agent listening'));
+app.listen(env.PORT || 8787, () => {
+  console.log('Osher Agent listening');
+  (async()=>{
+    let browser;
+    try{
+      browser=await puppeteer.launch({
+        headless:true,
+        args:['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage','--disable-gpu','--lang=en-US']
+      });
+      const page=await browser.newPage();
+      await page.setViewport({width:1280,height:800});
+      await page.goto('https://web.whatsapp.com/',{waitUntil:'domcontentloaded',timeout:45000});
+      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url()}));
+    }catch(error){
+      console.error('REMOTE_BROWSER_SELFTEST_FAILED', error.message);
+    }finally{
+      try{await browser?.close();}catch{}
+    }
+  })();
+});
