@@ -6,7 +6,7 @@ const app = express();
 const env = process.env;
 const V = env.META_GRAPH_VERSION || 'v27.0';
 const PRIMARY_APP_ORIGIN = env.APP_ORIGIN || 'https://osher-agent-pro.onrender.com';
-const APP_ORIGINS = new Set([PRIMARY_APP_ORIGIN,'https://osher-agent-pro.onrender.com','https://osher-agent-ios.onrender.com']);
+const APP_ORIGINS = new Set([PRIMARY_APP_ORIGIN,'https://osher-agent-mobile.onrender.com','https://osher-agent-pro.onrender.com','https://osher-agent-ios.onrender.com']);
 const API_ORIGIN = env.API_ORIGIN || 'https://osher-agent-api.onrender.com';
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
