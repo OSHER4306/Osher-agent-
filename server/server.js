@@ -115,41 +115,43 @@ async function clickText(page, patterns, timeoutMs = 25000) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
     const hit = await page.evaluate((patterns) => {
+      const norm = v => String(v || '').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
+      const pats = patterns.map(norm);
       const nodes = [...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
+      const candidates = [];
       for (const node of nodes) {
-        const txt = [
+        const r = node.getBoundingClientRect?.();
+        if (!r || r.width < 2 || r.height < 2) continue;
+        const raw = [
           node.innerText || node.textContent || '',
           node.getAttribute?.('aria-label') || '',
           node.getAttribute?.('title') || ''
-        ].join(' ').trim().toLowerCase();
-        if (!txt || !patterns.some(p => txt.includes(p.toLowerCase()))) continue;
-
-        let target = node;
-        for (let i=0; i<7 && target; i++, target=target.parentElement) {
-          const r = target.getBoundingClientRect?.();
-          if (!r || r.width < 2 || r.height < 2) continue;
-          const role = target.getAttribute?.('role') || '';
-          const cs = getComputedStyle(target);
-          const clickable =
-            ['BUTTON','A'].includes(target.tagName) ||
-            ['button','link'].includes(role) ||
-            target.tabIndex >= 0 ||
-            cs.cursor === 'pointer';
-          if (clickable) {
-            return {x:r.left+r.width/2, y:r.top+r.height/2};
-          }
+        ].join(' ');
+        const txt = norm(raw);
+        if (!txt) continue;
+        let score = null;
+        for (const p of pats) {
+          if (txt === p) score = Math.min(score ?? 1e9, 0);
+          else if (txt.startsWith(p) && txt.length <= p.length + 12) score = Math.min(score ?? 1e9, 5 + txt.length);
+          else if (txt.includes(p)) score = Math.min(score ?? 1e9, 1000 + txt.length);
         }
-
-        const r = node.getBoundingClientRect?.();
-        if (r && r.width > 1 && r.height > 1) return {x:r.left+r.width/2, y:r.top+r.height/2};
+        if (score !== null) candidates.push({node, r, score});
       }
-      return null;
+      candidates.sort((a,b)=>a.score-b.score || (a.r.width*a.r.height)-(b.r.width*b.r.height));
+      const best=candidates[0];
+      if(!best) return null;
+      return {
+        x:best.r.left+best.r.width/2,
+        y:best.r.top+best.r.height/2,
+        text:norm(best.node.innerText||best.node.textContent||''),
+        tag:best.node.tagName
+      };
     }, patterns).catch(() => null);
 
     if (hit) {
       await page.mouse.move(hit.x, hit.y).catch(()=>{});
-      await page.mouse.click(hit.x, hit.y, {delay:80}).catch(()=>{});
-      await sleep(500);
+      await page.mouse.click(hit.x, hit.y, {delay:100}).catch(()=>{});
+      await sleep(800);
       return true;
     }
     await sleep(700);
@@ -175,27 +177,44 @@ async function selectCountryIfPossible(page, country) {
   await sleep(500);
 }
 
-async function fillPhoneInput(page, localNumber, e164) {
-  const handles = await page.$('input');
-  let chosen = null;
+async function findPhoneInput(page) {
+  const handles = await page.$$('input, [contenteditable="true"]');
   for (const h of handles) {
     const meta = await h.evaluate(el => ({
-      type:el.type || '',
+      tag:el.tagName,
+      type:(el.type || '').toLowerCase(),
       placeholder:el.placeholder || '',
       aria:el.getAttribute('aria-label') || '',
+      inputmode:el.getAttribute('inputmode') || '',
+      contenteditable:el.getAttribute('contenteditable') || '',
       visible:!!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)
     })).catch(() => null);
     if (!meta?.visible) continue;
-    const hay = (meta.type + ' ' + meta.placeholder + ' ' + meta.aria).toLowerCase();
-    if (/tel|phone|number/.test(hay)) { chosen = h; break; }
-    if (!chosen) chosen = h;
+    if (['checkbox','radio','hidden','button','submit','reset','file'].includes(meta.type)) continue;
+    const hay = (meta.type+' '+meta.placeholder+' '+meta.aria+' '+meta.inputmode).toLowerCase();
+    const preferred = /tel|phone|number|mobile|numeric/.test(hay);
+    if (preferred) return h;
   }
+  for (const h of handles) {
+    const meta = await h.evaluate(el => ({
+      type:(el.type || '').toLowerCase(),
+      visible:!!(el.offsetWidth || el.offsetHeight || el.getClientRects().length),
+      ce:el.getAttribute('contenteditable')==='true'
+    })).catch(()=>null);
+    if(!meta?.visible) continue;
+    if(['checkbox','radio','hidden','button','submit','reset','file'].includes(meta.type)) continue;
+    if(meta.ce || ['','text','tel','number'].includes(meta.type)) return h;
+  }
+  return null;
+}
+
+async function fillPhoneInput(page, localNumber, e164) {
+  const chosen = await findPhoneInput(page);
   if (!chosen) throw new Error('WhatsApp phone-number input was not found');
   await chosen.click({clickCount:3}).catch(()=>{});
   await page.keyboard.press('Backspace').catch(()=>{});
   await chosen.type(localNumber || e164.replace(/^\+/, ''), {delay:35});
 }
-
 function extractPairingCode(text) {
   const lines = String(text || '').split(/\n+/).map(x => x.trim()).filter(Boolean);
   for (const line of lines) {
@@ -567,22 +586,24 @@ app.listen(env.PORT || 8787, () => {
       if(phoneLinkVisible) await sleep(1400);
       let phoneInputVisible=false;
       if(phoneLinkVisible){
-        try{
-          await page.waitForSelector('input',{visible:true,timeout:12000});
-          phoneInputVisible=true;
-        }catch{}
+        const started=Date.now();
+        while(Date.now()-started<12000){
+          const h=await findPhoneInput(page).catch(()=>null);
+          if(h){phoneInputVisible=true;break;}
+          await sleep(500);
+        }
       }
       const phoneInputDiagnostic=await page.evaluate(()=>{
-        const inputs=[...document.querySelectorAll('input')].map(el=>({
+        const inputs=[...document.querySelectorAll('input,[contenteditable="true"]')].map(el=>({
           type:el.type||'',
           placeholder:el.placeholder||'',
           aria:el.getAttribute('aria-label')||'',
+          inputmode:el.getAttribute('inputmode')||'',
           value:el.value||'',
           visible:!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)
         }));
-        return {inputs, visibleInput:inputs.some(x=>x.visible)};
-      }).catch(()=>({inputs:[],visibleInput:false}));
-      phoneInputVisible = phoneInputVisible || phoneInputDiagnostic.visibleInput;
+        return {inputs};
+      }).catch(()=>({inputs:[]}));
       const diagnostic=await page.evaluate(()=>{
         const body=(document.body?.innerText||'').replace(/\s+/g,' ').slice(0,1800);
         const controls=[...document.querySelectorAll('button,a,[role="button"],[aria-label]')].slice(0,120).map(el=>({
