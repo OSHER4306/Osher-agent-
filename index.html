@@ -31,7 +31,13 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
-<div class="card conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>פתיחה מיידית + Business API</small></div></div><button class="status" data-info="WhatsApp">הגדר</button></div>
+<div class="card">
+  <div class="conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>Business API + WhatsApp Web הרשמי</small></div></div><button class="status" data-info="WhatsApp">הגדר</button></div>
+  <div class="actions" style="margin-top:12px">
+    <button id="waQr">📷 חיבור QR / Web</button>
+    <button id="waPhone">🔢 מספר + קוד</button>
+  </div>
+</div>
 <div class="card conn"><div class="left"><div class="appicon">📸</div><div><b>Instagram</b><small>Professional דרך Meta</small></div></div><button class="status" data-info="Instagram">הגדר</button></div>
 <div class="card conn"><div class="left"><div class="appicon">🔵</div><div><b>Facebook</b><small>Page דרך Graph API</small></div></div><button class="status" data-info="Facebook">הגדר</button></div>
 </div></section>
@@ -41,7 +47,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <nav class="bottom"><button class="tab"><b>⌘</b>פקודות</button><button id="install" class="tab"><b>⬇️</b>התקנה</button><button id="settings" class="tab"><b>⚙️</b>הגדרות</button><button id="security" class="tab"><b>🛡️</b>אבטחה</button></nav>
 
 <dialog id="settingsDialog"><div class="modal"><h3>שרת הסוכן</h3><p>במצב מקומי ניתן לפתוח אפליקציות ולהכין הודעות. לפעולות אוטומטיות דרך Meta חבר שרת HTTPS.</p><div class="field"><label>כתובת שרת</label><input id="serverUrl" placeholder="https://..."></div><div class="field"><label>Agent key</label><input id="agentKey" type="password" placeholder="••••••••"></div><div class="row"><button id="saveSettings" class="primary">שמור</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
-<dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><button class="primary" data-close>סגור</button></div></dialog>
+<dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><div class="row"><button id="infoAction" class="primary" style="display:none">פתח</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
 
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -56,8 +62,17 @@ function add(x){state.queue.unshift(x);save();render();toast('נוסף לאיש�
 async function api(body){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+'/api/action',{method:'POST',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
 function parse(t){t=t.trim();const l=t.toLowerCase();if(!t)return null;if(l.includes('פתח וואט')||l==='וואטסאפ')return{instant:()=>openApp('wa')};if(l.includes('פתח אינסט')||l==='אינסטגרם')return{instant:()=>openApp('ig')};if(l.includes('פתח פייס')||l==='פייסבוק')return{instant:()=>openApp('fb')};let m=t.match(/שלח(?: הודעת)? וואטסאפ ל[\s:]*([+\d\- ]+)[\s,:-]+(.+)/i);if(m){const phone=m[1].replace(/\D/g,'');return{queue:{title:'שליחת WhatsApp ל‑'+phone,channel:'WhatsApp',description:m[2].trim(),action:{type:'whatsapp_send',phone,message:m[2].trim()}}}};m=t.match(/(?:פרסם|העלה)(?: פוסט)? (?:ב|ל)?פייסבוק[\s:,-]+(.+)/i);if(m)return{queue:{title:'פרסום בפייסבוק',channel:'Facebook',description:m[1],action:{type:'facebook_post',message:m[1]}}};return{queue:{title:'פקודת סוכן',channel:'Agent',description:t,action:{type:'command',command:t}}}}
 async function approve(i){const x=state.queue[i];try{if(x.action.type==='whatsapp_send'&&!state.server){location.href='https://wa.me/'+x.action.phone+'?text='+encodeURIComponent(x.action.message)}else if(!state.server){throw Error('לפעולה הזאת צריך לחבר שרת Meta')}else{await api(x.action);toast('בוצע')}log('בוצע: '+x.title);state.queue.splice(i,1);save();render()}catch(e){toast(e.message);log('שגיאה: '+e.message)}}
-function info(t,html){$('#infoTitle').textContent=t;$('#infoText').innerHTML=html;$('#infoDialog').showModal()}
-$$('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
+function info(t,html,actionLabel='',actionUrl=''){const a=$('#infoAction');$('#infoTitle').textContent=t;$('#infoText').innerHTML=html;if(actionUrl){a.style.display='block';a.textContent=actionLabel||'פתח';a.onclick=()=>window.open(actionUrl,'_blank','noopener,noreferrer')}else{a.style.display='none';a.onclick=null}$('#infoDialog').showModal()}
+function openWhatsAppWeb(mode){
+  if(mode==='qr'){
+    info('חיבור WhatsApp Web ב‑QR','1. פתח WhatsApp Web במחשב או במכשיר נוסף.<br>2. באייפון: WhatsApp → Settings → Linked Devices → Link a Device.<br>3. סרוק את ה‑QR שמופיע במסך השני.<br><br><b>הערה:</b> אי אפשר לסרוק QR שמוצג על אותו מסך של האייפון.','פתח WhatsApp Web','https://web.whatsapp.com/');
+  }else{
+    info('חיבור עם מספר טלפון + קוד','1. פתח WhatsApp Web ולחץ <b>Link with phone number</b>.<br>2. בחר ישראל והכנס את מספר ה‑WhatsApp שלך.<br>3. WhatsApp Web יציג קוד חד‑פעמי בן 8 תווים.<br>4. באייפון: WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead.<br>5. אשר את המכשיר והקלד את הקוד.<br><br>זהו קוד קישור מכשיר, לא קוד SMS לרישום החשבון.','פתח WhatsApp Web','https://web.whatsapp.com/');
+  }
+}
+$('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
+$('#waQr').onclick=()=>openWhatsAppWeb('qr');
+$('#waPhone').onclick=()=>openWhatsAppWeb('phone');
 $('#run').onclick=()=>{const p=parse($('#command').value);if(!p)return;if(p.instant)p.instant();if(p.queue)add(p.queue);$('#command').value=''};
 $('#command').addEventListener('keydown',e=>{if(e.key==='Enter')$('#run').click()});
 $('#queue').onclick=e=>{if(e.target.dataset.approve!==undefined)approve(+e.target.dataset.approve);if(e.target.dataset.reject!==undefined){state.queue.splice(+e.target.dataset.reject,1);save();render();log('הפעולה נדחתה')}};
