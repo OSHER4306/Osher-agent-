@@ -115,59 +115,63 @@ async function clickText(page, patterns, timeoutMs = 25000) {
   const canonical = pattern => {
     const p=String(pattern||'').toLowerCase();
     if(p.includes('link with phone number')) return ['Link with phone number instead.','Link with phone number instead'];
-    if(p.includes('log in with phone number')) return ['Log in with phone number','Log in with phone number instead'];
+    if(p.includes('log in with phone number')) return ['Log in with phone number'];
     if(p==='next') return ['Next'];
     return [String(pattern||'')];
   };
+  const deadline=Date.now()+timeoutMs;
 
-  const started=Date.now();
-  while(Date.now()-started<timeoutMs){
+  while(Date.now()<deadline){
     for(const pattern of patterns){
       for(const text of canonical(pattern)){
         const escaped=text.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
         const selector='::-p-text("'+escaped+'")';
         try{
-          const handle=await page.$(selector);
-          if(handle){
-            await handle.click({delay:100});
-            await sleep(900);
-            await handle.dispose().catch(()=>{});
-            return true;
-          }
+          await page.locator(selector)
+            .setTimeout(Math.min(3500, Math.max(500, deadline-Date.now())))
+            .setWaitForStableBoundingBox(false)
+            .click();
+          await sleep(1000);
+          return true;
         }catch{}
       }
     }
 
-    // Fallback for UI text that changes slightly.
-    const hit=await page.evaluate((patterns)=>{
-      const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
-      const pats=patterns.map(norm);
-      const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
-      const candidates=[];
-      for(const node of nodes){
-        const r=node.getBoundingClientRect?.();
-        if(!r||r.width<2||r.height<2) continue;
-        const txt=norm([
-          node.innerText||node.textContent||'',
-          node.getAttribute?.('aria-label')||'',
-          node.getAttribute?.('title')||''
-        ].join(' '));
-        if(!txt) continue;
-        for(const p of pats){
-          if(txt===p) candidates.push({x:r.left+r.width/2,y:r.top+r.height/2,area:r.width*r.height,score:0});
-          else if(txt.startsWith(p)&&txt.length<=p.length+12) candidates.push({x:r.left+r.width/2,y:r.top+r.height/2,area:r.width*r.height,score:10+txt.length});
+    // Deterministic DOM fallback with a hard timeout.
+    const fallback=await Promise.race([
+      page.evaluate((patterns)=>{
+        const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
+        const pats=patterns.map(norm);
+        const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
+        let best=null;
+        for(const node of nodes){
+          const r=node.getBoundingClientRect?.();
+          if(!r||r.width<2||r.height<2) continue;
+          const txt=norm([
+            node.innerText||node.textContent||'',
+            node.getAttribute?.('aria-label')||'',
+            node.getAttribute?.('title')||''
+          ].join(' '));
+          if(!txt) continue;
+          for(const p of pats){
+            const exact=txt===p;
+            const starts=txt.startsWith(p)&&txt.length<=p.length+12;
+            if(!exact&&!starts) continue;
+            const score=(exact?0:100)+(r.width*r.height)/100000;
+            if(!best||score<best.score) best={score,x:r.left+r.width/2,y:r.top+r.height/2};
+          }
         }
-      }
-      candidates.sort((a,b)=>a.score-b.score||a.area-b.area);
-      return candidates[0]||null;
-    },patterns).catch(()=>null);
+        return best;
+      },patterns),
+      new Promise(resolve=>setTimeout(()=>resolve(null),3000))
+    ]).catch(()=>null);
 
-    if(hit){
-      await page.mouse.click(hit.x,hit.y,{delay:100}).catch(()=>{});
-      await sleep(900);
+    if(fallback){
+      await page.mouse.click(fallback.x,fallback.y,{delay:100}).catch(()=>{});
+      await sleep(1000);
       return true;
     }
-    await sleep(700);
+    await sleep(400);
   }
   return false;
 }
