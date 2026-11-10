@@ -117,7 +117,11 @@ async function clickText(page, patterns, timeoutMs = 25000) {
     const clicked = await page.evaluate((patterns) => {
       const nodes = [...document.querySelectorAll('button,a,[role="button"],div,span')];
       for (const node of nodes) {
-        const txt = (node.innerText || node.textContent || '').trim().toLowerCase();
+        const txt = [
+          node.innerText || node.textContent || '',
+          node.getAttribute?.('aria-label') || '',
+          node.getAttribute?.('title') || ''
+        ].join(' ').trim().toLowerCase();
         if (!txt) continue;
         if (patterns.some(p => txt.includes(p.toLowerCase()))) {
           const target = node.closest('button,a,[role="button"]') || node;
@@ -205,6 +209,7 @@ async function prepareRemoteWhatsapp(session, phone) {
     const page=await browser.newPage();
     session.page=page;
     await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36');
     await page.setExtraHTTPHeaders({'Accept-Language':'en-US,en;q=0.9'});
     session.status='opening_whatsapp_web';
     await page.goto('https://web.whatsapp.com/', {waitUntil:'domcontentloaded', timeout:70000});
@@ -534,6 +539,8 @@ app.listen(env.PORT || 8787, () => {
       });
       const page=await browser.newPage();
       await page.setViewport({width:1280,height:800});
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36');
+      await page.setExtraHTTPHeaders({'Accept-Language':'en-US,en;q=0.9'});
       await page.goto('https://web.whatsapp.com/',{waitUntil:'domcontentloaded',timeout:45000});
       await sleep(3000);
       const phoneLinkVisible=await clickText(page,['link with phone number','log in with phone number'],15000);
