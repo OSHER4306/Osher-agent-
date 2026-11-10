@@ -1,4 +1,4 @@
-const CACHE='osher-agent-v6';
+const CACHE='osher-agent-v7';
 const SHELL=['./index.html','./manifest.webmanifest','./icon.svg'];
 
 self.addEventListener('install',event=>{
