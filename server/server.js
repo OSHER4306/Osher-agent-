@@ -114,28 +114,48 @@ function normalizeRemotePhone(raw) {
 async function clickText(page, patterns, timeoutMs = 25000) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
-    const clicked = await page.evaluate((patterns) => {
-      const nodes = [...document.querySelectorAll('button,a,[role="button"],div,span')];
+    const hit = await page.evaluate((patterns) => {
+      const nodes = [...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
       for (const node of nodes) {
         const txt = [
           node.innerText || node.textContent || '',
           node.getAttribute?.('aria-label') || '',
           node.getAttribute?.('title') || ''
         ].join(' ').trim().toLowerCase();
-        if (!txt) continue;
-        if (patterns.some(p => txt.includes(p.toLowerCase()))) {
-          const target = node.closest('button,a,[role="button"]') || node;
-          try { target.click(); return true; } catch {}
+        if (!txt || !patterns.some(p => txt.includes(p.toLowerCase()))) continue;
+
+        let target = node;
+        for (let i=0; i<7 && target; i++, target=target.parentElement) {
+          const r = target.getBoundingClientRect?.();
+          if (!r || r.width < 2 || r.height < 2) continue;
+          const role = target.getAttribute?.('role') || '';
+          const cs = getComputedStyle(target);
+          const clickable =
+            ['BUTTON','A'].includes(target.tagName) ||
+            ['button','link'].includes(role) ||
+            target.tabIndex >= 0 ||
+            cs.cursor === 'pointer';
+          if (clickable) {
+            return {x:r.left+r.width/2, y:r.top+r.height/2};
+          }
         }
+
+        const r = node.getBoundingClientRect?.();
+        if (r && r.width > 1 && r.height > 1) return {x:r.left+r.width/2, y:r.top+r.height/2};
       }
-      return false;
-    }, patterns).catch(() => false);
-    if (clicked) return true;
+      return null;
+    }, patterns).catch(() => null);
+
+    if (hit) {
+      await page.mouse.move(hit.x, hit.y).catch(()=>{});
+      await page.mouse.click(hit.x, hit.y, {delay:80}).catch(()=>{});
+      await sleep(500);
+      return true;
+    }
     await sleep(700);
   }
   return false;
 }
-
 async function selectCountryIfPossible(page, country) {
   if (!country) return;
   const opened = await page.evaluate(() => {
@@ -545,6 +565,13 @@ app.listen(env.PORT || 8787, () => {
       await sleep(3000);
       const phoneLinkVisible=await clickText(page,['link with phone number','log in with phone number'],15000);
       if(phoneLinkVisible) await sleep(1400);
+      let phoneInputVisible=false;
+      if(phoneLinkVisible){
+        try{
+          await page.waitForSelector('input',{visible:true,timeout:12000});
+          phoneInputVisible=true;
+        }catch{}
+      }
       const phoneInputDiagnostic=await page.evaluate(()=>{
         const inputs=[...document.querySelectorAll('input')].map(el=>({
           type:el.type||'',
@@ -555,6 +582,7 @@ app.listen(env.PORT || 8787, () => {
         }));
         return {inputs, visibleInput:inputs.some(x=>x.visible)};
       }).catch(()=>({inputs:[],visibleInput:false}));
+      phoneInputVisible = phoneInputVisible || phoneInputDiagnostic.visibleInput;
       const diagnostic=await page.evaluate(()=>{
         const body=(document.body?.innerText||'').replace(/\s+/g,' ').slice(0,1800);
         const controls=[...document.querySelectorAll('button,a,[role="button"],[aria-label]')].slice(0,120).map(el=>({
@@ -565,7 +593,7 @@ app.listen(env.PORT || 8787, () => {
         })).filter(x=>x.text||x.aria||x.title);
         return {body,controls};
       }).catch(()=>({body:'',controls:[]}));
-      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible,phoneInputVisible:phoneInputDiagnostic.visibleInput,phoneInputs:phoneInputDiagnostic.inputs,diagnostic}));
+      console.log('REMOTE_BROWSER_SELFTEST_OK', JSON.stringify({title:await page.title(),url:page.url(),phoneLinkVisible,phoneInputVisible,phoneInputs:phoneInputDiagnostic.inputs,diagnostic}));
     }catch(error){
       console.error('REMOTE_BROWSER_SELFTEST_FAILED', error.message);
     }finally{
