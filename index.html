@@ -28,25 +28,36 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.4.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.5.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
-  <div class="conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>Business API + WhatsApp Web הרשמי</small></div></div><button id="openWhatsAppApp" class="status">פתח WhatsApp</button></div>
+  <div class="conn">
+    <div class="left"><div class="appicon">💬</div><div><b>WhatsApp אישי</b><small>Linked Devices הרשמי בלבד</small></div></div>
+    <button id="openWhatsAppApp" class="status">פתח WhatsApp</button>
+  </div>
   <div class="actions" style="margin-top:12px">
     <button id="waQr">📷 QR במחשב</button>
-    <button id="waPhone">🔢 קוד במחשב</button>
-  </div>
-  <div class="actions" style="margin-top:8px">
-    <button id="waIphoneBrowser">☁️ דפדפן ענן באייפון</button>
+    <button id="waPhone">🔢 מספר + קוד</button>
   </div>
   <div class="field" style="margin-top:12px">
-    <label>קוד חיבור בענן מהאייפון</label>
+    <label>שלח חיבור למחשב / מכשיר נתמך</label>
     <div class="row">
       <input id="remotePhone" inputmode="tel" placeholder="+9725XXXXXXXX" style="flex:1">
-      <button id="remoteDevice" class="primary">צור קוד בענן</button>
+      <button id="remoteDevice" class="primary">שתף קישור</button>
     </div>
-    <small class="hint" style="display:block;margin-top:7px">יוצר קישור לפתיחה במחשב/דפדפן המרוחק. הקוד עצמו מתקבל רק מ‑WhatsApp Web הרשמי.</small>
+    <small class="hint" style="display:block;margin-top:7px">הקוד בן 8 התווים נוצר רק ב‑WhatsApp Web/Windows הרשמי. הסוכן לא מתחזה ללקוח WhatsApp אישי.</small>
+  </div>
+</div>
+
+<div class="card">
+  <div class="conn">
+    <div class="left"><div class="appicon">🏢</div><div><b>WhatsApp Business</b><small id="waBusinessSub">Cloud API הרשמי של Meta</small></div></div>
+    <button id="waBusinessStatus" class="status">לא מחובר</button>
+  </div>
+  <div class="actions" style="margin-top:12px">
+    <button id="waBusinessSetup">🔗 חבר Business API</button>
+    <button id="waBusinessCheck">✅ בדוק חיבור</button>
   </div>
 </div>
 <div class="card conn"><div class="left"><div class="appicon">📸</div><div><b>Instagram</b><small id="igSub">Professional דרך Meta</small></div></div><button id="connectInstagram" class="status">חבר חשבון</button></div>
@@ -57,191 +68,179 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 </div>
 <nav class="bottom"><button class="tab"><b>⌘</b>פקודות</button><button id="install" class="tab"><b>⬇️</b>התקנה</button><button id="settings" class="tab"><b>⚙️</b>הגדרות</button><button id="security" class="tab"><b>🛡️</b>אבטחה</button></nav>
 
-<dialog id="settingsDialog"><div class="modal"><h3>הגדרות וחיבורים</h3><p>שרת הסוכן כבר מוגדר. כדי לאשר Facebook/Instagram פעם אחת, צור Meta Developer App והכנס כאן את המזהים. ה‑Secret נשלח ב‑HTTPS ונשמר רק כ‑cookie מוצפן HttpOnly.</p>
+<dialog id="settingsDialog"><div class="modal">
+<h3>הגדרות וחיבורים</h3>
+<p>השרת כבר מוגדר. Facebook/Instagram משתמשים ב‑Meta OAuth. WhatsApp Business משתמש ב‑Cloud API הרשמי.</p>
 <div class="field"><label>כתובת שרת</label><input id="serverUrl" placeholder="https://..."></div>
 <div class="field"><label>Agent key</label><input id="agentKey" type="password" placeholder="••••••••"></div>
-<div class="row"><button id="saveSettings" class="primary">שמור שרת</button><button id="openMetaDev" class="primary ghost">פתח Meta Developers</button></div>
+<div class="row"><button id="saveSettings" class="primary">שמור שרת</button><button id="openMetaDev" class="primary ghost">Meta Developers</button></div>
+
 <hr style="border:0;border-top:1px solid #272d3a;margin:18px 0">
+<h3 style="font-size:16px">Facebook / Instagram</h3>
 <div class="field"><label>Meta App ID</label><input id="metaAppId" inputmode="numeric" placeholder="123456789..."></div>
 <div class="field"><label>Meta App Secret</label><input id="metaAppSecret" type="password" placeholder="נשמר מוצפן ולא יוצג שוב"></div>
-<div class="row"><button id="saveMeta" class="primary">שמור וחבר Meta</button><button class="primary ghost" data-close>סגור</button></div>
+<div class="row"><button id="saveMeta" class="primary">שמור וחבר Meta</button></div>
+
+<hr style="border:0;border-top:1px solid #272d3a;margin:18px 0">
+<h3 style="font-size:16px">WhatsApp Business Cloud API</h3>
+<p>הכנס Access Token ו‑Phone Number ID מ‑Meta Developers. השרת בודק אותם מול Graph API ורק אז שומר אותם מוצפנים.</p>
+<div class="field"><label>Access Token</label><input id="waBusinessToken" type="password" placeholder="EAAG..."></div>
+<div class="field"><label>Phone Number ID</label><input id="waBusinessPhoneId" inputmode="numeric" placeholder="123456789..."></div>
+<div class="row"><button id="saveWhatsAppBusiness" class="primary">שמור ובדוק</button><button id="disconnectWhatsAppBusiness" class="primary ghost">נתק Business</button></div>
+<div class="row" style="margin-top:8px"><button id="openWhatsAppMeta" class="primary ghost">פתח WhatsApp ב‑Meta Developers</button><button class="primary ghost" data-close>סגור</button></div>
 </div></dialog>
 <dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><div class="row"><button id="infoAction" class="primary" style="display:none">פתח</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
 
-<dialog id="remotePairDialog"><div class="modal">
-<h3>WhatsApp · מכשיר מרוחק אמיתי</h3>
-<p id="remotePairHelp">מפעיל דפדפן Desktop בענן ומבקש קוד קישור מ‑WhatsApp Web הרשמי.</p>
-<div id="remotePairStatus" class="card" style="margin:12px 0">מכין דפדפן מרוחק…</div>
-<div id="remotePairCode" style="display:none;text-align:center;font-size:36px;font-weight:900;letter-spacing:6px;direction:ltr;padding:18px;border:1px solid #3d4660;border-radius:18px;background:#080a10;margin:12px 0"></div>
-<img id="remotePairShot" alt="צילום מסך מהדפדפן המרוחק" style="display:none;width:100%;border-radius:14px;border:1px solid #303747;margin:12px 0">
-<div class="row">
-<button id="remotePairRefresh" class="primary ghost">צילום/עדכון</button>
-<button id="remotePairStop" class="primary ghost">סגור session</button>
-</div>
-</div></dialog>
+
 
 <script>
-const $ = s => document.querySelector(s); const qsa = s => [...document.querySelectorAll(s)];
+const $ = s => document.querySelector(s);
+const qsa = s => [...document.querySelectorAll(s)];
+
 window.addEventListener('error',e=>{try{document.getElementById('log').textContent='שגיאת ממשק: '+e.message+'\n'+document.getElementById('log').textContent}catch{}});
 window.addEventListener('unhandledrejection',e=>{try{document.getElementById('log').textContent='שגיאה: '+(e.reason?.message||e.reason||'Unknown')+'\n'+document.getElementById('log').textContent}catch{}});
-const state={queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),server:localStorage.getItem('oa_server')||'https://osher-agent-api.onrender.com',key:localStorage.getItem('oa_key')||''};const pair=new URLSearchParams(location.search).get('key');if(pair){state.key=pair;localStorage.setItem('oa_key',pair);history.replaceState({},'',location.pathname);}
+
+const state={
+  queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),
+  server:localStorage.getItem('oa_server')||'https://osher-agent-api.onrender.com',
+  key:localStorage.getItem('oa_key')||'',
+  waBusinessConnected:false
+};
+const pair=new URLSearchParams(location.search).get('key');
+if(pair){state.key=pair;localStorage.setItem('oa_key',pair);history.replaceState({},'',location.pathname);}
+
 const save=()=>localStorage.setItem('oa_queue',JSON.stringify(state.queue));
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
 function log(t){$('#log').textContent=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' — '+t+'\n'+$('#log').textContent}
 function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function render(){const q=$('#queue');q.innerHTML='';$('#count').textContent=state.queue.length+' ממתינות';if(!state.queue.length)q.innerHTML='<div class="card hint">אין פעולות שממתינות לאישור.</div>';state.queue.forEach((x,i)=>{const d=document.createElement('div');d.className='card item';d.innerHTML='<div class="top"><b>'+escapeHtml(x.title)+'</b><span class="meta">'+escapeHtml(x.channel)+'</span></div><p>'+escapeHtml(x.description)+'</p><div class="actions"><button class="approve" data-approve="'+i+'">אשר ובצע</button><button data-reject="'+i+'">דחה</button></div>';q.appendChild(d)})}
-function openApp(k){
-    const u={wa:'whatsapp://app',ig:'https://www.instagram.com/',fb:'https://www.facebook.com/'};
-    log('פותח '+k.toUpperCase());
-    location.href=u[k];
-  }
+function openApp(k){const u={wa:'whatsapp://app',ig:'https://www.instagram.com/',fb:'https://www.facebook.com/'};log('פותח '+k.toUpperCase());location.href=u[k]}
 function add(x){state.queue.unshift(x);save();render();toast('נוסף לאישורים');log('הוכנה פעולה: '+x.title)}
-async function api(body){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+'/api/action',{method:'POST',credentials:'include',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
+async function apiRequest(path,options={}){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+path,{...options,credentials:'include',headers:{'content-type':'application/json','x-agent-key':state.key,...(options.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
+async function api(body){return apiRequest('/api/action',{method:'POST',body:JSON.stringify(body)})}
+
 async function loadConnections(){
   if(!state.server||!state.key)return;
   try{
-    const r=await fetch(state.server.replace(/\/$/,'')+'/api/connections',{credentials:'include',headers:{'x-agent-key':state.key}});
-    const j=await r.json();
-    if(!r.ok)throw Error(j.error||'Connection status failed');
+    const j=await apiRequest('/api/connections');
     const fb=$('#connectFacebook'),ig=$('#connectInstagram');
     if(j.facebook?.connected){fb.textContent='מחובר ✓';fb.style.color='#9ff2bd';fb.style.borderColor='#285f40';fb.style.background='#153724';$('#fbSub').textContent=(j.facebook.pages||[]).map(x=>x.name).join(', ')||'Facebook מחובר'}
     else{fb.textContent=j.metaOAuthConfigured?'חבר חשבון':'צריך Meta App';}
     if(j.instagram?.connected){ig.textContent='מחובר ✓';ig.style.color='#9ff2bd';ig.style.borderColor='#285f40';ig.style.background='#153724';$('#igSub').textContent=(j.instagram.accounts||[]).map(x=>'@'+(x.username||x.pageName)).join(', ')||'Instagram מחובר'}
     else{ig.textContent=j.metaOAuthConfigured?'חבר חשבון':'צריך Meta App';}
+
+    state.waBusinessConnected=!!j.whatsappBusiness?.connected;
+    const wb=$('#waBusinessStatus');
+    if(state.waBusinessConnected){
+      const info=j.whatsappBusiness.info||{};
+      wb.textContent='מחובר ✓';
+      wb.style.color='#9ff2bd';wb.style.borderColor='#285f40';wb.style.background='#153724';
+      $('#waBusinessSub').textContent=[info.verifiedName,info.displayPhoneNumber].filter(Boolean).join(' · ')||'Cloud API מחובר';
+    }else{
+      wb.textContent='לא מחובר';
+      wb.style.color='';wb.style.borderColor='';wb.style.background='';
+      $('#waBusinessSub').textContent=j.whatsappBusiness?.error?'שגיאה: '+j.whatsappBusiness.error:'Cloud API הרשמי של Meta';
+    }
   }catch(e){log('בדיקת חיבורים: '+e.message)}
 }
-function connectMeta(){
-  if(!state.server)return toast('לא הוגדר שרת');
-  location.href=state.server.replace(/\/$/,'')+'/connect/meta';
-}
-function parse(t){t=t.trim();const l=t.toLowerCase();if(!t)return null;if(l.includes('פתח וואט')||l==='וואטסאפ')return{instant:()=>openApp('wa')};if(l.includes('פתח אינסט')||l==='אינסטגרם')return{instant:()=>openApp('ig')};if(l.includes('פתח פייס')||l==='פייסבוק')return{instant:()=>openApp('fb')};let m=t.match(/שלח(?: הודעת)? וואטסאפ ל[\s:]*([+\d\- ]+)[\s,:-]+(.+)/i);if(m){const phone=m[1].replace(/\D/g,'');return{queue:{title:'שליחת WhatsApp ל‑'+phone,channel:'WhatsApp',description:m[2].trim(),action:{type:'whatsapp_send',phone,message:m[2].trim()}}}};m=t.match(/(?:פרסם|העלה)(?: פוסט)? (?:ב|ל)?פייסבוק[\s:,-]+(.+)/i);if(m)return{queue:{title:'פרסום בפייסבוק',channel:'Facebook',description:m[1],action:{type:'facebook_post',message:m[1]}}};return{queue:{title:'פקודת סוכן',channel:'Agent',description:t,action:{type:'command',command:t}}}}
-async function approve(i){const x=state.queue[i];try{if(x.action.type==='whatsapp_send'&&!state.server){location.href='https://wa.me/'+x.action.phone+'?text='+encodeURIComponent(x.action.message)}else if(!state.server){throw Error('לפעולה הזאת צריך לחבר שרת Meta')}else{await api(x.action);toast('בוצע')}log('בוצע: '+x.title);state.queue.splice(i,1);save();render()}catch(e){toast(e.message);log('שגיאה: '+e.message)}}
+function connectMeta(){if(!state.server)return toast('לא הוגדר שרת');location.href=state.server.replace(/\/$/,'')+'/connect/meta'}
+
 function info(t,html,actionLabel='',actionUrl=''){const a=$('#infoAction');$('#infoTitle').textContent=t;$('#infoText').innerHTML=html;if(actionUrl){a.style.display='block';a.textContent=actionLabel||'פתח';a.onclick=()=>window.open(actionUrl,'_blank','noopener,noreferrer')}else{a.style.display='none';a.onclick=null}$('#infoDialog').showModal()}
-function openWhatsAppWeb(mode){
-  if(mode==='qr'){
-    info('חיבור WhatsApp Web ב‑QR','1. פתח WhatsApp Web במחשב או במכשיר נוסף.<br>2. באייפון: WhatsApp → Settings → Linked Devices → Link a Device.<br>3. סרוק את ה‑QR שמופיע במסך השני.<br><br><b>הערה:</b> אי אפשר לסרוק QR שמוצג על אותו מסך של האייפון.','פתח WhatsApp Web','https://web.whatsapp.com/');
-  }else{
-    info('חיבור עם מספר טלפון + קוד','1. פתח WhatsApp Web ולחץ <b>Link with phone number</b>.<br>2. בחר ישראל והכנס את מספר ה‑WhatsApp שלך.<br>3. WhatsApp Web יציג קוד חד‑פעמי בן 8 תווים.<br>4. באייפון: WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead.<br>5. אשר את המכשיר והקלד את הקוד.<br><br>זהו קוד קישור מכשיר, לא קוד SMS לרישום החשבון.','פתח WhatsApp Web','https://web.whatsapp.com/');
+
+function sharePersonalLink(mode){
+  const phone=$('#remotePhone').value.trim().replace(/[^+\d]/g,'');
+  const url=location.origin+'/remote.html?mode='+encodeURIComponent(mode)+(phone?'&phone='+encodeURIComponent(phone):'');
+  const text=mode==='qr'?'פתח במחשב כדי להציג QR של WhatsApp Web הרשמי:':'פתח במחשב כדי לקבל קוד בן 8 תווים דרך WhatsApp Web הרשמי:';
+  if(navigator.share){
+    navigator.share({title:'OSHER AGENT · WhatsApp אישי',text,url}).catch(()=>{});
+  }else if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(url).then(()=>toast('הקישור הועתק למחשב'));
   }
+  info('WhatsApp אישי',text+'<br><br><code style="word-break:break-all">'+url+'</code>');
 }
+function openWhatsAppWeb(mode){sharePersonalLink(mode)}
+
+function parse(t){
+  t=t.trim();const l=t.toLowerCase();if(!t)return null;
+  if(l.includes('פתח וואט')||l==='וואטסאפ')return{instant:()=>openApp('wa')};
+  if(l.includes('פתח אינסט')||l==='אינסטגרם')return{instant:()=>openApp('ig')};
+  if(l.includes('פתח פייס')||l==='פייסבוק')return{instant:()=>openApp('fb')};
+  let m=t.match(/שלח(?: הודעת)? וואטסאפ ל[\s:]*([+\d\- ]+)[\s,:-]+(.+)/i);
+  if(m){const phone=m[1].replace(/\D/g,'');return{queue:{title:'שליחת WhatsApp ל‑'+phone,channel:'WhatsApp',description:m[2].trim(),action:{type:'whatsapp_send',phone,message:m[2].trim()}}}}
+  m=t.match(/(?:פרסם|העלה)(?: פוסט)? (?:ב|ל)?פייסבוק[\s:,-]+(.+)/i);
+  if(m)return{queue:{title:'פרסום בפייסבוק',channel:'Facebook',description:m[1],action:{type:'facebook_post',message:m[1]}}};
+  return{queue:{title:'פקודת סוכן',channel:'Agent',description:t,action:{type:'command',command:t}}}
+}
+async function approve(i){
+  const x=state.queue[i];
+  try{
+    if(x.action.type==='whatsapp_send'&&!state.waBusinessConnected){
+      location.href='https://wa.me/'+x.action.phone+'?text='+encodeURIComponent(x.action.message);
+      log('נפתח WhatsApp אישי לשליחה ידנית: '+x.title);
+    }else{
+      await api(x.action);toast('בוצע');log('בוצע: '+x.title);
+    }
+    state.queue.splice(i,1);save();render();
+  }catch(e){toast(e.message);log('שגיאה: '+e.message)}
+}
+
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
-$('#waIphoneBrowser').onclick=()=>{
-    info('דפדפן ענן באייפון','במקום לפתוח web.whatsapp.com ישירות באייפון — דבר ש‑WhatsApp חוסמת — OSHER AGENT מפעיל Chrome Desktop בענן. הזן את המספר בשדה <b>קוד חיבור בענן מהאייפון</b> ולחץ <b>צור קוד בענן</b>. הקוד של WhatsApp יופיע כאן באפליקציה.');
-    $('#remotePhone').scrollIntoView({behavior:'smooth',block:'center'});
-    setTimeout(()=>$('#remotePhone').focus(),400);
-  };
-let remoteSessionId=null,remotePollTimer=null;
-async function remoteRequest(path,options={}){
-  if(!state.server||!state.key)throw Error('פתח את OSHER AGENT דרך קישור החיבור האישי כדי לחבר את השרת');
-  const r=await fetch(state.server.replace(/\/$/,'')+path,{
-    ...options,
-    credentials:'include',
-    headers:{'content-type':'application/json','x-agent-key':state.key,...(options.headers||{})}
-  });
-  const j=await r.json().catch(()=>({}));
-  if(!r.ok)throw Error(j.error||('HTTP '+r.status));
-  return j;
-}
-function remoteStatusLabel(s){
-  return ({
-    starting:'מתחיל session…',
-    launching:'מפעיל Chromium Desktop בענן…',
-    opening_whatsapp_web:'פותח WhatsApp Web הרשמי…',
-    opening_phone_link:'מחפש Link with phone number…',
-    entering_phone:'מזין את מספר ה‑WhatsApp…',
-    waiting_for_code:'ממתין לקוד מ‑WhatsApp…',
-    code_ready:'הקוד מוכן — אשר אותו עכשיו באייפון',
-    linked:'המכשיר המרוחק חובר בהצלחה ✓',
-    error:'החיבור נעצר'
-  })[s]||s;
-}
-async function pollRemotePairing(withScreenshot=false){
-  if(!remoteSessionId)return;
-  try{
-    const j=await remoteRequest('/api/whatsapp/remote/'+remoteSessionId+(withScreenshot?'?screenshot=1':''));
-    $('#remotePairStatus').textContent=remoteStatusLabel(j.status)+(j.error?' — '+j.error:'');
-    if(j.code){
-      $('#remotePairCode').style.display='block';
-      $('#remotePairCode').textContent=j.code;
-      $('#remotePairHelp').innerHTML='ב‑WhatsApp באייפון: <b>Settings → Linked Devices → Link a Device → Link with phone number instead</b>, ואז הזן את הקוד שמופיע כאן.';
-    }
-    if(j.screenshot){
-      $('#remotePairShot').src=j.screenshot;
-      $('#remotePairShot').style.display='block';
-    }
-    if(j.status==='linked'){
-      $('#remotePairHelp').innerHTML='<b>מחובר ✓</b> — Chromium המרוחק הפך למכשיר WhatsApp מקושר.';
-      toast('WhatsApp חובר כמכשיר מרוחק');
-      return;
-    }
-    if(j.status==='error')return;
-    clearTimeout(remotePollTimer);
-    remotePollTimer=setTimeout(()=>pollRemotePairing(false),1800);
-  }catch(e){
-    $('#remotePairStatus').textContent='שגיאה: '+e.message;
-  }
-}
-$('#remoteDevice').onclick=async()=>{
-  const phone=$('#remotePhone').value.trim();
-  if(!phone)return toast('הכנס מספר WhatsApp בפורמט +972...');
-  $('#remotePairCode').style.display='none';
-  $('#remotePairShot').style.display='none';
-  $('#remotePairHelp').textContent='מפעיל דפדפן Desktop בענן ומבקש קוד קישור מ‑WhatsApp Web הרשמי.';
-  $('#remotePairStatus').textContent='מתחיל session…';
-  $('#remotePairDialog').showModal();
-  try{
-    const j=await remoteRequest('/api/whatsapp/remote/start',{method:'POST',body:JSON.stringify({phone})});
-    remoteSessionId=j.id;
-    pollRemotePairing(false);
-  }catch(e){
-    $('#remotePairStatus').textContent='שגיאה: '+e.message;
-  }
-};
-$('#remotePairRefresh').onclick=()=>pollRemotePairing(true);
-$('#remotePairStop').onclick=async()=>{
-  clearTimeout(remotePollTimer);
-  if(remoteSessionId){
-    try{await remoteRequest('/api/whatsapp/remote/'+remoteSessionId+'/close',{method:'POST',body:'{}'});}catch(e){}
-  }
-  remoteSessionId=null;
-  $('#remotePairDialog').close();
-};
-$('#waQr').onclick=()=>openWhatsAppWeb('qr');
-$('#waPhone').onclick=()=>openWhatsAppWeb('phone');
+$('#waQr').onclick=()=>sharePersonalLink('qr');
+$('#waPhone').onclick=()=>sharePersonalLink('phone');
+$('#remoteDevice').onclick=()=>sharePersonalLink('phone');
+
+$('#waBusinessSetup').onclick=()=>{$('#settings').click();setTimeout(()=>$('#waBusinessToken').focus(),200)};
+$('#waBusinessCheck').onclick=async()=>{toast('בודק Business…');await loadConnections();toast(state.waBusinessConnected?'Business מחובר ✓':'Business לא מחובר')};
+
 $('#connectFacebook').onclick=connectMeta;
 $('#connectInstagram').onclick=connectMeta;
+
 $('#run').onclick=()=>{const p=parse($('#command').value);if(!p)return;if(p.instant)p.instant();if(p.queue)add(p.queue);$('#command').value=''};
 $('#command').addEventListener('keydown',e=>{if(e.key==='Enter')$('#run').click()});
 $('#queue').onclick=e=>{if(e.target.dataset.approve!==undefined)approve(+e.target.dataset.approve);if(e.target.dataset.reject!==undefined){state.queue.splice(+e.target.dataset.reject,1);save();render();log('הפעולה נדחתה')}};
-qsa('[data-info]').forEach(b=>b.onclick=()=>info('חיבור '+b.dataset.info,'החיבור האוטומטי מתבצע דרך הרשאות Meta רשמיות בצד השרת. באייפון ניתן גם לפתוח את האפליקציה המקורית ישירות.'));
-$('#settings').onclick=()=>{$('#serverUrl').value=state.server;$('#agentKey').value=state.key;$('#metaAppId').value='';$('#metaAppSecret').value='';$('#settingsDialog').showModal()};
+
+$('#settings').onclick=()=>{$('#serverUrl').value=state.server;$('#agentKey').value=state.key;$('#metaAppId').value='';$('#metaAppSecret').value='';$('#waBusinessToken').value='';$('#waBusinessPhoneId').value='';$('#settingsDialog').showModal()};
 $('#openMetaDev').onclick=()=>window.open('https://developers.facebook.com/apps/','_blank','noopener,noreferrer');
+$('#openWhatsAppMeta').onclick=()=>window.open('https://developers.facebook.com/apps/','_blank','noopener,noreferrer');
+
 $('#saveMeta').onclick=async()=>{
   try{
     const appId=$('#metaAppId').value.trim(),appSecret=$('#metaAppSecret').value.trim();
     if(!appId||!appSecret)throw Error('הכנס App ID ו‑App Secret');
-    const r=await fetch(state.server.replace(/\/$/,'')+'/api/meta/config',{method:'POST',credentials:'include',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify({appId,appSecret})});
-    const j=await r.json().catch(()=>({}));
-    if(!r.ok)throw Error(j.error||'שמירת Meta נכשלה');
-    $('#metaAppSecret').value='';
-    toast('Meta נשמר מוצפן');
-    $('#settingsDialog').close();
-    loadConnections();
-    setTimeout(connectMeta,350);
+    await apiRequest('/api/meta/config',{method:'POST',body:JSON.stringify({appId,appSecret})});
+    $('#metaAppSecret').value='';toast('Meta נשמר מוצפן');$('#settingsDialog').close();loadConnections();setTimeout(connectMeta,350);
   }catch(e){toast(e.message);log('Meta config: '+e.message)}
 };
+
+$('#saveWhatsAppBusiness').onclick=async()=>{
+  try{
+    const token=$('#waBusinessToken').value.trim(),phoneNumberId=$('#waBusinessPhoneId').value.trim();
+    if(!token||!phoneNumberId)throw Error('הכנס Access Token ו‑Phone Number ID');
+    const j=await apiRequest('/api/whatsapp/business/config',{method:'POST',body:JSON.stringify({token,phoneNumberId})});
+    $('#waBusinessToken').value='';toast('WhatsApp Business מחובר ✓');
+    $('#settingsDialog').close();await loadConnections();
+    if(j.info?.verifiedName||j.info?.displayPhoneNumber)log('Business מחובר: '+[j.info.verifiedName,j.info.displayPhoneNumber].filter(Boolean).join(' · '));
+  }catch(e){toast(e.message);log('WhatsApp Business: '+e.message)}
+};
+$('#disconnectWhatsAppBusiness').onclick=async()=>{
+  try{await apiRequest('/api/whatsapp/business/disconnect',{method:'POST',body:'{}'});state.waBusinessConnected=false;toast('Business נותק');await loadConnections()}catch(e){toast(e.message)}
+};
+
 $('#saveSettings').onclick=()=>{state.server=$('#serverUrl').value.trim();state.key=$('#agentKey').value.trim();localStorage.setItem('oa_server',state.server);localStorage.setItem('oa_key',state.key);$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';$('#settingsDialog').close();toast('נשמר')};
-$('#install').onclick=()=>info('התקנה באייפון','פתח את האתר ב‑<b>Safari</b> → שיתוף → <b>הוסף למסך הבית</b>. לאחר מכן OSHER AGENT נפתח בחלון עצמאי.');
-$('#security').onclick=()=>info('אבטחה','סודות Meta אינם נשמרים בדפדפן. iOS לא מאפשר לאפליקציה אחת לשלוט שרירותית בממשק של אפליקציה אחרת; אוטומציה אמינה משתמשת ב‑APIs רשמיים, Shortcuts וקישורים מאושרים.');
-$('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';qsa('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+$('#install').onclick=()=>info('התקנה באייפון','פתח את האתר ב‑<b>Safari</b> → שיתוף → <b>הוסף למסך הבית</b>.');
+$('#security').onclick=()=>info('אבטחה','WhatsApp אישי משתמש רק ב‑Linked Devices הרשמי. WhatsApp Business משתמש ב‑Cloud API הרשמי של Meta. טוקנים נשמרים ב‑cookie מוצפן HttpOnly בצד השרת.');
+$('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';
+qsa('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+
 if('serviceWorker' in navigator){
   navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
-  caches?.keys?.().then(keys=>keys.forEach(k=>caches.delete(k))).catch?.(()=>{});
+  if(window.caches)caches.keys().then(keys=>keys.forEach(k=>caches.delete(k))).catch(()=>{});
 }
 const qp=new URLSearchParams(location.search);
 if(qp.get('connected')==='meta'){toast('Meta חובר בהצלחה');log('Facebook / Instagram אושרו דרך Meta');history.replaceState({},'',location.pathname)}
 if(qp.get('connect_error')){toast('החיבור לא הושלם');log('שגיאת חיבור: '+qp.get('connect_error'));history.replaceState({},'',location.pathname)}
-$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';render();loadConnections();
+$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';
+render();loadConnections();
 </script>
 </body></html>
