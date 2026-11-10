@@ -28,23 +28,23 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.4.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.4.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
   <div class="conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>Business API + WhatsApp Web הרשמי</small></div></div><button id="openWhatsAppApp" class="status">פתח WhatsApp</button></div>
   <div class="actions" style="margin-top:12px">
-    <button id="waQr">📷 חיבור QR / Web</button>
-    <button id="waPhone">🔢 מספר + קוד</button>
+    <button id="waQr">📷 QR במחשב</button>
+    <button id="waPhone">🔢 קוד במחשב</button>
   </div>
   <div class="actions" style="margin-top:8px">
-    <button id="waIphoneBrowser">🌐 דפדפן באייפון</button>
+    <button id="waIphoneBrowser">☁️ דפדפן ענן באייפון</button>
   </div>
   <div class="field" style="margin-top:12px">
-    <label>חיבור כמכשיר מרוחק</label>
+    <label>קוד חיבור בענן מהאייפון</label>
     <div class="row">
       <input id="remotePhone" inputmode="tel" placeholder="+9725XXXXXXXX" style="flex:1">
-      <button id="remoteDevice" class="primary">צור חיבור</button>
+      <button id="remoteDevice" class="primary">צור קוד בענן</button>
     </div>
     <small class="hint" style="display:block;margin-top:7px">יוצר קישור לפתיחה במחשב/דפדפן המרוחק. הקוד עצמו מתקבל רק מ‑WhatsApp Web הרשמי.</small>
   </div>
@@ -126,7 +126,11 @@ function openWhatsAppWeb(mode){
 }
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
-$('#waIphoneBrowser').onclick=()=>location.href=location.origin+'/iphone-web.html';
+$('#waIphoneBrowser').onclick=()=>{
+    info('דפדפן ענן באייפון','במקום לפתוח web.whatsapp.com ישירות באייפון — דבר ש‑WhatsApp חוסמת — OSHER AGENT מפעיל Chrome Desktop בענן. הזן את המספר בשדה <b>קוד חיבור בענן מהאייפון</b> ולחץ <b>צור קוד בענן</b>. הקוד של WhatsApp יופיע כאן באפליקציה.');
+    $('#remotePhone').scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>$('#remotePhone').focus(),400);
+  };
 let remoteSessionId=null,remotePollTimer=null;
 async function remoteRequest(path,options={}){
   if(!state.server||!state.key)throw Error('פתח את OSHER AGENT דרך קישור החיבור האישי כדי לחבר את השרת');
