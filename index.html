@@ -28,11 +28,11 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.2.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.2.2</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
-  <div class="conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>Business API + WhatsApp Web הרשמי</small></div></div><button class="status" data-info="WhatsApp">הגדר</button></div>
+  <div class="conn"><div class="left"><div class="appicon">💬</div><div><b>WhatsApp</b><small>Business API + WhatsApp Web הרשמי</small></div></div><button id="openWhatsAppApp" class="status">פתח WhatsApp</button></div>
   <div class="actions" style="margin-top:12px">
     <button id="waQr">📷 חיבור QR / Web</button>
     <button id="waPhone">🔢 מספר + קוד</button>
@@ -67,7 +67,11 @@ function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');se
 function log(t){$('#log').textContent=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' — '+t+'\n'+$('#log').textContent}
 function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function render(){const q=$('#queue');q.innerHTML='';$('#count').textContent=state.queue.length+' ממתינות';if(!state.queue.length)q.innerHTML='<div class="card hint">אין פעולות שממתינות לאישור.</div>';state.queue.forEach((x,i)=>{const d=document.createElement('div');d.className='card item';d.innerHTML='<div class="top"><b>'+escapeHtml(x.title)+'</b><span class="meta">'+escapeHtml(x.channel)+'</span></div><p>'+escapeHtml(x.description)+'</p><div class="actions"><button class="approve" data-approve="'+i+'">אשר ובצע</button><button data-reject="'+i+'">דחה</button></div>';q.appendChild(d)})}
-function openApp(k){const u={wa:'https://wa.me/',ig:'https://www.instagram.com/',fb:'https://www.facebook.com/'};log('פותח '+k.toUpperCase());location.href=u[k]}
+function openApp(k){
+    const u={wa:'whatsapp://app',ig:'https://www.instagram.com/',fb:'https://www.facebook.com/'};
+    log('פותח '+k.toUpperCase());
+    location.href=u[k];
+  }
 function add(x){state.queue.unshift(x);save();render();toast('נוסף לאישורים');log('הוכנה פעולה: '+x.title)}
 async function api(body){if(!state.server)throw Error('לא הוגדר שרת');const r=await fetch(state.server.replace(/\/$/,'')+'/api/action',{method:'POST',credentials:'include',headers:{'content-type':'application/json','x-agent-key':state.key},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||('HTTP '+r.status));return j}
 async function loadConnections(){
@@ -98,6 +102,7 @@ function openWhatsAppWeb(mode){
   }
 }
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
+$('#openWhatsAppApp').onclick=()=>openApp('wa');
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
 $('#connectFacebook').onclick=connectMeta;
