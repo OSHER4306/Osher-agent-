@@ -1,1 +1,15 @@
-{"name":"osher-agent-server","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node server.js","test":"node test.js"},"dependencies":{"express":"^4.21.2","helmet":"^8.0.0"}}
+{
+  "name": "osher-agent-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "puppeteer": "^23.11.1"
+  }
+}
