@@ -126,6 +126,40 @@ async function clickText(page, patterns, timeoutMs = 25000) {
       const lower=String(pattern||'').toLowerCase();
 
       if(lower.includes('log in with phone number')){
+        const dispatched=await Promise.race([
+          page.evaluate(()=>{
+            const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
+            const nodes=[...document.querySelectorAll('div,button,a,[role="button"],[role="link"]')];
+            const exact=nodes.filter(n=>norm(n.innerText||n.textContent||'')==='log in with phone number')
+              .sort((a,b)=>{
+                const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect();
+                return (ar.width*ar.height)-(br.width*br.height);
+              })[0];
+            if(!exact) return false;
+            let target=exact;
+            for(let i=0;i<6&&target;i++,target=target.parentElement){
+              const role=target.getAttribute?.('role')||'';
+              if(target.tagName==='BUTTON'||target.tagName==='A'||role==='button'||role==='link'||target.tabIndex>=0) break;
+            }
+            target=target||exact;
+            target.scrollIntoView?.({block:'center',inline:'center'});
+            target.focus?.();
+            const opts={bubbles:true,cancelable:true,composed:true,view:window,button:0,buttons:1,pointerId:1,pointerType:'mouse',isPrimary:true};
+            try{target.dispatchEvent(new PointerEvent('pointerdown',opts));}catch{}
+            try{target.dispatchEvent(new MouseEvent('mousedown',opts));}catch{}
+            try{target.dispatchEvent(new PointerEvent('pointerup',{...opts,buttons:0}));}catch{}
+            try{target.dispatchEvent(new MouseEvent('mouseup',{...opts,buttons:0}));}catch{}
+            try{target.dispatchEvent(new MouseEvent('click',{...opts,buttons:0}));}catch{}
+            try{target.click?.();}catch{}
+            return true;
+          }),
+          new Promise(resolve=>setTimeout(()=>resolve(false),2500))
+        ]).catch(()=>false);
+        if(dispatched){
+          await sleep(1600);
+          return true;
+        }
+
         const focused=await Promise.race([
           page.evaluate(()=>{
             const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
