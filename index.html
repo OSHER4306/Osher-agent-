@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.2</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.3</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -36,6 +36,9 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
   <div class="actions" style="margin-top:12px">
     <button id="waQr">📷 חיבור QR / Web</button>
     <button id="waPhone">🔢 מספר + קוד</button>
+  </div>
+  <div class="actions" style="margin-top:8px">
+    <button id="waIphoneBrowser">🌐 דפדפן באייפון</button>
   </div>
   <div class="field" style="margin-top:12px">
     <label>חיבור כמכשיר מרוחק</label>
@@ -111,6 +114,7 @@ function openWhatsAppWeb(mode){
 }
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
+$('#waIphoneBrowser').onclick=()=>location.href=location.origin+'/iphone-web.html';
 $('#remoteDevice').onclick=async()=>{
   const phone=$('#remotePhone').value.trim().replace(/[^+\d]/g,'');
   if(!phone)return toast('הכנס מספר WhatsApp');
