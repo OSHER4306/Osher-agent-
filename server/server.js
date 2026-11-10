@@ -5,12 +5,14 @@ import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'crypt
 const app = express();
 const env = process.env;
 const V = env.META_GRAPH_VERSION || 'v27.0';
-const APP_ORIGIN = env.APP_ORIGIN || 'https://osher-agent-ios.onrender.com';
+const PRIMARY_APP_ORIGIN = env.APP_ORIGIN || 'https://osher-agent-pro.onrender.com';
+const APP_ORIGINS = new Set([PRIMARY_APP_ORIGIN,'https://osher-agent-pro.onrender.com','https://osher-agent-ios.onrender.com']);
 const API_ORIGIN = env.API_ORIGIN || 'https://osher-agent-api.onrender.com';
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', APP_ORIGIN);
+  const origin=req.headers.origin;
+  if(origin && APP_ORIGINS.has(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Agent-Key');
@@ -109,7 +111,7 @@ app.post('/api/meta/config/clear', auth, (req, res) => {
 app.get('/connect/meta', (req, res) => {
   const cfg = metaConfig(req);
   if (!cfg) {
-    return res.redirect(APP_ORIGIN + '/?connect_error=' + encodeURIComponent('Meta App ID / Secret are not configured yet'));
+    return res.redirect(PRIMARY_APP_ORIGIN + '/?connect_error=' + encodeURIComponent('Meta App ID / Secret are not configured yet'));
   }
   const state = seal({ type:'meta-oauth', expires_at: Date.now() + 10 * 60 * 1000 });
   const redirectUri = API_ORIGIN + '/oauth/meta/callback';
@@ -164,9 +166,9 @@ app.get('/oauth/meta/callback', async (req, res) => {
       expires_at: Date.now() + expiresIn * 1000
     }, Math.min(expiresIn, 5184000));
 
-    res.redirect(APP_ORIGIN + '/?connected=meta');
+    res.redirect(PRIMARY_APP_ORIGIN + '/?connected=meta');
   } catch (error) {
-    res.redirect(APP_ORIGIN + '/?connect_error=' + encodeURIComponent(error.message));
+    res.redirect(PRIMARY_APP_ORIGIN + '/?connect_error=' + encodeURIComponent(error.message));
   }
 });
 
