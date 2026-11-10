@@ -123,6 +123,23 @@ async function clickText(page, patterns, timeoutMs = 25000) {
 
   while(Date.now()<deadline){
     for(const pattern of patterns){
+      const lower=String(pattern||'').toLowerCase();
+      if(lower.includes('log in with phone number')){
+        const ariaSelectors=[
+          '::-p-aria([name="Log in with phone number"][role="button"])',
+          '::-p-aria(Log in with phone number)'
+        ];
+        for(const selector of ariaSelectors){
+          try{
+            await page.locator(selector)
+              .setTimeout(Math.min(3500, Math.max(500, deadline-Date.now())))
+              .setWaitForStableBoundingBox(false)
+              .click();
+            await sleep(1200);
+            return true;
+          }catch{}
+        }
+      }
       for(const text of canonical(pattern)){
         const escaped=text.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
         const selector='::-p-text("'+escaped+'")';
