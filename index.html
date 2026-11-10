@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.1</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.2</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -111,12 +111,21 @@ function openWhatsAppWeb(mode){
 }
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
-$('#remoteDevice').onclick=()=>{
+$('#remoteDevice').onclick=async()=>{
   const phone=$('#remotePhone').value.trim().replace(/[^+\d]/g,'');
   if(!phone)return toast('הכנס מספר WhatsApp');
   const url=location.origin+'/remote.html?phone='+encodeURIComponent(phone);
-  info('מכשיר מרוחק','פתח את הקישור הבא במחשב או בדפדפן המרוחק. שם תעבור ל‑WhatsApp Web הרשמי ותבחר <b>Link with phone number</b>.<br><br><code style="word-break:break-all">'+url+'</code>','פתח כאן לבדיקה',url);
-  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>toast('קישור המכשיר המרוחק הועתק'));
+  let shared=false;
+  try{
+    if(navigator.share){
+      await navigator.share({title:'OSHER AGENT · WhatsApp Remote Device',text:'פתח את הקישור הזה במחשב כדי לקשר אותו כמכשיר WhatsApp מרוחק:',url});
+      shared=true;
+    }
+  }catch(e){}
+  if(!shared && navigator.clipboard?.writeText){
+    try{await navigator.clipboard.writeText(url);toast('קישור למחשב הועתק');}catch(e){}
+  }
+  info('מכשיר מרוחק','הקישור מיועד לפתיחה <b>במחשב או בדפדפן שולחני אחר</b>, לא באותו אייפון.<br><br>שלח/העתק את הקישור למחשב, פתח אותו שם, ואז ב‑WhatsApp Web בחר <b>Link with phone number</b>.<br><br><code style="word-break:break-all">'+url+'</code>');
 };
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
