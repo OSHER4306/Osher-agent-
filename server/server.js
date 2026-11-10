@@ -1,19 +1,23 @@
 import express from 'express';
 import helmet from 'helmet';
-import puppeteer from 'puppeteer';
-import { createHash, createCipheriv, createDecipheriv, randomBytes, randomUUID } from 'crypto';
+import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const app = express();
 const env = process.env;
 const V = env.META_GRAPH_VERSION || 'v27.0';
-const PRIMARY_APP_ORIGIN = env.APP_ORIGIN || 'https://osher-agent-pro.onrender.com';
-const APP_ORIGINS = new Set([PRIMARY_APP_ORIGIN,'https://osher-agent-mobile.onrender.com','https://osher-agent-pro.onrender.com','https://osher-agent-ios.onrender.com']);
+const PRIMARY_APP_ORIGIN = env.APP_ORIGIN || 'https://osher-agent-mobile.onrender.com';
+const APP_ORIGINS = new Set([
+  PRIMARY_APP_ORIGIN,
+  'https://osher-agent-mobile.onrender.com',
+  'https://osher-agent-pro.onrender.com',
+  'https://osher-agent-ios.onrender.com'
+]);
 const API_ORIGIN = env.API_ORIGIN || 'https://osher-agent-api.onrender.com';
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use((req, res, next) => {
-  const origin=req.headers.origin;
-  if(origin && APP_ORIGINS.has(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
+  const origin = req.headers.origin;
+  if (origin && APP_ORIGINS.has(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Agent-Key');
@@ -31,10 +35,16 @@ function auth(req, res, next) {
 }
 
 function cookieMap(req) {
-  return Object.fromEntries((req.headers.cookie || '').split(';').map(x => x.trim()).filter(Boolean).map(x => {
-    const i = x.indexOf('=');
-    return [decodeURIComponent(x.slice(0, i)), decodeURIComponent(x.slice(i + 1))];
-  }));
+  return Object.fromEntries(
+    (req.headers.cookie || '')
+      .split(';')
+      .map(x => x.trim())
+      .filter(Boolean)
+      .map(x => {
+        const i = x.indexOf('=');
+        return [decodeURIComponent(x.slice(0, i)), decodeURIComponent(x.slice(i + 1))];
+      })
+  );
 }
 function cryptoKey() {
   if (!env.AGENT_KEY) throw new Error('AGENT_KEY missing');
@@ -51,11 +61,15 @@ function unseal(value) {
   try {
     const [a,b,c] = String(value || '').split('.');
     if (!a || !b || !c) return null;
-    const iv = Buffer.from(a,'base64url'), tag = Buffer.from(b,'base64url'), enc = Buffer.from(c,'base64url');
+    const iv = Buffer.from(a,'base64url');
+    const tag = Buffer.from(b,'base64url');
+    const enc = Buffer.from(c,'base64url');
     const decipher = createDecipheriv('aes-256-gcm', cryptoKey(), iv);
     decipher.setAuthTag(tag);
     return JSON.parse(Buffer.concat([decipher.update(enc), decipher.final()]).toString('utf8'));
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 function setEncryptedCookie(res, name, value, maxAgeSeconds = 5184000) {
   res.append('Set-Cookie', `${name}=${encodeURIComponent(seal(value))}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${maxAgeSeconds}`);
@@ -63,16 +77,25 @@ function setEncryptedCookie(res, name, value, maxAgeSeconds = 5184000) {
 function clearCookie(res, name) {
   res.append('Set-Cookie', `${name}=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0`);
 }
+
+function metaConfig(req) {
+  if (env.META_APP_ID && env.META_APP_SECRET) return { appId: env.META_APP_ID, appSecret: env.META_APP_SECRET };
+  const cfg = unseal(cookieMap(req).oa_meta_cfg);
+  return cfg?.appId && cfg?.appSecret ? cfg : null;
+}
 function metaSession(req) {
   const data = unseal(cookieMap(req).oa_meta);
   if (!data?.access_token) return null;
   if (data.expires_at && Date.now() > data.expires_at) return null;
   return data;
 }
-function metaConfig(req) {
-  if (env.META_APP_ID && env.META_APP_SECRET) return { appId: env.META_APP_ID, appSecret: env.META_APP_SECRET };
-  const cfg = unseal(cookieMap(req).oa_meta_cfg);
-  return cfg?.appId && cfg?.appSecret ? cfg : null;
+function whatsappBusinessConfig(req) {
+  const cookie = unseal(cookieMap(req).oa_wa_business);
+  if (cookie?.token && cookie?.phoneNumberId) return cookie;
+  if (env.WHATSAPP_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID) {
+    return { token: env.WHATSAPP_TOKEN, phoneNumberId: env.WHATSAPP_PHONE_NUMBER_ID };
+  }
+  return null;
 }
 
 async function graph(path, token, opts = {}) {
@@ -82,373 +105,59 @@ async function graph(path, token, opts = {}) {
   if (!response.ok) throw new Error(json?.error?.message || `Meta HTTP ${response.status}`);
   return json;
 }
-
 async function getPages(token) {
   const result = await graph('me/accounts?fields=id,name,access_token,instagram_business_account{id,username}', token);
   return result.data || [];
 }
-
-const waRemoteSessions = new Map();
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-function normalizeRemotePhone(raw) {
-  const original = String(raw || '').trim();
-  const digits = original.replace(/\D/g, '');
-  if (digits.length < 8 || digits.length > 15) throw new Error('Enter a valid international WhatsApp number, for example +9725XXXXXXXX');
-  const known = [
-    { code:'972', country:'Israel' },
-    { code:'1', country:'United States' },
-    { code:'44', country:'United Kingdom' },
-    { code:'33', country:'France' },
-    { code:'49', country:'Germany' },
-    { code:'39', country:'Italy' },
-    { code:'34', country:'Spain' }
-  ].find(x => digits.startsWith(x.code));
+async function inspectWhatsappBusiness(cfg) {
+  const data = await graph(`${cfg.phoneNumberId}?fields=id,display_phone_number,verified_name,quality_rating`, cfg.token);
   return {
-    e164:'+' + digits,
-    country:known?.country || null,
-    local:known ? digits.slice(known.code.length).replace(/^0+/, '') : digits
+    id: data.id,
+    displayPhoneNumber: data.display_phone_number || null,
+    verifiedName: data.verified_name || null,
+    qualityRating: data.quality_rating || null
   };
 }
-
-async function clickText(page, patterns, timeoutMs = 25000) {
-  const canonical = pattern => {
-    const p=String(pattern||'').toLowerCase();
-    if(p.includes('link with phone number')) return ['Link with phone number instead.','Link with phone number instead'];
-    if(p.includes('log in with phone number')) return ['Log in with phone number'];
-    if(p==='next') return ['Next'];
-    return [String(pattern||'')];
-  };
-  const deadline=Date.now()+timeoutMs;
-
-  while(Date.now()<deadline){
-    for(const pattern of patterns){
-      const lower=String(pattern||'').toLowerCase();
-
-      if(lower.includes('log in with phone number')){
-        const dispatched=await Promise.race([
-          page.evaluate(()=>{
-            const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
-            const nodes=[...document.querySelectorAll('div,button,a,[role="button"],[role="link"]')];
-            const exact=nodes.filter(n=>norm(n.innerText||n.textContent||'')==='log in with phone number')
-              .sort((a,b)=>{
-                const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect();
-                return (ar.width*ar.height)-(br.width*br.height);
-              })[0];
-            if(!exact) return false;
-            let target=exact;
-            for(let i=0;i<6&&target;i++,target=target.parentElement){
-              const role=target.getAttribute?.('role')||'';
-              if(target.tagName==='BUTTON'||target.tagName==='A'||role==='button'||role==='link'||target.tabIndex>=0) break;
-            }
-            target=target||exact;
-            target.scrollIntoView?.({block:'center',inline:'center'});
-            target.focus?.();
-            const opts={bubbles:true,cancelable:true,composed:true,view:window,button:0,buttons:1,pointerId:1,pointerType:'mouse',isPrimary:true};
-            try{target.dispatchEvent(new PointerEvent('pointerdown',opts));}catch{}
-            try{target.dispatchEvent(new MouseEvent('mousedown',opts));}catch{}
-            try{target.dispatchEvent(new PointerEvent('pointerup',{...opts,buttons:0}));}catch{}
-            try{target.dispatchEvent(new MouseEvent('mouseup',{...opts,buttons:0}));}catch{}
-            try{target.dispatchEvent(new MouseEvent('click',{...opts,buttons:0}));}catch{}
-            try{target.click?.();}catch{}
-            return true;
-          }),
-          new Promise(resolve=>setTimeout(()=>resolve(false),2500))
-        ]).catch(()=>false);
-        if(dispatched){
-          await sleep(1600);
-          return true;
-        }
-
-        const focused=await Promise.race([
-          page.evaluate(()=>{
-            const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
-            const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
-            const match=nodes.find(n=>norm(n.innerText||n.textContent||'')==='log in with phone number');
-            if(!match) return false;
-            let target=match;
-            for(let i=0;i<7&&target;i++,target=target.parentElement){
-              const role=target.getAttribute?.('role')||'';
-              if(target.tagName==='BUTTON'||target.tagName==='A'||role==='button'||role==='link'||target.tabIndex>=0){
-                target.focus?.();
-                target.setAttribute?.('data-osher-pair-target','1');
-                return true;
-              }
-            }
-            match.focus?.();
-            match.setAttribute?.('data-osher-pair-target','1');
-            return true;
-          }),
-          new Promise(resolve=>setTimeout(()=>resolve(false),2500))
-        ]).catch(()=>false);
-        if(focused){
-          await page.keyboard.press('Enter').catch(()=>{});
-          await sleep(1400);
-          return true;
-        }
-      }
-      if(lower.includes('log in with phone number')){
-        const ariaSelectors=[
-          '::-p-aria([name="Log in with phone number"][role="button"])',
-          '::-p-aria(Log in with phone number)'
-        ];
-        for(const selector of ariaSelectors){
-          try{
-            await page.locator(selector)
-              .setTimeout(Math.min(3500, Math.max(500, deadline-Date.now())))
-              .setWaitForStableBoundingBox(false)
-              .click();
-            await sleep(1200);
-            return true;
-          }catch{}
-        }
-      }
-      for(const text of canonical(pattern)){
-        const escaped=text.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
-        const selector='::-p-text("'+escaped+'")';
-        try{
-          await page.locator(selector)
-            .setTimeout(Math.min(3500, Math.max(500, deadline-Date.now())))
-            .setWaitForStableBoundingBox(false)
-            .click();
-          await sleep(1000);
-          return true;
-        }catch{}
-      }
-    }
-
-    // Deterministic DOM fallback with a hard timeout.
-    const fallback=await Promise.race([
-      page.evaluate((patterns)=>{
-        const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
-        const pats=patterns.map(norm);
-        const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
-        let best=null;
-        for(const node of nodes){
-          const r=node.getBoundingClientRect?.();
-          if(!r||r.width<2||r.height<2) continue;
-          const txt=norm([
-            node.innerText||node.textContent||'',
-            node.getAttribute?.('aria-label')||'',
-            node.getAttribute?.('title')||''
-          ].join(' '));
-          if(!txt) continue;
-          for(const p of pats){
-            const exact=txt===p;
-            const starts=txt.startsWith(p)&&txt.length<=p.length+12;
-            if(!exact&&!starts) continue;
-            const score=(exact?0:100)+(r.width*r.height)/100000;
-            if(!best||score<best.score) best={score,x:r.left+r.width/2,y:r.top+r.height/2};
-          }
-        }
-        return best;
-      },patterns),
-      new Promise(resolve=>setTimeout(()=>resolve(null),3000))
-    ]).catch(()=>null);
-
-    if(fallback){
-      await page.mouse.click(fallback.x,fallback.y,{delay:100}).catch(()=>{});
-      await sleep(1000);
-      return true;
-    }
-    await sleep(400);
-  }
-  return false;
-}
-async function selectCountryIfPossible(page, country) {
-  if (!country) return;
-  const opened = await page.evaluate(() => {
-    const nodes = [...document.querySelectorAll('button,[role="button"],div')];
-    const node = nodes.find(el => {
-      const text = (el.innerText || '').trim();
-      const aria = el.getAttribute('aria-label') || '';
-      return /country|united states|\+1/i.test(text + ' ' + aria);
-    });
-    if (!node) return false;
-    const target = node.closest('button,[role="button"]') || node;
-    try { target.click(); return true; } catch { return false; }
-  }).catch(() => false);
-  if (!opened) return;
-  await sleep(800);
-  await clickText(page, [country], 6000);
-  await sleep(500);
-}
-
-async function findPhoneInput(page) {
-  const handles = await page.$$('input, [contenteditable="true"]');
-  for (const h of handles) {
-    const meta = await h.evaluate(el => ({
-      tag:el.tagName,
-      type:(el.type || '').toLowerCase(),
-      placeholder:el.placeholder || '',
-      aria:el.getAttribute('aria-label') || '',
-      inputmode:el.getAttribute('inputmode') || '',
-      contenteditable:el.getAttribute('contenteditable') || '',
-      visible:!!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)
-    })).catch(() => null);
-    if (!meta?.visible) continue;
-    if (['checkbox','radio','hidden','button','submit','reset','file'].includes(meta.type)) continue;
-    const hay = (meta.type+' '+meta.placeholder+' '+meta.aria+' '+meta.inputmode).toLowerCase();
-    const preferred = /tel|phone|number|mobile|numeric/.test(hay);
-    if (preferred) return h;
-  }
-  for (const h of handles) {
-    const meta = await h.evaluate(el => ({
-      type:(el.type || '').toLowerCase(),
-      visible:!!(el.offsetWidth || el.offsetHeight || el.getClientRects().length),
-      ce:el.getAttribute('contenteditable')==='true'
-    })).catch(()=>null);
-    if(!meta?.visible) continue;
-    if(['checkbox','radio','hidden','button','submit','reset','file'].includes(meta.type)) continue;
-    if(meta.ce || ['','text','tel','number'].includes(meta.type)) return h;
-  }
-  return null;
-}
-
-async function fillPhoneInput(page, localNumber, e164) {
-  const chosen = await findPhoneInput(page);
-  if (!chosen) throw new Error('WhatsApp phone-number input was not found');
-  await chosen.click({clickCount:3}).catch(()=>{});
-  await page.keyboard.press('Backspace').catch(()=>{});
-  await chosen.type(localNumber || e164.replace(/^\+/, ''), {delay:35});
-}
-function extractPairingCode(text) {
-  const lines = String(text || '').split(/\n+/).map(x => x.trim()).filter(Boolean);
-  for (const line of lines) {
-    const compact = line.replace(/[\s-]/g, '');
-    if (/^[A-Z0-9]{8}$/i.test(compact) && !/^\d{8}$/.test(compact)) return compact.toUpperCase();
-  }
-  const mixed = String(text || '').match(/\b[A-Z0-9]{4}[\s-]?[A-Z0-9]{4}\b/i);
-  if (mixed) return mixed[0].replace(/[\s-]/g,'').toUpperCase();
-  const digits = String(text || '').match(/\b\d{4}[\s-]?\d{4}\b/);
-  if (digits) return digits[0].replace(/[\s-]/g,'');
-  return null;
-}
-
-async function sessionScreenshot(session) {
-  if (!session?.page || session.page.isClosed()) return null;
-  const buf = await session.page.screenshot({type:'png', fullPage:false}).catch(()=>null);
-  return buf ? 'data:image/png;base64,' + buf.toString('base64') : null;
-}
-
-async function prepareRemoteWhatsapp(session, phone) {
-  try {
-    session.status='launching';
-    const browser = await puppeteer.launch({
-      headless:true,
-      args:[
-        '--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage',
-        '--disable-gpu','--no-first-run','--no-default-browser-check','--lang=en-US'
-      ]
-    });
-    session.browser=browser;
-    const page=await browser.newPage();
-    session.page=page;
-    await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36');
-    await page.setExtraHTTPHeaders({'Accept-Language':'en-US,en;q=0.9'});
-    session.status='opening_whatsapp_web';
-    await page.goto('https://web.whatsapp.com/', {waitUntil:'domcontentloaded', timeout:70000});
-    await sleep(3500);
-
-    session.status='opening_phone_link';
-    const linkClicked = await clickText(page, ['log in with phone number'], 30000);
-    if (!linkClicked) {
-      session.screenshot = await sessionScreenshot(session);
-      throw new Error('WhatsApp Web did not expose the phone-number linking option in the remote desktop session');
-    }
-    await sleep(1800);
-
-    await selectCountryIfPossible(page, phone.country);
-    session.status='entering_phone';
-    await fillPhoneInput(page, phone.local, phone.e164);
-    await sleep(400);
-
-    const nextClicked = await clickText(page, ['next'], 8000);
-    if (!nextClicked) {
-      session.screenshot = await sessionScreenshot(session);
-      throw new Error('WhatsApp Next button was not found after entering the phone number');
-    }
-
-    session.status='waiting_for_code';
-    const started=Date.now();
-    while(Date.now()-started < 45000){
-      const bodyText=await page.evaluate(()=>document.body.innerText).catch(()=> '');
-      const code=extractPairingCode(bodyText);
-      if(code){
-        session.code=code;
-        session.status='code_ready';
-        session.screenshot=await sessionScreenshot(session);
-        break;
-      }
-      await sleep(1000);
-    }
-    if(!session.code){
-      session.screenshot=await sessionScreenshot(session);
-      throw new Error('WhatsApp did not return an 8-character pairing code');
-    }
-
-    // Keep the browser alive and watch for successful linking.
-    while(session.browser && session.status==='code_ready'){
-      const linked=await page.evaluate(()=>{
-        return !!document.querySelector('#pane-side,[data-testid="chat-list"],[aria-label="Chat list"]') ||
-          /\bchats\b/i.test((document.body.innerText||'').slice(0,1200));
-      }).catch(()=>false);
-      if(linked){
-        session.status='linked';
-        session.linkedAt=Date.now();
-        session.screenshot=await sessionScreenshot(session);
-        break;
-      }
-      await sleep(1800);
-    }
-  } catch (error) {
-    session.error=error.message;
-    session.status='error';
-    if(!session.screenshot) session.screenshot=await sessionScreenshot(session);
-  }
-}
-
-app.post('/api/whatsapp/remote/start', auth, async (req,res)=>{
-  try{
-    const phone=normalizeRemotePhone(req.body?.phone);
-    const id=randomUUID();
-    const session={id,phone:phone.e164,status:'starting',createdAt:Date.now(),code:null,error:null,screenshot:null,browser:null,page:null};
-    waRemoteSessions.set(id,session);
-    prepareRemoteWhatsapp(session,phone);
-    res.json({ok:true,id,status:session.status,phone:phone.e164});
-  }catch(error){
-    res.status(400).json({error:error.message});
-  }
-});
-
-app.get('/api/whatsapp/remote/:id', auth, async (req,res)=>{
-  const session=waRemoteSessions.get(req.params.id);
-  if(!session) return res.status(404).json({error:'Remote WhatsApp session not found'});
-  const withScreenshot=req.query.screenshot==='1';
-  if(withScreenshot && !session.screenshot) session.screenshot=await sessionScreenshot(session);
-  res.json({
-    ok:true,id:session.id,phone:session.phone,status:session.status,
-    code:session.code,error:session.error,
-    screenshot:withScreenshot ? session.screenshot : undefined,
-    linkedAt:session.linkedAt || null
-  });
-});
-
-app.post('/api/whatsapp/remote/:id/close', auth, async (req,res)=>{
-  const session=waRemoteSessions.get(req.params.id);
-  if(!session) return res.json({ok:true});
-  try{await session.browser?.close();}catch{}
-  waRemoteSessions.delete(req.params.id);
-  res.json({ok:true});
-});
 
 app.get('/health', (req, res) => res.json({
   ok: true,
   service: 'osher-agent',
   metaOAuthConfigured: Boolean(metaConfig(req)),
-  remoteBrowserPairing: true
+  whatsappBusinessConfigured: Boolean(whatsappBusinessConfig(req)),
+  personalWhatsappMode: 'official-linked-devices-only'
 }));
+
+app.post('/api/whatsapp/business/config', auth, async (req, res) => {
+  try {
+    const token = String(req.body?.token || '').trim();
+    const phoneNumberId = String(req.body?.phoneNumberId || '').trim();
+    if (token.length < 20 || token.length > 1000) return res.status(400).json({ error: 'Invalid WhatsApp access token' });
+    if (!/^\d{5,30}$/.test(phoneNumberId)) return res.status(400).json({ error: 'Invalid Phone Number ID' });
+
+    const cfg = { token, phoneNumberId };
+    const info = await inspectWhatsappBusiness(cfg);
+    setEncryptedCookie(res, 'oa_wa_business', cfg, 31536000);
+    res.json({ ok: true, info });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.get('/api/whatsapp/business/status', auth, async (req, res) => {
+  try {
+    const cfg = whatsappBusinessConfig(req);
+    if (!cfg) return res.json({ connected: false });
+    const info = await inspectWhatsappBusiness(cfg);
+    res.json({ connected: true, info });
+  } catch (error) {
+    res.json({ connected: false, error: error.message });
+  }
+});
+
+app.post('/api/whatsapp/business/disconnect', auth, (req, res) => {
+  clearCookie(res, 'oa_wa_business');
+  res.json({ ok: true });
+});
 
 app.post('/api/meta/config', auth, (req, res) => {
   const appId = String(req.body?.appId || '').trim();
@@ -496,6 +205,7 @@ app.get('/oauth/meta/callback', async (req, res) => {
     if (req.query.error) throw new Error(String(req.query.error_description || req.query.error));
     const state = unseal(req.query.state);
     if (!state || state.type !== 'meta-oauth' || Date.now() > state.expires_at) throw new Error('Invalid or expired OAuth state');
+
     const redirectUri = API_ORIGIN + '/oauth/meta/callback';
     const shortParams = new URLSearchParams({
       client_id: cfg.appId,
@@ -534,8 +244,19 @@ app.get('/api/connections', auth, async (req, res) => {
     metaOAuthConfigured: Boolean(metaConfig(req)),
     facebook: { connected: false },
     instagram: { connected: false },
-    whatsapp: { connected: Boolean(env.WHATSAPP_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID), mode: env.WHATSAPP_TOKEN ? 'cloud-api' : 'web-link' }
+    whatsappPersonal: { mode: 'linked-devices', connected: null },
+    whatsappBusiness: { connected: false }
   };
+
+  try {
+    const waCfg = whatsappBusinessConfig(req);
+    if (waCfg) {
+      out.whatsappBusiness = { connected: true, info: await inspectWhatsappBusiness(waCfg) };
+    }
+  } catch (error) {
+    out.whatsappBusiness = { connected: false, error: error.message };
+  }
+
   try {
     const session = metaSession(req);
     if (session) {
@@ -557,6 +278,7 @@ app.get('/api/connections', auth, async (req, res) => {
   } catch (error) {
     out.metaError = error.message;
   }
+
   res.json(out);
 });
 
@@ -571,7 +293,6 @@ app.get('/webhook', (req, res) => {
   }
   res.sendStatus(403);
 });
-
 app.post('/webhook', (req, res) => {
   console.log(JSON.stringify({ type: 'meta-webhook', body: req.body }));
   res.sendStatus(200);
@@ -582,13 +303,12 @@ app.post('/api/action', auth, async (req, res) => {
     const action = req.body || {};
 
     if (action.type === 'whatsapp_send') {
-      if (!env.WHATSAPP_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID) {
-        throw new Error('WhatsApp Business API is not configured. Use WhatsApp Web linking for manual handoff, or connect Cloud API.');
-      }
-      const response = await fetch(`https://graph.facebook.com/${V}/${env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+      const cfg = whatsappBusinessConfig(req);
+      if (!cfg) throw new Error('WhatsApp Business API is not connected');
+      const response = await fetch(`https://graph.facebook.com/${V}/${cfg.phoneNumberId}/messages`, {
         method: 'POST',
         headers: {
-          authorization: `Bearer ${env.WHATSAPP_TOKEN}`,
+          authorization: `Bearer ${cfg.token}`,
           'content-type': 'application/json'
         },
         body: JSON.stringify({
@@ -598,7 +318,7 @@ app.post('/api/action', auth, async (req, res) => {
           text: { body: action.message }
         })
       });
-      const json = await response.json();
+      const json = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(json?.error?.message || 'WhatsApp send failed');
       return res.json({ ok: true, result: json });
     }
@@ -646,19 +366,19 @@ app.post('/api/action', auth, async (req, res) => {
       });
       const container = await graph(`${instagramId}/media`, token, {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        headers: { 'content-type':'application/x-www-form-urlencoded' },
         body: createBody
       });
       const publishBody = new URLSearchParams({ creation_id: container.id });
       const published = await graph(`${instagramId}/media_publish`, token, {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        headers: { 'content-type':'application/x-www-form-urlencoded' },
         body: publishBody
       });
       return res.json({ ok: true, result: published });
     }
 
-    return res.status(400).json({ error: 'unsupported action' });
+    res.status(400).json({ error: 'unsupported action' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
