@@ -40,6 +40,7 @@ let lastQr = null;
 let lastQrDataUrl = null;
 let lastError = null;
 let pairingInFlight = false;
+let pairingRequest = null;
 let persistQueue = Promise.resolve();
 let reconnectTimer = null;
 
@@ -192,6 +193,25 @@ async function startSocket({ fresh = false } = {}) {
       if (connectionState !== 'pairing') connectionState = 'connecting';
     }
 
+    if ((connection === 'connecting' || qr) && pairingRequest && !pairingRequest.requested) {
+      pairingRequest.requested = true;
+      const pending = pairingRequest;
+      try {
+        const code = await sock.requestPairingCode(pending.phone);
+        const clean = String(code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        if (!clean) throw new Error('WhatsApp returned an empty pairing code');
+        clearTimeout(pending.timer);
+        pairingRequest = null;
+        pending.resolve(clean);
+      } catch (err) {
+        clearTimeout(pending.timer);
+        pairingRequest = null;
+        lastError = err?.message || String(err);
+        console.warn('Pairing code request failed:', lastError);
+        pending.reject(err);
+      }
+    }
+
     if (connection === 'open') {
       connectionState = 'connected';
       lastQr = null;
@@ -211,6 +231,13 @@ async function startSocket({ fresh = false } = {}) {
         || null;
 
       lastError = lastDisconnect?.error?.message || (code ? `WhatsApp closed connection (${code})` : 'WhatsApp connection closed');
+
+      if (pairingRequest) {
+        const pending = pairingRequest;
+        clearTimeout(pending.timer);
+        pairingRequest = null;
+        pending.reject(new Error(lastError));
+      }
 
       if (code === DisconnectReason.loggedOut || code === 401) {
         connectionState = 'needs_pairing';
@@ -235,21 +262,30 @@ async function requestPairingCode(phone) {
   if (pairingInFlight) throw new Error('A pairing request is already in progress');
   pairingInFlight = true;
   connectionState = 'pairing';
+  lastError = null;
 
   try {
-    let last;
-    for (let i = 0; i < 8; i++) {
-      try {
-        const code = await sock.requestPairingCode(number);
-        if (code) {
-          return String(code).replace(/[^A-Za-z0-9]/g, '').toUpperCase();
-        }
-      } catch (err) {
-        last = err;
-        await new Promise(r => setTimeout(r, 900));
-      }
+    // Baileys' current guidance is to request the pairing code only after the
+    // socket reaches connecting/QR readiness. If a QR was already emitted,
+    // the socket is ready and we can request immediately.
+    if (lastQr) {
+      const code = await sock.requestPairingCode(number);
+      const clean = String(code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      if (!clean) throw new Error('WhatsApp returned an empty pairing code');
+      return clean;
     }
-    throw last || new Error('Could not generate pairing code');
+
+    return await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        if (pairingRequest) pairingRequest = null;
+        reject(new Error('WhatsApp socket was not ready for pairing. Use the QR fallback or try again.'));
+      }, 20000);
+      pairingRequest = { phone: number, resolve, reject, timer, requested: false };
+    });
+  } catch (err) {
+    lastError = err?.message || String(err);
+    console.warn('Pairing failed:', lastError);
+    throw err;
   } finally {
     pairingInFlight = false;
   }
@@ -285,7 +321,8 @@ app.post('/api/pair', setupAuth, async (req, res) => {
     res.json({ ok: true, code });
   } catch (err) {
     lastError = err.message;
-    res.status(400).json({ error: err.message, state: connectionState });
+    console.warn('Pair endpoint error:', err?.message || String(err));
+    res.status(400).json({ error: err.message, state: connectionState, qrAvailable: Boolean(lastQrDataUrl) });
   }
 });
 
