@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b10">
+<title>OSHER AGENT · WhatsApp Web on iPhone</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#07080b;color:#f6f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding:22px}
+.wrap{max-width:720px;margin:0 auto}.card{background:#11141b;border:1px solid #2b3242;border-radius:26px;padding:22px;margin-bottom:14px}.logo{width:56px;height:56px;border-radius:17px;background:linear-gradient(135deg,#9b82ff,#4d2ce8);display:grid;place-items:center;font-size:29px;margin-bottom:14px}
+h1{font-size:28px;margin:0 0 8px}.muted{color:#aab2c1;line-height:1.6}.step{display:flex;gap:10px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #242a36}.step:last-child{border:0}.num{flex:0 0 30px;height:30px;border-radius:9px;background:#6d50f5;display:grid;place-items:center;font-weight:800}.actions{display:grid;gap:10px}button,a.btn{display:block;width:100%;border:0;border-radius:15px;padding:14px;text-align:center;text-decoration:none;font-size:16px;font-weight:800;color:white;background:linear-gradient(135deg,#8d70ff,#5d3cf0)}button.secondary,a.secondary{background:#181d27;border:1px solid #303747}.warn{color:#ffd66e;font-size:13px;line-height:1.55;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="logo">🌐</div>
+<h1>WhatsApp Web בדפדפן באייפון</h1>
+<p class="muted">המסלול הזה מנסה לפתוח את WhatsApp Web דרך Safari במצב שולחני. Safari מאפשר לבקש גרסת Desktop, אבל WhatsApp עצמה יכולה עדיין לחסום שימוש במובייל.</p>
+<div class="step"><span class="num">1</span><div>פתח את העמוד הזה ב־<b>Safari</b>, לא בדפדפן הפנימי של ChatGPT.</div></div>
+<div class="step"><span class="num">2</span><div>בספארי לחץ על <b>Page Menu</b> ליד שורת הכתובת.</div></div>
+<div class="step"><span class="num">3</span><div>בחר <b>Request Desktop Website</b>.</div></div>
+<div class="step"><span class="num">4</span><div>לחץ למטה על <b>פתח WhatsApp Web</b>. אם WhatsApp מציגה מסך “פתח ממחשב”, זו חסימה מצד WhatsApp ולא תקלה ב־OSHER AGENT.</div></div>
+</div>
+
+<div class="card actions">
+<a class="btn" href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer">פתח WhatsApp Web</a>
+<button id="copy" class="secondary">העתק web.whatsapp.com</button>
+<button id="back" class="secondary">חזור ל־OSHER AGENT</button>
+<div class="warn">אין דרך אמינה מהאתר שלנו לכפות על Safari מצב Desktop או לגרום ל‑WhatsApp לקבל את האייפון כמחשב. הבחירה “Request Desktop Website” נעשית על ידך ב‑Safari.</div>
+</div>
+</div>
+<script>
+document.getElementById('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText('https://web.whatsapp.com/');document.getElementById('copy').textContent='הועתק ✓';}
+  catch(e){document.getElementById('copy').textContent='העתק ידנית: web.whatsapp.com';}
+};
+document.getElementById('back').onclick=()=>location.href='./';
+</script>
+</body>
+</html>
