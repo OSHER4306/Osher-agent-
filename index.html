@@ -28,7 +28,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
-<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.3.3</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
+<header><div class="brand"><div class="logo">⚡</div><div><div class="title">OSHER AGENT</div><div class="sub">מרכז שליטה לאייפון · v1.4.0</div></div></div><div id="mode" class="pill">מצב מקומי</div></header>
 <div class="hero"><h1>מה אתה רוצה שאעשה?</h1><p>פקודות בעברית ל‑WhatsApp, Facebook ו‑Instagram. פעולות רגישות נכנסות לתור אישורים לפני ביצוע.</p><div class="cmd"><input id="command" placeholder="לדוגמה: פתח וואטסאפ / שלח וואטסאפ ל..."><button id="run" class="primary">בצע</button></div><div class="quickgrid"><button class="quick" data-open="wa"><b>💬</b>WhatsApp</button><button class="quick" data-open="ig"><b>📸</b>Instagram</button><button class="quick" data-open="fb"><b>🔵</b>Facebook</button></div></div>
 <section><div class="head"><h2>חיבורים</h2><span class="hint">Meta + iPhone</span></div><div class="connections">
 <div class="card">
@@ -67,6 +67,18 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 <div class="row"><button id="saveMeta" class="primary">שמור וחבר Meta</button><button class="primary ghost" data-close>סגור</button></div>
 </div></dialog>
 <dialog id="infoDialog"><div class="modal"><h3 id="infoTitle"></h3><p id="infoText"></p><div class="row"><button id="infoAction" class="primary" style="display:none">פתח</button><button class="primary ghost" data-close>סגור</button></div></div></dialog>
+
+<dialog id="remotePairDialog"><div class="modal">
+<h3>WhatsApp · מכשיר מרוחק אמיתי</h3>
+<p id="remotePairHelp">מפעיל דפדפן Desktop בענן ומבקש קוד קישור מ‑WhatsApp Web הרשמי.</p>
+<div id="remotePairStatus" class="card" style="margin:12px 0">מכין דפדפן מרוחק…</div>
+<div id="remotePairCode" style="display:none;text-align:center;font-size:36px;font-weight:900;letter-spacing:6px;direction:ltr;padding:18px;border:1px solid #3d4660;border-radius:18px;background:#080a10;margin:12px 0"></div>
+<img id="remotePairShot" alt="צילום מסך מהדפדפן המרוחק" style="display:none;width:100%;border-radius:14px;border:1px solid #303747;margin:12px 0">
+<div class="row">
+<button id="remotePairRefresh" class="primary ghost">צילום/עדכון</button>
+<button id="remotePairStop" class="primary ghost">סגור session</button>
+</div>
+</div></dialog>
 
 <script>
 const $ = s => document.querySelector(s); const qsa = s => [...document.querySelectorAll(s)];
@@ -115,21 +127,81 @@ function openWhatsAppWeb(mode){
 qsa('[data-open]').forEach(b=>b.onclick=()=>openApp(b.dataset.open));
 $('#openWhatsAppApp').onclick=()=>openApp('wa');
 $('#waIphoneBrowser').onclick=()=>location.href=location.origin+'/iphone-web.html';
-$('#remoteDevice').onclick=async()=>{
-  const phone=$('#remotePhone').value.trim().replace(/[^+\d]/g,'');
-  if(!phone)return toast('הכנס מספר WhatsApp');
-  const url=location.origin+'/remote.html?phone='+encodeURIComponent(phone);
-  let shared=false;
+let remoteSessionId=null,remotePollTimer=null;
+async function remoteRequest(path,options={}){
+  if(!state.server||!state.key)throw Error('פתח את OSHER AGENT דרך קישור החיבור האישי כדי לחבר את השרת');
+  const r=await fetch(state.server.replace(/\/$/,'')+path,{
+    ...options,
+    credentials:'include',
+    headers:{'content-type':'application/json','x-agent-key':state.key,...(options.headers||{})}
+  });
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw Error(j.error||('HTTP '+r.status));
+  return j;
+}
+function remoteStatusLabel(s){
+  return ({
+    starting:'מתחיל session…',
+    launching:'מפעיל Chromium Desktop בענן…',
+    opening_whatsapp_web:'פותח WhatsApp Web הרשמי…',
+    opening_phone_link:'מחפש Link with phone number…',
+    entering_phone:'מזין את מספר ה‑WhatsApp…',
+    waiting_for_code:'ממתין לקוד מ‑WhatsApp…',
+    code_ready:'הקוד מוכן — אשר אותו עכשיו באייפון',
+    linked:'המכשיר המרוחק חובר בהצלחה ✓',
+    error:'החיבור נעצר'
+  })[s]||s;
+}
+async function pollRemotePairing(withScreenshot=false){
+  if(!remoteSessionId)return;
   try{
-    if(navigator.share){
-      await navigator.share({title:'OSHER AGENT · WhatsApp Remote Device',text:'פתח את הקישור הזה במחשב כדי לקשר אותו כמכשיר WhatsApp מרוחק:',url});
-      shared=true;
+    const j=await remoteRequest('/api/whatsapp/remote/'+remoteSessionId+(withScreenshot?'?screenshot=1':''));
+    $('#remotePairStatus').textContent=remoteStatusLabel(j.status)+(j.error?' — '+j.error:'');
+    if(j.code){
+      $('#remotePairCode').style.display='block';
+      $('#remotePairCode').textContent=j.code;
+      $('#remotePairHelp').innerHTML='ב‑WhatsApp באייפון: <b>Settings → Linked Devices → Link a Device → Link with phone number instead</b>, ואז הזן את הקוד שמופיע כאן.';
     }
-  }catch(e){}
-  if(!shared && navigator.clipboard?.writeText){
-    try{await navigator.clipboard.writeText(url);toast('קישור למחשב הועתק');}catch(e){}
+    if(j.screenshot){
+      $('#remotePairShot').src=j.screenshot;
+      $('#remotePairShot').style.display='block';
+    }
+    if(j.status==='linked'){
+      $('#remotePairHelp').innerHTML='<b>מחובר ✓</b> — Chromium המרוחק הפך למכשיר WhatsApp מקושר.';
+      toast('WhatsApp חובר כמכשיר מרוחק');
+      return;
+    }
+    if(j.status==='error')return;
+    clearTimeout(remotePollTimer);
+    remotePollTimer=setTimeout(()=>pollRemotePairing(false),1800);
+  }catch(e){
+    $('#remotePairStatus').textContent='שגיאה: '+e.message;
   }
-  info('מכשיר מרוחק','הקישור מיועד לפתיחה <b>במחשב או בדפדפן שולחני אחר</b>, לא באותו אייפון.<br><br>שלח/העתק את הקישור למחשב, פתח אותו שם, ואז ב‑WhatsApp Web בחר <b>Link with phone number</b>.<br><br><code style="word-break:break-all">'+url+'</code>');
+}
+$('#remoteDevice').onclick=async()=>{
+  const phone=$('#remotePhone').value.trim();
+  if(!phone)return toast('הכנס מספר WhatsApp בפורמט +972...');
+  $('#remotePairCode').style.display='none';
+  $('#remotePairShot').style.display='none';
+  $('#remotePairHelp').textContent='מפעיל דפדפן Desktop בענן ומבקש קוד קישור מ‑WhatsApp Web הרשמי.';
+  $('#remotePairStatus').textContent='מתחיל session…';
+  $('#remotePairDialog').showModal();
+  try{
+    const j=await remoteRequest('/api/whatsapp/remote/start',{method:'POST',body:JSON.stringify({phone})});
+    remoteSessionId=j.id;
+    pollRemotePairing(false);
+  }catch(e){
+    $('#remotePairStatus').textContent='שגיאה: '+e.message;
+  }
+};
+$('#remotePairRefresh').onclick=()=>pollRemotePairing(true);
+$('#remotePairStop').onclick=async()=>{
+  clearTimeout(remotePollTimer);
+  if(remoteSessionId){
+    try{await remoteRequest('/api/whatsapp/remote/'+remoteSessionId+'/close',{method:'POST',body:'{}'});}catch(e){}
+  }
+  remoteSessionId=null;
+  $('#remotePairDialog').close();
 };
 $('#waQr').onclick=()=>openWhatsAppWeb('qr');
 $('#waPhone').onclick=()=>openWhatsAppWeb('phone');
