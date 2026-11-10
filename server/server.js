@@ -124,6 +124,35 @@ async function clickText(page, patterns, timeoutMs = 25000) {
   while(Date.now()<deadline){
     for(const pattern of patterns){
       const lower=String(pattern||'').toLowerCase();
+
+      if(lower.includes('log in with phone number')){
+        const focused=await Promise.race([
+          page.evaluate(()=>{
+            const norm=v=>String(v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/[.!]+$/,'');
+            const nodes=[...document.querySelectorAll('button,a,[role="button"],[role="link"],div,span')];
+            const match=nodes.find(n=>norm(n.innerText||n.textContent||'')==='log in with phone number');
+            if(!match) return false;
+            let target=match;
+            for(let i=0;i<7&&target;i++,target=target.parentElement){
+              const role=target.getAttribute?.('role')||'';
+              if(target.tagName==='BUTTON'||target.tagName==='A'||role==='button'||role==='link'||target.tabIndex>=0){
+                target.focus?.();
+                target.setAttribute?.('data-osher-pair-target','1');
+                return true;
+              }
+            }
+            match.focus?.();
+            match.setAttribute?.('data-osher-pair-target','1');
+            return true;
+          }),
+          new Promise(resolve=>setTimeout(()=>resolve(false),2500))
+        ]).catch(()=>false);
+        if(focused){
+          await page.keyboard.press('Enter').catch(()=>{});
+          await sleep(1400);
+          return true;
+        }
+      }
       if(lower.includes('log in with phone number')){
         const ariaSelectors=[
           '::-p-aria([name="Log in with phone number"][role="button"])',
