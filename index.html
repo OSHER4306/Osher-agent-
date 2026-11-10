@@ -45,7 +45,7 @@ dialog{width:min(680px,calc(100% - 24px));border:1px solid #303747;border-radius
 
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const state={queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),server:localStorage.getItem('oa_server')||'',key:localStorage.getItem('oa_key')||''};
+const state={queue:JSON.parse(localStorage.getItem('oa_queue')||'[]'),server:localStorage.getItem('oa_server')||'https://osher-agent-api.onrender.com',key:localStorage.getItem('oa_key')||''};const pair=new URLSearchParams(location.search).get('key');if(pair){state.key=pair;localStorage.setItem('oa_key',pair);history.replaceState({},'',location.pathname);}
 const save=()=>localStorage.setItem('oa_queue',JSON.stringify(state.queue));
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
 function log(t){$('#log').textContent=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' — '+t+'\n'+$('#log').textContent}
@@ -63,11 +63,11 @@ $('#command').addEventListener('keydown',e=>{if(e.key==='Enter')$('#run').click(
 $('#queue').onclick=e=>{if(e.target.dataset.approve!==undefined)approve(+e.target.dataset.approve);if(e.target.dataset.reject!==undefined){state.queue.splice(+e.target.dataset.reject,1);save();render();log('הפעולה נדחתה')}};
 $$('[data-info]').forEach(b=>b.onclick=()=>info('חיבור '+b.dataset.info,'החיבור האוטומטי מתבצע דרך הרשאות Meta רשמיות בצד השרת. באייפון ניתן גם לפתוח את האפליקציה המקורית ישירות.'));
 $('#settings').onclick=()=>{$('#serverUrl').value=state.server;$('#agentKey').value=state.key;$('#settingsDialog').showModal()};
-$('#saveSettings').onclick=()=>{state.server=$('#serverUrl').value.trim();state.key=$('#agentKey').value.trim();localStorage.setItem('oa_server',state.server);localStorage.setItem('oa_key',state.key);$('#mode').textContent=state.server?'שרת מחובר':'מצב מקומי';$('#settingsDialog').close();toast('נשמר')};
+$('#saveSettings').onclick=()=>{state.server=$('#serverUrl').value.trim();state.key=$('#agentKey').value.trim();localStorage.setItem('oa_server',state.server);localStorage.setItem('oa_key',state.key);$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';$('#settingsDialog').close();toast('נשמר')};
 $('#install').onclick=()=>info('התקנה באייפון','פתח את האתר ב‑<b>Safari</b> → שיתוף → <b>הוסף למסך הבית</b>. לאחר מכן OSHER AGENT נפתח בחלון עצמאי.');
 $('#security').onclick=()=>info('אבטחה','סודות Meta אינם נשמרים בדפדפן. iOS לא מאפשר לאפליקציה אחת לשלוט שרירותית בממשק של אפליקציה אחרת; אוטומציה אמינה משתמשת ב‑APIs רשמיים, Shortcuts וקישורים מאושרים.');
 $('#clear').onclick=()=>$('#log').textContent='יומן נוקה.';$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
-$('#mode').textContent=state.server?'שרת מחובר':'מצב מקומי';render();
+$('#mode').textContent=state.server&&state.key?'שרת מחובר':'שרת מוכן';render();
 </script>
 </body></html>
