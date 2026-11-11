@@ -1,0 +1,49 @@
+diff --git a/codex-rs/core-plugins/src/marketplace_add/source.rs b/codex-rs/core-plugins/src/marketplace_add/source.rs
+--- a/codex-rs/core-plugins/src/marketplace_add/source.rs
++++ b/codex-rs/core-plugins/src/marketplace_add/source.rs
+@@
+-    let (base_source, parsed_ref) = split_source_ref(source);
++    // Local paths may legally contain '#'. Detect them before parsing Git refs.
++    // Otherwise "./marketplace#v1" is incorrectly interpreted as a Git ref.
++    if looks_like_local_path(source) {
++        if explicit_ref.is_some() {
++            return Err(MarketplaceAddError::InvalidRequest(
++                "--ref is only supported for git marketplace sources".to_string(),
++            ));
++        }
++        let path = resolve_local_source_path(source)?;
++        if path.is_file() {
++            return Err(MarketplaceAddError::InvalidRequest(
++                "local marketplace source must be a directory, not a file".to_string(),
++            ));
++        }
++        return Ok(MarketplaceSource::Local { path });
++    }
++
++    let (base_source, parsed_ref) = split_source_ref(source);
+@@
+     fn local_path_source_parses() {
+@@
+     }
++
++    #[test]
++    fn local_path_with_hash_is_not_treated_as_git_ref() {
++        let tempdir = TempDir::new().unwrap();
++        for name in ["folder#", "folder#one"] {
++            let dir = tempdir.path().join(name);
++            std::fs::create_dir(&dir).unwrap();
++            assert_eq!(
++                parse_marketplace_source(dir.to_str().unwrap(), None).unwrap(),
++                MarketplaceSource::Local { path: dir.canonicalize().unwrap() }
++            );
++        }
++    }
++
++    #[test]
++    fn local_path_with_hash_rejects_explicit_ref() {
++        let tempdir = TempDir::new().unwrap();
++        let dir = tempdir.path().join("folder#one");
++        std::fs::create_dir(&dir).unwrap();
++        let err = parse_marketplace_source(dir.to_str().unwrap(), Some("main".into())).unwrap_err();
++        assert!(err.to_string().contains("--ref is only supported"));
++    }
