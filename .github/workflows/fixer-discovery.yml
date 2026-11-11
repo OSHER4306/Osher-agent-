@@ -18,11 +18,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python automation/fixer_runner.py
+      - name: Run qualification unit tests
+        run: python -m unittest discover -s automation -p 'test_qualify.py'
+      - name: Qualify sourced opportunities
+        run: python automation/qualify_discovery.py
       - name: Commit new findings if any
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add automation/opportunities.csv
+          git add automation/opportunities.csv automation/qualified.json
           if ! git diff --cached --quiet; then
             git commit -m "Update public fixer opportunities"
             git push
