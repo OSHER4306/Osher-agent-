@@ -1,0 +1,16 @@
+company,repository,issue_url,reported_problem,proposed_first_step,verification_status,commercial_status
+OpenAI,openai/codex,https://github.com/openai/codex/issues/60896,Local marketplace path containing hash parsed as Git ref,Build local path parsing regression test,Reported only,No paid route confirmed
+OpenAI,openai/codex,https://github.com/openai/codex/issues/60894,Windows repair rollback safety concern,Review safe synthetic rollback test plan,Reported only,No paid route confirmed
+OpenAI,openai/codex,https://github.com/openai/codex/issues/60893,MCP config removal hint targets different layer,Create profile override fixture,Reported only,No paid route confirmed
+OpenAI,openai/codex,https://github.com/openai/codex/issues/60891,Windows watcher fails after directory recreation,Write isolated filesystem watcher test,Reported only,No paid route confirmed
+OpenAI,openai/codex,https://github.com/openai/codex/issues/60890,CLI feature toggles disregard override order,Test order preserving parser behavior,Reported only,No paid route confirmed
+Google,google/syzkaller,https://github.com/google/syzkaller/issues/8122,Syzbot test command temporarily disabled,Read maintainer mitigation plans before offering safe assistance,Reported only,No paid route confirmed
+Google,google/ksp,https://github.com/google/ksp/issues/3302,Incremental compilation API queries not tracked,Design incremental trace fixture,Reported only,No paid route confirmed
+Google,google/dtoolkit,https://github.com/google/dtoolkit/issues/110,FDT structure bounds validation concern,Write synthetic bounds regression test,Reported only,No paid route confirmed
+Google,google/dtoolkit,https://github.com/google/dtoolkit/issues/109,FDT property operation panic on invalid unused string,Write fuzz regression test,Reported only,No paid route confirmed
+Google,google/adk-go,https://github.com/google/adk-go/issues/2267,Memory service mutable reference aliasing,Deep copy and race regression tests,Reported only,No paid route confirmed
+Microsoft,microsoft/vscode-dotnettools,https://github.com/microsoft/vscode-dotnettools/issues/3824,SDK restore stale NETSDK1045,Create isolated version selection fixture,Reported only,No paid route confirmed
+Microsoft,microsoft/azure-linux-image-tools,https://github.com/microsoft/azure-linux-image-tools/issues/980,Package cache not persisted on host,Measure cache reuse impact and suggest safe caching,Reported only,No paid route confirmed
+Microsoft,microsoft/vscode-dotnettools,https://github.com/microsoft/vscode-dotnettools/issues/3819,Missing runtime misreported as missing SDK,Create SDK runtime detection test,Reported only,No paid route confirmed
+Microsoft,microsoft/vscode-dotnettools,https://github.com/microsoft/vscode-dotnettools/issues/3818,Duplicate and contradictory SDK guidance,Create local global.json fixture,Reported only,No paid route confirmed
+Microsoft,microsoft/vscode-dotnettools,https://github.com/microsoft/vscode-dotnettools/issues/3817,Unreadable global.json open file error,Create permissions regression fixture,Reported only,No paid route confirmed
