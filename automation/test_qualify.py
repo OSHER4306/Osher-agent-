@@ -12,4 +12,14 @@ class Tests(unittest.TestCase):
         self.assertEqual(qualify([r]),[])
     def test_missing(self):
         self.assertEqual(qualify([{'company':'Google'}]),[])
+    def test_confirmed_without_evidence_is_not_paid(self):
+        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed'}
+        self.assertFalse(qualify([r])[0]['eligible_for_paid_pitch'])
+    def test_verified_official_route_is_paid(self):
+        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_url':'https://bughunters.google.com/'}
+        self.assertTrue(qualify([r])[0]['eligible_for_paid_pitch'])
+    def test_lookalike_domain_is_rejected(self):
+        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_url':'https://google.com.evil.example/'}
+        self.assertFalse(qualify([r])[0]['eligible_for_paid_pitch'])
+
 if __name__=='__main__':unittest.main()
