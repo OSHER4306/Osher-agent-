@@ -34,7 +34,7 @@ let teamIndex=0;
 const teamQuote=document.getElementById('teamQuote'),teamSub=document.getElementById('teamSub'),teamDots=document.getElementById('teamDots');
 if(teamQuote&&teamSub&&teamDots){
 teamDots.innerHTML=teamLines.map((_,i)=>'<i'+(i===0?' class="active"':'')+'></i>').join('');
-function showTeam(i){teamIndex=(i+teamLines.length)%teamLines.length;teamQuote.textContent=teamLines[teamIndex][0];teamSub.textContent=teamLines[teamIndex][1];[teamQuote,teamSub].forEach(el=>{el.classList.remove('teamSwap');void el.offsetWidth;el.classList.add('teamSwap')});[...teamDots.children].forEach((d,n)=>d.classList.toggle('active',n===teamIndex))}
+function showTeam(i){teamIndex=(i+teamLines.length)%teamLines.length;teamQuote.textContent=teamLines[teamIndex][0];teamSub.textContent=teamLines[teamIndex][1];const portrait=document.getElementById('teamPortrait');if(portrait){portrait.src=['./giovanni-duo.svg','./giovanni-duo-gold.svg','./giovanni-duo-casual.svg','./giovanni-duo-black.svg'][teamIndex%4];portrait.classList.remove('swap');void portrait.offsetWidth;portrait.classList.add('swap');}[teamQuote,teamSub].forEach(el=>{el.classList.remove('teamSwap');void el.offsetWidth;el.classList.add('teamSwap')});[...teamDots.children].forEach((d,n)=>d.classList.toggle('active',n===teamIndex))}
 document.getElementById('teamPrev')?.addEventListener('click',()=>showTeam(teamIndex-1));
 document.getElementById('teamNext')?.addEventListener('click',()=>showTeam(teamIndex+1));
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){let t=setInterval(()=>{if(!document.hidden)showTeam(teamIndex+1)},5200);document.addEventListener('visibilitychange',()=>{});}
