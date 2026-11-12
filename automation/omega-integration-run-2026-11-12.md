@@ -1,0 +1,3 @@
+# OMEGA offline integration
+
+Added CSV lead ingestion and 3 regression tests to a local working copy. Verified 17/17 unit tests locally. Source data: 50 reported public issues in fixer-outreach/50-company-issue-opportunities-2026-11-12.csv. No external emails, API payments, or verified revenue. Local ZIP available in ChatGPT conversation, not yet merged to GitHub repository. The import requires an explicit CSV and should be reviewed before production use.
