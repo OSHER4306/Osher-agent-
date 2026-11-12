@@ -21,3 +21,21 @@ if(matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: r
 }
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const teamLines=[
+['עוד קמפיין? אולי קודם עוד לקוחות.','ביקוש חכם עדיף על רעש יקר.'],
+['קליקים זה חמוד. עסקאות זה יפה יותר.','כן, גם אנחנו מעדיפים שיחות אמיתיות על מספרים יפים.'],
+['ליד טוב לא מחפש רעש. הוא מחפש התאמה.','פחות בזבוז. יותר שיחות ששוות כסף.'],
+['אם כולם מפרסמים — תופיע בזמן הנכון.','זה פחות קסם. זה יותר דיוק.'],
+['הלקוחות לא נעלמו. הם פשוט עונים למישהו אחר.','עדיף שהם יענו לך.'],
+['שלחו הודעה. נבדוק אם הביקוש כבר מחפש אתכם.','Giovanni Social · לידים בלי תקציב מדיה']
+];
+let teamIndex=0;
+const teamQuote=document.getElementById('teamQuote'),teamSub=document.getElementById('teamSub'),teamDots=document.getElementById('teamDots');
+if(teamQuote&&teamSub&&teamDots){
+teamDots.innerHTML=teamLines.map((_,i)=>'<i'+(i===0?' class="active"':'')+'></i>').join('');
+function showTeam(i){teamIndex=(i+teamLines.length)%teamLines.length;teamQuote.textContent=teamLines[teamIndex][0];teamSub.textContent=teamLines[teamIndex][1];[teamQuote,teamSub].forEach(el=>{el.classList.remove('teamSwap');void el.offsetWidth;el.classList.add('teamSwap')});[...teamDots.children].forEach((d,n)=>d.classList.toggle('active',n===teamIndex))}
+document.getElementById('teamPrev')?.addEventListener('click',()=>showTeam(teamIndex-1));
+document.getElementById('teamNext')?.addEventListener('click',()=>showTeam(teamIndex+1));
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){let t=setInterval(()=>{if(!document.hidden)showTeam(teamIndex+1)},5200);document.addEventListener('visibilitychange',()=>{});}
+}
