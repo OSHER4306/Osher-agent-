@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python automation/fixer_runner.py
       - name: Run qualification unit tests
-        run: python -m unittest discover -s automation -p 'test_qualify.py'
+        run: python -m unittest discover -s automation -p 'test_*.py'
       - name: Qualify sourced opportunities
         run: python automation/qualify_discovery.py
       - name: Commit new findings if any
