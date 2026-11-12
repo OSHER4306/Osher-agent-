@@ -10,10 +10,14 @@ OFFICIAL_PAYMENT_DOMAINS={
 }
 
 def verified_payment_route(row):
-    """Only explicit verification + an official source permits a paid pitch."""
+    """Require official program URL, eligibility and issue-specific scope evidence."""
     if row.get('paid_route','').strip().lower() != 'confirmed':
         return False
     if str(row.get('paid_route_verified','')).strip().lower() not in ('true','yes','1'):
+        return False
+    if str(row.get('issue_in_scope','')).strip().lower() not in ('true','yes','1'):
+        return False
+    if str(row.get('eligibility_verified','')).strip().lower() not in ('true','yes','1'):
         return False
     url=row.get('paid_route_url','').strip()
     try:
