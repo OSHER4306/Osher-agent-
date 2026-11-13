@@ -10,7 +10,11 @@ OFFICIAL_PAYMENT_DOMAINS={
 }
 
 def verified_payment_route(row):
-    """Require official program URL, eligibility and issue-specific scope evidence."""
+    """Require an active paid program and verified URL, eligibility and scope."""
+    # Program status is independent of issue state: a merged security patch
+    # can have a closed issue while its reward program remains active.
+    if str(row.get('paid_route_status', '')).strip().lower() != 'active':
+        return False
     if row.get('paid_route','').strip().lower() != 'confirmed':
         return False
     if str(row.get('paid_route_verified','')).strip().lower() not in ('true','yes','1'):
