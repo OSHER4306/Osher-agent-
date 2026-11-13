@@ -33,6 +33,8 @@ def qualify(rows):
         if not all(str(row.get(k,'')).strip() for k in REQUIRED): continue
         url=row['issue_url'].strip()
         if not re.fullmatch(r'https://github\.com/[^/]+/[^/]+/issues/\d+',url): continue
+        # GitHub owner and repository names are case-insensitive.
+        url=url.lower()
         if url in seen: continue
         seen.add(url)
         status=row['source_status'].strip().lower()
