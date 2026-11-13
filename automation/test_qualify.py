@@ -16,10 +16,10 @@ class Tests(unittest.TestCase):
         r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed'}
         self.assertFalse(qualify([r])[0]['eligible_for_paid_pitch'])
     def test_verified_official_route_is_paid(self):
-        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_url':'https://bughunters.google.com/','issue_in_scope':'true','eligibility_verified':'true'}
+        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_status':'active','paid_route_url':'https://bughunters.google.com/','issue_in_scope':'true','eligibility_verified':'true'}
         self.assertTrue(qualify([r])[0]['eligible_for_paid_pitch'])
     def test_lookalike_domain_is_rejected(self):
-        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_url':'https://google.com.evil.example/','issue_in_scope':'true','eligibility_verified':'true'}
+        r={'company':'Google','issue_url':'https://github.com/google/adk-go/issues/2267','problem':'aliasing','source_status':'open','paid_route':'confirmed','paid_route_verified':'true','paid_route_status':'active','paid_route_url':'https://google.com.evil.example/','issue_in_scope':'true','eligibility_verified':'true'}
         self.assertFalse(qualify([r])[0]['eligible_for_paid_pitch'])
 
     def test_program_exists_but_issue_not_in_scope(self):
