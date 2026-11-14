@@ -1,0 +1,108 @@
+{
+  "date": "2026-11-14",
+  "run": "1616 Israel",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "count": 38,
+    "pages": 1,
+    "complete": true,
+    "sends_attempted": 0,
+    "rate_limit_probe_attempted": false,
+    "new_business_replies": 0,
+    "b2b_coordination": "Read latest B2B result at15:28 Israel; no new actionable reply or delivery failure, no duplicate drafts or sends"
+  },
+  "routes": [
+    {
+      "name": "Openbounty",
+      "source": "https://openbounty.ai/",
+      "status": "excluded: mock payments only",
+      "evidence": "Official page says no real funds move during MVP, despite apparently funded issue amounts.",
+      "ai_policy": "AI agents supported, exactly one human operator, operator review before PR reaches GitHub",
+      "blockers": [
+        "No real payments",
+        "Individual eligibility, Israel onboarding and real payout terms unverified"
+      ],
+      "action": "No account, GitHub OAuth, claim, comment or code submission; do not treat demo funded amounts as cash"
+    },
+    {
+      "name": "warpSpeed Audio Note Recording",
+      "source": "https://github.com/warpspeedopen-source/warpspeed-bounties/issues/9",
+      "programme": "https://github.com/warpspeedopen-source/warpspeed-bounties/blob/main/README.md",
+      "full_rules_source": "https://warpspeedopen.org/bounties",
+      "status": "public open $750 listing; not authorised or payment-ready for our work",
+      "scope": "React Native/TypeScript audio recording, playback, transcription, sharing and note attachment lifecycle",
+      "terms_verified": [
+        "Website signup and explicit maintainer claim confirmation required before starting work",
+        "Maximum3 submission attempts",
+        "At least90% spec match for consideration, payment only at100% completion after approval and merge",
+        "First code commit at midpoint of assigned start/expiry window",
+        "Original or properly licensed code"
+      ],
+      "blockers": [
+        "No verified signup or maintainer assignment",
+        "Full official page returned no readable lines; actual deadline and full scope unavailable",
+        "AI policy, Israel eligibility, payout rail/timing, fees and exclusivity not verified",
+        "54 comments reported; public issue being open does not establish an unclaimed payable assignment"
+      ],
+      "payment_proof_check": {
+        "source": "https://github.com/warpspeedopen-source/warpspeed-bounties/issues/173",
+        "status": "proof-of-payment question open; issue metadata says5comments but connector returned empty comment list, so no conclusion about replies or payout history"
+      },
+      "action": "No claim comment falsely asserting signup; no implementation before required maintainer confirmation"
+    },
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "status": "six displayed open cards",
+      "counts_observed": {
+        "toc": 106,
+        "sales": 94,
+        "lumen": 35,
+        "flapjax_q98": 15,
+        "flapjax_q97": 18
+      },
+      "new_task": {
+        "source": "https://taskmarket.dev/tasks/0xce38437f4cf4c83ffeaa45c55881ce7b68aa044c7a24a0f0a2a93ee0579cae85",
+        "id": "TSK-4ZMPB9HE",
+        "title": "Title",
+        "brief": "Original neo-classical song",
+        "displayed_reward": "$0.70 on Tempo; actual payout asset not independently verified",
+        "deadline": "2026-11-17T12:34:47Z",
+        "decision_by": "2026-11-24T12:34:47Z",
+        "list_submissions": 37,
+        "detail_submissions": 35,
+        "observation_note": "List/detail snapshots differ; no single exact current entry count asserted",
+        "deliverables": "Complete2-6minute song, WAV/AIFF, MP3, editable project or sources, README, originality/licensing statement, reproducible reopen/render check",
+        "blockers": [
+          "Unverified submission account and free allowance",
+          "Payment asset, task-specific IP/duplicate/AI terms and eligibility not fully verified",
+          "Very low reward with dozens of competing entries"
+        ],
+        "action": "No music generation, copied competitor assets, paid services, wallet operation or submission"
+      }
+    }
+  ],
+  "engineering": {
+    "new_code": 0,
+    "new_tests": 0,
+    "new_prs": 0,
+    "new_merges": 0,
+    "previous_internal_pr5": "https://github.com/OSHER4306/Osher-agent-/pull/5",
+    "previous_merge_not_recounted": true,
+    "live_sender_integration": false
+  },
+  "counts": {
+    "new_route_screenings": 2,
+    "new_task_briefs_reviewed": 1,
+    "fully_qualified_new_paid_opportunities": 0,
+    "new_verified_companies": 0,
+    "outreach_sent": 0,
+    "external_technical_submissions": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "limits": "No verified paid assignment suitable for authorised engineering this run. No artificial internal changes made to satisfy an activity quota. Research continued without fees; no platform/payment/identity restrictions bypassed.",
+  "next": "Keep Openbounty outside cash pipeline until official real-payment launch. warpSpeed requires verified signup, full rules, payout/AI/Israel terms and maintainer assignment before work. Continue other cash routes and warm replies; do not resend while daily cap remains reached."
+}
