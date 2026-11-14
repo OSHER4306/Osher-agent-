@@ -1,0 +1,126 @@
+{
+  "run": "2026-11-14-2313-Asia_Jerusalem",
+  "prior": "funding/route-screening-2026-11-14-2220.json",
+  "scope": "Bounded execution and paid-route research, not an exhaustive worldwide scan.",
+  "mail": {
+    "account_wide_sent_today": 38,
+    "query": "in:sent after:1794607199 before:1794693600",
+    "pages": 1,
+    "next_page_token": null,
+    "send_allowed": false,
+    "send_attempts": 0,
+    "new_positive_business_replies": 0,
+    "coordination": {
+      "automation": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed": "2026-11-14T20:34:21.575889Z",
+      "already_handled_failure": "ranin.co.il failure already labeled by B2B; no duplicate action."
+    }
+  },
+  "completed_suppression": {
+    "company": "KDLR",
+    "recipient": "info@kdlr.co.il",
+    "original_message": "1a1cc2e015dd05a9",
+    "failure_message": "1a1dbd3cbe6f76e1",
+    "Action": "failed",
+    "Status": "4.4.1",
+    "reason": "Recipient server did not accept connection requests; timeout.",
+    "qualification": "Final failure of this delivery, not proof the address is permanently nonexistent.",
+    "label_id": "Label_60",
+    "label_name": "מכירות/לא לפנות — כשל מסירה",
+    "messages_newly_labeled": 2,
+    "readback_verified": true,
+    "older_delay_labels_preserved": true,
+    "no_resend": true
+  },
+  "new_paid_route": {
+    "name": "JigJoy Black Friday AI Hackathon",
+    "sources": [
+      "https://build.jigjoy.ai/",
+      "https://build.jigjoy.ai/rules"
+    ],
+    "eligibility": "Free worldwide online entry,18+/local majority. AI development explicitly encouraged. Individual payout identity not verified.",
+    "registration_deadline_Israel": "2026-11-26T10:00:00+02:00",
+    "submission_deadline_Israel": "2026-11-28T01:00:00+02:00",
+    "event": "26–27November; substantive project work must occur during the event.",
+    "cash_USD": [
+      500,
+      300,
+      200
+    ],
+    "requirements": "Mozaik with at least2 genuinely concurrent agents, finance use case, public/synthetic data only; no real accounts or money movement. Accessible source/description/concurrency explanation; video optional.",
+    "IP_duplicates": "IP retained; nonexclusive event/gallery license. One team per person, one entry per team; latest revision judged.",
+    "payment": "Via payment-enabled Upwork account; organiser initiates within7days after4December winner announcement. Not guaranteed receipt date. Account verification and net fees unverified.",
+    "fit": "Potential synthetic invoice/payment reconciliation and independent evidence check; concept only, no contest implementation.",
+    "priority": "December potential award, not near-term November cash."
+  },
+  "prepared_draft": {
+    "draft_id": "r6875962798313593448",
+    "message_id": "1a1dbea5907d5861",
+    "to": "miodrag.todorovic@jigjoy.ai",
+    "recipient_source": "Published in official rules and homepage.",
+    "subject": "Black Friday AI Hackathon — Israel, Upwork payment and no-cost model setup",
+    "dedupe": {
+      "query": "{from:miodrag.todorovic@jigjoy.ai to:miodrag.todorovic@jigjoy.ai \"JigJoy\" \"Black Friday AI Hackathon\"}",
+      "results": 0,
+      "next_page_token": null
+    },
+    "questions": "Israel prize delivery and verification; any upfront costs/net award fees; local/free-model use with genuine Mozaik concurrency.",
+    "readback": {
+      "label": "DRAFT",
+      "recipient_verified": true,
+      "subject_verified": true,
+      "body_exact": true
+    },
+    "status": "Created unsent. No registration, contract, paid service, competition submission or organiser response."
+  },
+  "enterprise_case": {
+    "company": "Microsoft",
+    "issue": "https://github.com/microsoft/vscode/issues/347654",
+    "title": "Agents window freezes when sending with thousands of external Copilot CLI sessions",
+    "status": "open",
+    "evidence": "Reporter logs/analysis only, not independently reproduced here.",
+    "duplicate_check": {
+      "search": "repo:microsoft/vscode is:pr347654",
+      "total": 0,
+      "incomplete_results": false,
+      "comments": 0,
+      "limitation": "Reference search is not proof no overlapping patch exists."
+    },
+    "plan": "In an isolated test profile with synthetic session metadata, measure list/reconciliation calls, adapter updates and renderer responsiveness at increasing session counts. Compare targeted SessionAdded handling against full refresh. Check sibling large-session issues and all overlapping PRs before coding. Use no real sessions, credentials or paid model requests.",
+    "submission_decision": "No extra public comment duplicating existing analysis and no untested PR. Runtime/ownership of a paid fix not established.",
+    "commercial_proposal_sent": false
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open": 5,
+    "entries": {
+      "music": 49,
+      "Q98": 17,
+      "lumen": 36,
+      "toc": 112,
+      "sales": 99
+    },
+    "new_task_found": false,
+    "submissions": 0,
+    "access": "Authenticated worker and free allowance not verified.",
+    "revenue": "Token quantities and advertised amounts are not collected cash."
+  },
+  "counts": {
+    "new_unpaid_drafts": 1,
+    "messages_sent": 0,
+    "new_code_products": 0,
+    "new_tests_executed": 0,
+    "new_PRs": 0,
+    "merged_PRs": 0,
+    "external_technical_submissions": 0,
+    "bounty_or_grant_submissions": 0,
+    "registered_events": 0,
+    "new_verified_company_database_records": 0,
+    "new_paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "verified_collected_ILS_this_run": 0
+  },
+  "existing_blockers": "Apart not retried after previous automatic approval review denial. No deployment rerun, billing workaround, spend or repeated test claims.",
+  "next": "Preserve unsent organiser inquiry until fresh all-account quota, dedupe and rate-limit checks permit outreach. Verify payment route before contest commitment; preserve during-event work requirement. Warm deals and written CSP commission/eligibility remain the nearer-term commercial priority."
+}
