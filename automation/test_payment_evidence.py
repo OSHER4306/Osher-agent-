@@ -8,7 +8,7 @@ BASE={
     'problem':'memory aliasing',
     'source_status':'open',
     'paid_route':'confirmed',
-    'paid_route_status':'active',
+    'paid_route_status':'active','paid_route_deadline':'rolling',
     'paid_route_verified':'true',
     'paid_route_url':'https://bughunters.google.com/',
     'issue_in_scope':'true',
@@ -47,3 +47,4 @@ class PaymentEvidenceTests(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+

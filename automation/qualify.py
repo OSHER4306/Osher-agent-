@@ -1,4 +1,5 @@
 import csv, json, re, sys
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -9,8 +10,32 @@ OFFICIAL_PAYMENT_DOMAINS={
     'apple.com','stripe.com','hashicorp.com','vercel.com','elastic.co'
 }
 
-def verified_payment_route(row):
-    """Require an active paid program and verified URL, eligibility and scope."""
+def submission_window_open(row, now):
+    """Require 'rolling' or a future, timezone-aware ISO 8601 deadline."""
+    deadline = row.get('paid_route_deadline')
+    if not isinstance(deadline, str):
+        return False
+    deadline = deadline.strip()
+    if deadline.lower() == 'rolling':
+        return True
+    try:
+        cutoff = datetime.fromisoformat(deadline.replace('Z', '+00:00'))
+    except ValueError:
+        return False
+    return cutoff.utcoffset() is not None and now < cutoff
+
+def evaluation_time(now):
+    if now is None:
+        return datetime.now(timezone.utc)
+    if not isinstance(now, datetime) or now.utcoffset() is None:
+        raise ValueError('Evaluation time must be a timezone-aware datetime')
+    return now
+
+def verified_payment_route(row, *, now=None):
+    """Require an active program, open window, verified URL, eligibility and scope."""
+    now = evaluation_time(now)
+    if not submission_window_open(row, now):
+        return False
     # Program status is independent of issue state: a merged security patch
     # can have a closed issue while its reward program remains active.
     if str(row.get('paid_route_status', '')).strip().lower() != 'active':
@@ -31,7 +56,8 @@ def verified_payment_route(row):
     except ValueError:
         return False
 
-def qualify(rows):
+def qualify(rows, *, now=None):
+    now = evaluation_time(now)
     seen=set(); output=[]
     for row in rows:
         if not all(str(row.get(k,'')).strip() for k in REQUIRED): continue
@@ -42,7 +68,7 @@ def qualify(rows):
         if url in seen: continue
         seen.add(url)
         status=row['source_status'].strip().lower()
-        paid=verified_payment_route(row)
+        paid=verified_payment_route(row, now=now)
         score=(4 if status=='open' else 0)+(5 if status=='verified' else 0)+(6 if paid else 0)
         output.append({**row,'issue_url':url,'priority_score':score,'eligible_for_paid_pitch':paid})
     return sorted(output,key=lambda r:(-r['priority_score'],r['company'],r['issue_url']))
@@ -55,3 +81,4 @@ def main():
     print(f'Qualified {len(result)} unique issue opportunities; verified paid routes: {sum(r["eligible_for_paid_pitch"] for r in result)}')
 
 if __name__=='__main__':main()
+
