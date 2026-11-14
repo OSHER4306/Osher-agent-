@@ -1,0 +1,183 @@
+{
+  "run_id": "2026-11-15-0118-Asia_Jerusalem",
+  "verified_at_utc": "2026-11-14T23:28:00Z",
+  "status": "Research completed; no eligible external execution established",
+  "priorities_completed": [
+    "Reviewed all-account sent count, recent delivery failures, warm inbox and latest B2B result.",
+    "Rescanned Taskmarket and verified one new official AI forecasting prize programme.",
+    "Inspected official bot template and one feature request; retained blockers instead of duplicating work."
+  ],
+  "gmail": {
+    "day": "2026-11-15",
+    "timezone": "Asia/Jerusalem",
+    "query": "in:sent after:1794693599 before:1794780000",
+    "verified_account_sent_count": 0,
+    "complete_pages": 1,
+    "next_page_token": null,
+    "numeric_run_ceiling": 5,
+    "sent_this_run": 0,
+    "rate_limit_clearance_verified": false,
+    "fresh_warm_inbox_query": "in:inbox newer_than:3d (\"CSP\" OR \"Archi-Tech\" OR \"Simple Key\" OR \"Polymer\" OR \"Tamir\" OR \"Mayrav\")",
+    "warm_results": 0,
+    "metaculus_duplicate_query": "in:anywhere (Metaculus OR FutureEval)",
+    "metaculus_results": 0,
+    "b2b_run_id": "12ad38ee-8464-8322-9948-6d6dfcf48c6d",
+    "b2b_completed_at": "2026-11-14T22:32:35.792784Z",
+    "bounce_review": {
+      "recipient": "info@shalevet-l.co.il",
+      "original_message_id": "1a1cba6782e26cc0",
+      "final_message_id": "1a1dc3f939e22c50",
+      "action": "failed",
+      "status": "4.4.1",
+      "interpretation": "Final delivery failure, not proof address permanently nonexistent.",
+      "original_and_final_already_suppressed_label": "Label_125",
+      "new_label_mutations": 0,
+      "other_failure": "Dobrin already handled by B2B; no duplicate action."
+    },
+    "saved_drafts_sent": 0,
+    "notes": "Day reset does not prove rate-limit release. No test send. JigJoy draft remained unsent; no fresh recipient outreach."
+  },
+  "new_opportunity": {
+    "key": "metaculus:fall-futureeval-2026",
+    "name": "Fall 2026 FutureEval Bot Tournament",
+    "source": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
+    "state": "active official candidate; individual and payout qualification pending",
+    "advertised_prize_pool_usd": 50000,
+    "collected_usd": 0,
+    "closes_date": "2027-01-06",
+    "closing_time_and_timezone_verified": false,
+    "entry_fee_required": false,
+    "ai_allowed": true,
+    "resources": "https://www.metaculus.com/notebooks/38928/bot-tournament-resources-page/",
+    "resources_updated": "2026-11-10",
+    "operating_rules": [
+      "Human creates parent account; bot token and participation form required.",
+      "One prize-eligible primary bot; extra bots marked secondary.",
+      "API forecasts and reasoning required; no human selection, copied submissions, or tuning against open/upcoming competition outputs.",
+      "Use testing area or closed questions during development.",
+      "Organizer prohibits AI-initiated email or other communications; none sent.",
+      "Prize review can require code inspection and human interview."
+    ],
+    "eligibility": {
+      "general_rules": "Worldwide subject to restrictions; Israel not explicitly named excluded. Not a personal eligibility determination.",
+      "age_conflict": "General rules say 13+, current Terms say 16+, linked specific rules require 18 as of 2024-10-08. Historical date applicability needs human clarification before entry.",
+      "general_source": "https://www.metaculus.com/tournament-rules/",
+      "specific_source": "https://www.metaculus.com/notebooks/28751/q1-ai-forecasting-benchmark-rules/",
+      "personal_age_residency_and_prize_eligibility_verified": false
+    },
+    "payment": {
+      "method": "General rules allow cash or cash equivalent at organizer discretion; Israel cash receipt route unverified.",
+      "requirements": "Identity, eligibility, tax and delivery details may be required; recipient pays taxes and fees.",
+      "source": "https://www.metaculus.com/tournament-rules/",
+      "payment_date_verified": false
+    },
+    "ip": {
+      "source": "https://www.metaculus.com/terms-of-use/",
+      "terms_updated": "2026-09-21",
+      "summary": "Creator keeps ownership but grants broad perpetual, irrevocable, nonexclusive, transferable, sublicensable rights to submitted content. No confidentiality assurance.",
+      "accepted_new_submission_terms": false
+    },
+    "no_spend_constraints": [
+      "No funded provider key or free model credit award available; no model calls.",
+      "Donated credits are application-based, not cash income or guaranteed.",
+      "Optional AskNews free access asks LinkedIn; not verified available without it.",
+      "Existing GitHub billing blocker means Actions cannot be assumed runnable."
+    ],
+    "missing": [
+      "Human-created Metaculus account",
+      "Bot token and participation form",
+      "Personal eligibility including age-date clarification",
+      "Verified cash payout to Israel",
+      "Approved free model/search capacity"
+    ],
+    "registrations": 0,
+    "forecasts": 0,
+    "credit_applications": 0,
+    "communications": 0
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open_tasks_observed": 5,
+    "new_tasks_vs_previous_run": 0,
+    "tasks": [
+      {
+        "name": "Title music",
+        "advertised_reward": "0.70 Tempo",
+        "entries": 50,
+        "deadline_utc": "2026-11-17T12:34:47Z"
+      },
+      {
+        "name": "FlapJax Q98 first-timers",
+        "advertised_reward": "100000 FLAPJAX; displayed $1",
+        "entries": 17,
+        "deadline_utc": "2026-11-16T01:59:35Z"
+      },
+      {
+        "name": "Lumen House promotion",
+        "advertised_reward": "displayed $5",
+        "entries": 42,
+        "deadline_utc": "2026-11-19T18:53:15Z"
+      },
+      {
+        "name": "Python Markdown TOC",
+        "advertised_reward": "0.50 USDC",
+        "entries": 113,
+        "deadline_utc": "2026-11-15T06:55:07Z"
+      },
+      {
+        "name": "Sales storytelling",
+        "advertised_reward": "0.50 USDC",
+        "entries": 100,
+        "deadline_utc": "2026-11-15T06:54:38Z"
+      }
+    ],
+    "authentication_worker_address_and_free_allowance_verified": false,
+    "submissions": 0,
+    "note": "Token display valuation is not collected cash. No deposit, fee, wallet setup, paid action or submission performed."
+  },
+  "technical_candidate": {
+    "source": "https://github.com/Metaculus/metac-bot-template/issues/108",
+    "title": "Build backtest harness for parameter tuning",
+    "type": "Public feature request; not independently reproduced product defect.",
+    "state": "open",
+    "comments": 0,
+    "open_issue_list_records": 2,
+    "other_open_record": "Dependabot PR 33",
+    "timeline_events_returned": 0,
+    "duplicate_absence_proven": false,
+    "assessment": "Resolved-question replay can leak outcomes through present-day model knowledge or live research. No current-data backtest should be presented as historical forecasting skill without dated evidence and a leakage audit.",
+    "next_acceptance": "Define information cutoff and historical model/search provenance; then agree measurable evaluation scope before coding. No maintainer response, payment offer, patch or submission established.",
+    "code_files_written": 0,
+    "tests_run": 0,
+    "external_comments": 0,
+    "prs": 0
+  },
+  "preserved_blocks": {
+    "apart": "Prior action-specific automatic review rejection remains; no retry, upload, registration or submission attempted.",
+    "github_deploy": "No speculative change, rerun, charge or billing workaround.",
+    "shared_mail_control": "Existing offline timing/quota utilities are not a production account-wide lock."
+  },
+  "counters": {
+    "new_official_programmes_identified": 1,
+    "new_fully_qualified_paid_routes": 0,
+    "new_verified_company_records": 0,
+    "new_company_outreach": 0,
+    "emails_sent": 0,
+    "technical_submissions": 0,
+    "external_prs_submitted": 0,
+    "prs_merged": 0,
+    "code_fixes": 0,
+    "new_tests_executed": 0,
+    "contest_submissions": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "collected_payments": 0,
+    "collected_ils": 0,
+    "spend": 0
+  },
+  "next_actions": [
+    "Prioritize new warm replies and verified near-term paid commitments when available; maintain recipient suppression.",
+    "Metaculus requires human account/eligibility clarification; no AI organizer outreach.",
+    "Continue fresh official paid-route discovery and Taskmarket scans; no artificial code or duplicate public comments for counts."
+  ]
+}
