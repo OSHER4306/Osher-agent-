@@ -80,7 +80,7 @@
     "status": "open",
     "evidence": "Reporter logs/analysis only, not independently reproduced here.",
     "duplicate_check": {
-      "search": "repo:microsoft/vscode is:pr347654",
+      "search": "repo:microsoft/vscode is:pr 347654",
       "total": 0,
       "incomplete_results": false,
       "comments": 0,
