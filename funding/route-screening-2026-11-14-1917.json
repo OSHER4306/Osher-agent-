@@ -1,0 +1,135 @@
+{
+  "run_id": "2026-11-14-1917-Asia_Jerusalem",
+  "recorded_at": "2026-11-14T19:22:00+02:00",
+  "scope": "Bounded review of warm pipeline, shared Gmail cap, Taskmarket and new paid routes; not an exhaustive worldwide inventory.",
+  "prior_report": "funding/route-screening-2026-11-14-1820.json",
+  "completed": {
+    "gmail_cap": {
+      "query": "in:sent after:1794607199 before:1794693600",
+      "timezone": "Asia/Jerusalem",
+      "unique_sent_messages": 38,
+      "pages": 1,
+      "next_page_token": null,
+      "send_allowed": false,
+      "send_attempts": 0
+    },
+    "sales_coordination": {
+      "automation_id": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed_at": "2026-11-14T16:30:05.749070Z",
+      "new_warm_reply_search_results": 0,
+      "query": "newer_than:2d { \"CSP\" \"Archi-Tech\" \"Simple Key\" \"Polymer G\" } -in:sent -in:drafts",
+      "qualification": "Keyword search plus B2B status review; not a full mailbox audit."
+    },
+    "suppression": {
+      "new_unsuitable_recipients": 1,
+      "message_ids": [
+        "1a1d6e326070e33e",
+        "1a1daee7dd37ae04"
+      ],
+      "thread_id": "1a1d6e326070e33e",
+      "label_id": "Label_38",
+      "label_name": "מכירות/לא לפנות",
+      "reason": "Recipient replied that they do not work in the solicited moving sector. Prior outreach offered no further contact when irrelevant.",
+      "label_readback_verified": true,
+      "recipient_search": {
+        "messages": 2,
+        "next_page_token": null
+      },
+      "public_report_redaction": "Recipient address and email body omitted. Gmail labels are visible suppression, not an atomic account-wide dispatch lock."
+    }
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open_tasks": 5,
+    "observed_entries": {
+      "music": 40,
+      "Q98": 15,
+      "lumen": 35,
+      "toc_python": 107,
+      "sales_storytelling": 95
+    },
+    "change_from_prior_observation": "No new task or entry-count change observed.",
+    "qualification": "No authenticated worker/free allowance/payout account verified. Q98 is token compensation; headline dollar display is not collected cash.",
+    "submissions": 0
+  },
+  "new_paid_routes": [
+    {
+      "name": "Elgora",
+      "sources": [
+        "https://elgora.ai/bounties",
+        "https://docs.elgora.ai/docs/solver",
+        "https://docs.elgora.ai/docs/run-an-agent",
+        "https://docs.elgora.ai/docs/solver/outcomes"
+      ],
+      "observed_open_counter": 7,
+      "qualification": "Several nominally open items have all ten submission slots filled. Security item #3 advertises 36 USDC escrow, 4/10 slots, deadline 2026-11-21T23:59:00Z (2026-11-22T01:59:00+02:00). Full challenge detail, Israel eligibility and IP terms not verified.",
+      "cost": "No USDC stake/deposit required, but submission and claim use native gas unless a wallet provider sponsors it. No sponsored-gas route, authorized funded signer or wallet verified. Net winner payment is escrow less snapshotted protocol fees.",
+      "status": "Blocked under no-spend authorization; no wallet, signup, code execution, security test, claim or submission."
+    },
+    {
+      "name": "Firedancer",
+      "sources": [
+        "https://bounty.firedancer.io/terms",
+        "https://bounty.firedancer.io/"
+      ],
+      "verified": "Official terms effective 2026-10-26 advertise reward boost through November 20. Bounty eligibility requires irreversible SOL burn. Accepted awards use USDC after KYC; known/duplicate findings excluded, first complete eligible report generally prioritized. Full end-to-end local PoC on allowed target/configuration required, unit test alone insufficient.",
+      "unverified": [
+        "Exact current burn amount",
+        "Individual Israel/KYC acceptance",
+        "Any independently verified eligible vulnerability"
+      ],
+      "status": "Excluded from no-spend execution; no burn, probing, report or fee."
+    }
+  ],
+  "enterprise_case": {
+    "company": "OpenAI",
+    "repository": "openai/openai-python",
+    "issue": "https://github.com/openai/openai-python/issues/4023",
+    "state": "open",
+    "title": "Derived names for generic Pydantic models fall outside documented name constraints",
+    "evidence_status": "User-reported; not independently reproduced by this run. Two existing public comments already reproduce it and discuss collision handling.",
+    "duplicate_check": {
+      "timeline": "Only two comments returned; no linked PR found in timeline.",
+      "pr_searches": [
+        "repo:openai/openai-python is:pr generic in:title",
+        "repo:openai/openai-python is:pr name in:title"
+      ],
+      "limitation": "Name search returned 31 total, default first 30; not an exhaustive absence proof."
+    },
+    "channel_policy": {
+      "source": "https://github.com/openai/openai-python/blob/main/CONTRIBUTING.md",
+      "verified": "External reports/minimal reproductions/root-cause analysis welcomed through issues; PRs limited to repository collaborators, including docs/examples. No collaborator authorization verified."
+    },
+    "measurable_plan": "If maintainers request new evidence, pin SDK/Pydantic versions, test normal/generic/nested/long model names at Chat, Responses and function-tool helpers with mocked transport and zero API calls. Check allowed characters and <=64 length, explicit overrides, deterministic collision behavior and backward compatibility before proposing a shared naming policy.",
+    "decision": "Do not repeat the existing reproduction comment or prepare a prohibited external PR. No reward or paid engagement established.",
+    "public_comments": 0,
+    "code_changes": 0
+  },
+  "counts": {
+    "new_code_products": 0,
+    "new_tests_executed": 0,
+    "messages_sent": 0,
+    "technical_submissions": 0,
+    "new_PRs": 0,
+    "merged_PRs": 0,
+    "new_paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices_issued": 0,
+    "verified_collected_ILS": 0,
+    "new_verified_companies": 0,
+    "suppression_labels_added_to_messages": 2
+  },
+  "open_blockers": [
+    "Shared daily Gmail cap exceeded; no sends this run.",
+    "No newly qualified no-spend cash task with verified scope, payout and access.",
+    "Apart submission remains blocked by prior automatic approval review denial; no retry or alternate-route attempt.",
+    "Previously verified GitHub billing lock not repaired, rerun or paid around. No new root cause inferred."
+  ],
+  "next_action": "Advance existing warm deals through the already recorded Sunday call plan, seek written scope/commission and CSP tender eligibility evidence. Recheck mailbox and payment routes next authorized run; reset day count only from fresh complete SENT query. Do not create new duplicate outreach.",
+  "not_claimed": [
+    "Continuous execution between runs",
+    "10,000 companies reached or verified",
+    "Any new external technical contribution",
+    "Prize eligibility, contract or income"
+  ]
+}
