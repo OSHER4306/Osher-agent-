@@ -24,3 +24,16 @@ This is an unsolicited technical proposal, **not** a paid order or a bounty clai
 
 ## Honest status
 Problem sourced: yes. Reproduction: not yet. Patch: not yet. PR: not yet. Payment: none.
+
+
+## Recheck 14 November 2026 — do not duplicate
+Issue #2263 is still open. A maintainer has already posted a fake-model reproduction and linked the proposed fix:
+https://github.com/google/adk-go/issues/2263#issuecomment-6799241455
+
+Upstream PR #2264 is open and unmerged at head ffb3a527cff3ccdf56306da1ff860734264d88d4:
+https://github.com/google/adk-go/pull/2264
+Its author reports usage propagation, JSON round-trip coverage and passing race/build checks. Those are the author's test claims, not tests run by this workflow.
+
+The earlier minimal patch and test plan now overlaps that PR. Status: defer; do not implement or submit a duplicate. Revisit only for a demonstrated gap after reading the actual patch and current maintainer feedback.
+
+Local command check: `go version` exited 1 with “Go: Unknown option: version”; no compatible Go compiler was verified. No Google ADK tests, live model calls or independent reproduction were completed here. No source fix, technical comment, PR, bounty eligibility or income is claimed.
