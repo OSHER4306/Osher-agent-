@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-14",
+  "run": "1820 Israel",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "count": 38,
+    "pages": 1,
+    "complete": true,
+    "sends_attempted": 0,
+    "rate_limit_probe": false,
+    "new_warm_B2B_reply": 0,
+    "b2b_coordination": "Read17:31 Israel B2B result; XPlace217749 already tracked there. No duplicate proposal, draft or outreach."
+  },
+  "completed": {
+    "type": "final delivery failure suppression",
+    "original_id": "1a1cb0e8a548df45",
+    "notice_id": "1a1dac0bdb13002f",
+    "affected_messages": 2,
+    "label_id": "Label_60",
+    "label_readback_verified": true,
+    "previous_state": "Original message had delay hold Label_93",
+    "classification": "DSN Action failed with Status4.4.1 recipient connection timeout. Final failure of this delivery attempt, not proof that address is permanently invalid.",
+    "resend": false,
+    "address_guessed_or_corrected": false,
+    "effect": "Visible message labels; no atomic sender enforcement claimed"
+  },
+  "routes": [
+    {
+      "name": "Repovive SWE Round1",
+      "source": "https://codeforces.com/top?attempt=1&locale=en",
+      "official_registration": "https://repovive.com/contests/swe1",
+      "official_rules": "https://repovive.com/contests/swe1/rules",
+      "status": "excluded from AI-assisted execution",
+      "start": "2026-11-14T14:35:00Z",
+      "end": "2026-11-14T17:35:00Z",
+      "organizer_prize_pool_usd": 750,
+      "scope": "Live debugging of4Python projects, public/hidden tests,3hours",
+      "restriction": "Organizer announcement strictly prohibits external AI tools including ChatGPT, Copilot and Claude; only their built-in restricted agent allowed",
+      "blockers": [
+        "External AI prohibited",
+        "Registration page inaccessible in web reader",
+        "Individual Israel eligibility, payout, tax and exclusivity terms unverified"
+      ],
+      "action": "No registration, problem access, code generation or submission for contest; prize pool not counted as income"
+    },
+    {
+      "name": "Build Your First AI App",
+      "source": "https://build-your-first-ai-app.devpost.com/",
+      "status": "excluded from cash queue",
+      "deadline": "2026-11-27T22:00:00Z",
+      "reward": "1non-cash prize",
+      "eligibility": "Students only, majority age, companies/professional organizations excluded",
+      "action": "No registration or submission; student status not verified"
+    },
+    {
+      "name": "EVOLVE8090",
+      "source": "https://evolve-8090.devpost.com/",
+      "status": "unqualified",
+      "search_observation": "Organizer-hosted indexed page shows4non-cash prizes and14Nov15:15PST deadline",
+      "blockers": [
+        "Direct page not accessible via web reader",
+        "No cash award verified"
+      ],
+      "action": "No submission"
+    },
+    {
+      "name": "Topcoder",
+      "source": "https://help.topcoder.com/hc/en-us/articles/24956098483355-What-are-Development-Challenges",
+      "status": "general development format verified, no current paid assignment verified",
+      "scope": "F2F quick fixes, code and ideation challenges described by official support",
+      "blockers": [
+        "No specific live brief, deadline, AI rules, Israel eligibility or individual payout terms verified"
+      ],
+      "action": "No account, registration or submission"
+    },
+    {
+      "name": "XPlace217749",
+      "source": "https://www.xplace.com/job/217749",
+      "status": "existing B2B-tracked candidate, not a new lead",
+      "need": "Webinar funnel and performance marketing management",
+      "budget": "ILS3000 reported by platform notification/B2B review; not independently verified on accessible job page",
+      "blockers": [
+        "Job page inaccessible in web reader",
+        "Submission fees/free allowance and actual account/assignment terms unverified",
+        "Performance marketing experience and deliverable fit not established"
+      ],
+      "action": "No duplicate proposal, message or application; no assumed client acceptance"
+    },
+    {
+      "name": "Frantic",
+      "source": "https://gofrantic.com/",
+      "status": "dynamic board not reliably rendered; no new verified payable task",
+      "observation": "Page shows loading/empty placeholders; not used as proof of zero live bounties or zero payouts",
+      "action": "No enlistment, deposit, extension installation or claim"
+    },
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "status": "five displayed open cards on complete retrieved page",
+      "observed_submissions": {
+        "music": 40,
+        "flapjax_q98": 15,
+        "lumen": 35,
+        "toc": 107,
+        "sales": 95
+      },
+      "deadlines": {
+        "music": "2026-11-17T12:34:47Z",
+        "flapjax_q98": "2026-11-16T01:59:35Z",
+        "lumen": "2026-11-19T18:53:15Z",
+        "toc": "2026-11-15T06:55:07Z",
+        "sales": "2026-11-15T06:54:38Z"
+      },
+      "action": "No wallet, deposit or submission; existing eligibility/free-allowance/payment-readiness blockers retained. Token rewards not counted as cash"
+    }
+  ],
+  "counts": {
+    "new_code_files": 0,
+    "new_tests": 0,
+    "new_prs": 0,
+    "new_merges": 0,
+    "external_technical_submissions": 0,
+    "fully_qualified_new_paid_opportunities": 0,
+    "new_verified_companies": 0,
+    "outreach_sent": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next": "Continue research and warm-reply handling without sends while shared cap reached. Use only challenges explicitly permitting our assistance; obtain verified scope, payment and application prerequisites before engineering. Do not duplicate B2B handling of XPlace217749."
+}
