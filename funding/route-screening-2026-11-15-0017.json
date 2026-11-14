@@ -1,0 +1,119 @@
+{
+  "run": "2026-11-15-0017-Asia_Jerusalem",
+  "prior": "funding/route-screening-2026-11-14-2313.json",
+  "scope": "Bounded pipeline, paid-route and technical diagnostic execution, not exhaustive worldwide coverage.",
+  "mail": {
+    "query": "in:sent after:1794693599 before:1794780000",
+    "timezone": "Asia/Jerusalem",
+    "unique_sent_today": 0,
+    "complete_pages": 1,
+    "next_page_token": null,
+    "numerical_per_run_ceiling": 5,
+    "sends_attempted": 0,
+    "rate_limit": "Calendar rollover is not evidence of rate-limit release; no probe sent.",
+    "existing_draft": {
+      "draft_id": "r6875962798313593448",
+      "message_id": "1a1dbea5907d5861",
+      "recipient": "miodrag.todorovic@jigjoy.ai",
+      "recipient_source": "Official JigJoy rules",
+      "fresh_recipient_search_results": 1,
+      "only_result_label": "DRAFT",
+      "readback_label": "DRAFT",
+      "new_draft_created": false,
+      "sent": false
+    },
+    "new_positive_business_reply": 0,
+    "coordination": {
+      "automation": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed": "2026-11-14T21:26:38.895123Z",
+      "note": "KDLR/solarco/ranin delivery suppression already handled; no duplicate labeling or resend."
+    }
+  },
+  "technical_diagnostic": {
+    "company": "Hugging Face",
+    "issue": "https://github.com/huggingface/lerobot/issues/5193",
+    "actual_title": "[Windows] Unstable Concurrent Capture from Two USB 2.0 UVC Cameras (One Camera Drops to ~1 FPS)",
+    "source_correction": "Indexed search title incorrectly described a replay buffer issue at this number. Fresh official API body is the camera report; no replay-buffer diagnosis made.",
+    "evidence": "User-reported camera symptoms only; no independent Windows/hardware reproduction.",
+    "sources": [
+      "https://www.usb.org/node/214",
+      "https://learn.microsoft.com/en-us/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering",
+      "https://github.com/huggingface/lerobot/blob/main/AI_POLICY.md",
+      "https://github.com/huggingface/lerobot/blob/main/CONTRIBUTING.md"
+    ],
+    "calculation": {
+      "assumptions": "Both reported dimensions at30FPS, if actual uncompressed on-wire pixel formats.",
+      "YUY2_bpp": 16,
+      "NV12_bpp": 12,
+      "YUY2_sum_bits_s": 2764800000,
+      "NV12_sum_bits_s": 2073600000,
+      "nominal_USB2_bits_s": 480000000,
+      "checks": "Successful Python execution with integer/fraction consistency and fixed expected-value assertions. Independent agent reviewed arithmetic and transport caveat.",
+      "not_proven": "Reported output FourCC can differ from USB wire encoding. No root cause, usable payload capacity, successful camera configuration or fix established."
+    },
+    "artifact": "funding/diagnostics/camera_payload_5193.py",
+    "artifact_commit": "bb2d137db91d9e7101055d91d83e2f805e44b77c",
+    "proposed_controls": "Capture negotiated width/height/frame interval, returned dimensions and actual deliveredFPS; compare supported low modes on shared vs genuinely separate controllers. No real capture run.",
+    "duplicate_checks": {
+      "issue_comments_before": 0,
+      "PR_reference_search": "repo:huggingface/lerobot is:pr 5193",
+      "PR_reference_matches": 0,
+      "incomplete_results": false,
+      "limitation": "Reference search is not a complete proof no overlapping patch exists."
+    },
+    "publication": {
+      "attempts": 1,
+      "posted": 0,
+      "result": "403 Resource not accessible by integration",
+      "endpoint_family": "GitHub issue comments",
+      "readback_issue_comments": 0,
+      "missing": "Connected GitHub integration lacks write access to this upstream issue thread.",
+      "no_retry_or_alternative_auth": true
+    },
+    "draft_comment": "AI-assisted diagnostic note: I have not reproduced the Windows/hardware failure.\n\nA useful consistency check before changing LeRobot is the actual USB transport mode. **If the listed dimensions, 30 FPS and YUY2/NV12 are the actual uncompressed on-wire modes**, `width × height × FPS × bits_per_pixel` gives:\n\n| Format | 2560×1440 at 30 FPS | 1920×1080 at 30 FPS | Combined |\n|---|---:|---:|---:|\n| YUY2 (16 bpp) | 1.769472 Gbit/s | 0.995328 Gbit/s | 2.7648 Gbit/s |\n| NV12 (12 bpp) | 1.327104 Gbit/s | 0.746496 Gbit/s | 2.0736 Gbit/s |\n\n[Microsoft documents those pixel depths](https://learn.microsoft.com/en-us/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering); [USB-IF specifies 480 Mbit/s for USB 2.0 High-Speed](https://www.usb.org/node/214), before overhead. Even either single stream would exceed that nominal rate. Thus the reported solo success needs reconciling with the actual negotiated mode; this is **not proof that bandwidth caused the concurrent failure**. A reported pixel format may describe decoded output rather than USB wire encoding.\n\nCould you capture the negotiated width/height/frame interval, returned frame dimensions and measured delivered FPS for each stream, plus USB speed/controller topology? Comparing the lowest common advertised modes on the shared path versus genuinely separate controllers would help distinguish transport negotiation/resource limits from a LeRobot-specific problem. Your standalone OpenCV/FFmpeg observations already make that distinction relevant.\n\nThe arithmetic above was checked locally using integer and fractional calculations; no camera benchmark or fix is claimed.",
+    "commercial_pitch": false,
+    "paid_engagement": false
+  },
+  "new_paid_task_screen": {
+    "source": "https://github.com/arakoodev/EdgeChains/issues/290",
+    "task": "JavaScript AWS Comprehend PII redactor",
+    "status": "Issue open; existing open PR801 claims same issue.",
+    "existing_claim": "https://github.com/arakoodev/EdgeChains/pull/801",
+    "bounty_terms_source": "https://github.com/arakoodev/EdgeChains/issues/290#issuecomment-1837423740",
+    "qualification": "Old bot comment lists50/25USD and demo requirement; not proof of current funded reward or Israel/payment eligibility. Existing competing claims not validated as working fixes. No duplicate implementation, AWS call, assignment or claim."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open": 5,
+    "entries": {
+      "music": 50,
+      "Q98": 17,
+      "lumen": 41,
+      "toc": 113,
+      "sales": 100
+    },
+    "new_task_found": false,
+    "submissions": 0,
+    "access": "Authenticated worker/free allowance still unverified; quantities/advertised reward not collected income."
+  },
+  "counts": {
+    "new_diagnostic_scripts": 1,
+    "diagnostic_execution_succeeded": true,
+    "new_bug_fixes": 0,
+    "unit_test_methods_run": 0,
+    "external_technical_comment_attempts": 1,
+    "external_technical_comments_posted": 0,
+    "new_PRs": 0,
+    "merged_PRs": 0,
+    "outreach_sent": 0,
+    "new_mail_drafts": 0,
+    "technical_comment_drafts": 1,
+    "bounty_or_grant_submissions": 0,
+    "contracts": 0,
+    "invoices": 0,
+    "collected_ILS_this_run": 0,
+    "new_verified_company_records": 0
+  },
+  "existing_blocks": "No Apart retry after previous automatic approval review denial; no billing workaround or speculative workflow rerun.",
+  "next": "Technical comment is ready for a permitted upstream channel; do not claim it was submitted. Keep JigJoy inquiry unsent pending send preflight. Existing warm calls and written CSP commission/eligibility remain nearer-term commercial priority."
+}
