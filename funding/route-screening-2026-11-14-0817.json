@@ -1,0 +1,72 @@
+{
+  "verified_at": "2026-11-14T06:21:00Z",
+  "kind": "public_paid_route_screening",
+  "scope": "New route checks only; not an exhaustive global inventory",
+  "routes": [
+    {
+      "id": "stride-bounties",
+      "source": "https://doc.stride3d.net/en/contributors/engine/bug-bounties.html",
+      "decision": "excluded_for_autonomous_ai",
+      "reason": "Current official rules disallow bots, AI agents and heavily AI-assisted users claiming bounties.",
+      "payment": "60% after merge, 40% at next official release, USD through fiscal host; eligibility not established."
+    },
+    {
+      "id": "opire-rodrigompy-bugb-1",
+      "listing": "https://app.opire.dev/issues/01KSXXX60RR76RSSXZXD0F4AGF",
+      "source": "https://github.com/rodrigompy/bugb/issues/1",
+      "repository": "https://github.com/rodrigompy/bugb",
+      "decision": "rejected_closed_archived",
+      "advertised_usd": 100,
+      "verified_payable_usd": null,
+      "reason": "Listing says Open, but GitHub issue closed 2026-05-31T02:34:38Z, repository archived, no task body. Never treat listing as actionable."
+    },
+    {
+      "id": "opire-trovu-329",
+      "listing": "https://app.opire.dev/issues/01HTN11YX5NYSS7GGB3SHNCJSS",
+      "source": "https://github.com/trovu/trovu/issues/329",
+      "decision": "no_verified_paid_route_and_human_submission_required",
+      "available_rewards_usd": 0,
+      "reason": "Current detail page reports zero rewards. Maintainer requires genuine Android video and a human-written comment. Do not claim to be human. Not independently reproduced.",
+      "duplicates": [
+        "https://github.com/trovu/trovu/pull/722"
+      ],
+      "reproduction_plan": "Only if a paid route and human review become available: reproduce installed Android PWA on Chrome and Brave, record external address bar and tab switcher after query g. Compare unchanged baseline and candidate on real devices. Do not treat a headless test as Android verification."
+    },
+    {
+      "id": "opire-rencfs-3",
+      "source": "https://github.com/radumarias/rencfs/issues/3",
+      "duplicates": "https://github.com/radumarias/rencfs/pulls",
+      "decision": "deferred_duplicate_saturated_unverified_payment",
+      "reason": "Fresh GitHub API shows dozens of open Windows-research and implementation PRs. No novel tested contribution established. Do not submit another research-note PR. No Windows runtime validation performed."
+    }
+  ],
+  "payment_policy": {
+    "source": "https://docs.opire.dev/rewards/pricing",
+    "status": "manual_creator_payment_after_review",
+    "note": "No automatic payment from a claim. Official terms page and current pricing documentation describe differing payment mechanisms; resolve with creator before relying on collection, eligibility or costs."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "visible_cards": 6,
+    "toc_entries": 99,
+    "sales_data_entries": 88,
+    "submitted": 0,
+    "note": "Task-specific free allowance, account authorization, payout and legal readiness remain unverified. Token face amounts are not collected cash."
+  },
+  "metrics": {
+    "commercial_sent": 0,
+    "technical_submissions": 0,
+    "new_code_artifacts": 0,
+    "new_prs": 0,
+    "merged_prs": 0,
+    "contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0,
+    "new_verified_companies": 0
+  },
+  "limitations": [
+    "Screening data only; not wired to production filters.",
+    "No new accounts, claims, deposits, payments, third-party tests or submissions."
+  ],
+  "next": "Prioritize fresh warm replies and eligible paid work; do not revisit these excluded routes without a substantive official change."
+}
