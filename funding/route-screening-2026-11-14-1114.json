@@ -1,0 +1,71 @@
+{
+  "verified_at": "2026-11-14 09:17:01 UTC",
+  "completed": [
+    {
+      "action": "account_wide_sent_audit",
+      "date": "2026-11-14",
+      "timezone": "Asia/Jerusalem",
+      "query": "in:sent after:1794607200 before:1794693600",
+      "start_local": "2026-11-14T00:00:00+02:00",
+      "end_exclusive_local": "2026-11-15T00:00:00+02:00",
+      "messages": 38,
+      "pages": 1,
+      "pagination_complete": true,
+      "unique_ids": 38,
+      "shared_daily_cap": 20,
+      "remaining_budget": 0,
+      "decision": "No SEND or SEND_DRAFT this run. Count includes all account agents, not only this task. It is a point-in-time SENT search, not an atomic lock or proof of delivery."
+    },
+    {
+      "action": "sales_coordination",
+      "result": "Read latest B2B result and fresh inbox. A new content-publishing reply was visible in a separate existing thread; it is not evidence of a paid Fixer deal. No duplicate outreach or send-limit probe. Existing final delivery-failure suppression labels still present."
+    }
+  ],
+  "new_funding_check": {
+    "name": "Mozilla Foundation Human-Scale AI Incubator",
+    "sources": [
+      "https://www.mozillafoundation.org/en/what-we-do/grantmaking/incubator/human-scale-ai/call-for-proposals/",
+      "https://www.mozillafoundation.org/documents/501/Mozilla_Foundation_Grant_Eligibility_Guidelines_tNhKrgM.pdf"
+    ],
+    "status": "active_call_not_application_ready",
+    "deadline": "2026-11-20 23:59 PST / 2026-11-21 09:59 Israel",
+    "scope": "Working, deployed technology with early community fit; small, intentional, tailored AI. Ideas/prototypes without meaningful use and generic frontier-model wrappers are not a fit.",
+    "funding": "Selected projects receive $300,000 and support beginning April 2027; a further $200,000 is conditional. Not near-term cash.",
+    "ai_policy": "Supportive brainstorming, translation and clarification allowed; full generated responses may not replace the applicant's own work and voice. No application text generated or submitted.",
+    "missing": "A qualifying deployed project with genuine use/community evidence, applicant-written project account, budget and legal/payment eligibility. No current user project was verified to meet these conditions.",
+    "payment_eligibility": "Individuals and companies can be considered for genuinely charitable work, not profit maximization. Must legally receive USD grant funds by check/ACH/wire and enter an agreement; banking/FX fees may apply. Individual Israel eligibility, contractual IP/exclusivity and duplicate-funding provisions not verified. No applicant fee or LinkedIn requirement observed; not a guarantee.",
+    "submissions": 0
+  },
+  "other_checks": [
+    {
+      "name": "OTF Rapid Response vendor RFP",
+      "official_document": "https://public.opentech.fund/documents/Rapid_Response_Fund_RFP.pdf",
+      "status": "not_qualified",
+      "result": "Official PDF returned 403 in the reader. Third-party summaries conflict on geographic eligibility; no authoritative 2026 procurement eligibility verified. Did not bypass access, submit, email, or fabricate references. Emergency-aid applications are separate from vendor procurement and do not justify a business-income application."
+    },
+    {
+      "name": "Taskmarket sales-data task",
+      "source": "https://taskmarket.dev/tasks/0x2d6c97c911c6dd928ced4a6cc1754ffff99dbd6de1cdba3132ba3e64b375f6ce",
+      "task_code": "TSK-ADQ03YTW",
+      "observed_submissions": 91,
+      "reward": "0.5 USDC, single best entry; earliest qualifying entry breaks ties",
+      "scope": "Exactly three numbered-data findings, reproducible calculation and honest caveat, text-only, no outside data.",
+      "decision": "Do not invest in a new submission while account/free-allowance/payout readiness remains unverified and earliest-entry priority is unfavorable. No competing submissions opened or copied; no work submitted."
+    }
+  ],
+  "metrics": {
+    "commercial_sent": 0,
+    "technical_submissions": 0,
+    "prs_submitted": 0,
+    "prs_merged": 0,
+    "grant_contest_submissions": 0,
+    "new_code_artifacts": 0,
+    "tests_run": 0,
+    "new_verified_companies": 0,
+    "contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "limitations": "Completed account audit and source checks. No justified code change or paid submission was available from the verified facts; no income or exhaustive worldwide scan claimed.",
+  "next": "Continue read-only response handling today under the exhausted shared cap. Prioritize eligible paid tasks and advanced existing deals; respect 72-hour and two-business-day follow-up limits, refusals and failures. New spend, legal commitments, fabricated project evidence and full AI-generated Mozilla responses are not authorized."
+}
