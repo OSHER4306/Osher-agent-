@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-14",
+  "run": "1713 Israel",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "unique_accountwide_sent": 38,
+    "pages": 1,
+    "complete": true,
+    "sending_stopped": true,
+    "sends_attempted": 0,
+    "new_business_reply_requiring_response": 0,
+    "b2b_coordination": "Latest B2B result read at16:26 Israel; existing warm threads/drafts not duplicated",
+    "new_marketing_invitation": "Received an invitation to list an existing digital product and seek free launch support; not a paid engagement or revenue; separate workflow, no reply, signup or duplicate submission"
+  },
+  "completed": {
+    "action": "temporary delivery-delay hold",
+    "affected_messages": 2,
+    "label_id": "Label_95",
+    "original_message_id": "1a1d4ecdd3abbc79",
+    "delay_notice_id": "1a1da7922199393e",
+    "readback_verified": true,
+    "classification": "Action delayed /4.4.1 recipient-server timeout; not final delivery failure",
+    "effect": "Visible no-resend label only; Gmail automatic retries not cancelled, no shared atomic lock created",
+    "manual_retry": false
+  },
+  "engineering_blocker": {
+    "run_url": "https://github.com/OSHER4306/Osher-agent-/actions/runs/43608438093",
+    "commit": "3163ebad534e7ab4747750ceb5b4411ef9b0d0e9",
+    "job_id": 132487991175,
+    "conclusion": "failure",
+    "recorded_steps": 0,
+    "root_cause": "not independently confirmed for this run",
+    "inspection_limit": "API job metadata available, public run page failed in web reader; no new annotation text obtained",
+    "action": "No speculative code/workflow edit, rerun, payment or billing workaround. Previous Deploy billing blocker remains unresolved."
+  },
+  "routes": [
+    {
+      "name": "Sequoia Open Source Fellowship",
+      "source": "https://sequoiacap.com/oss",
+      "status": "official page describes rolling applications; live form submission path unverified",
+      "scope": "Existing OSS projects with real-world adoption; individuals need not form a company",
+      "geography": "Location-agnostic, no travel required per FAQ; individual Israel payout eligibility still unverified",
+      "funding": "Reasonable living costs for6-12months; no fixed applicant amount; no equity; creator retains code and roadmap control",
+      "deadline": "No fixed cutoff stated; official expectation2-3fellows/year",
+      "blockers": [
+        "No verified real-world adoption of applicant's proposed OSS project",
+        "Accurate applicant narrative/roadmap/budget missing",
+        "Embedded application fields not exposed in web reader; LinkedIn/account/AI policy not verified",
+        "Payment rail, individual onboarding, exclusivity/duplicate-funding terms not verified"
+      ],
+      "action": "No application, fabricated users, CV or adoption claims"
+    },
+    {
+      "name": "IES PCIe conformance claimed $600 bounty",
+      "source": "https://github.com/IES-BoilerRoom/pcie-tlp-credit-flow-gate/issues/2",
+      "contents_source": "https://api.github.com/repos/IES-BoilerRoom/pcie-tlp-credit-flow-gate/contents",
+      "metadata_source": "https://api.github.com/repos/IES-BoilerRoom/pcie-tlp-credit-flow-gate",
+      "status": "excluded pending real source code, funded terms and valid submission route",
+      "scope_claimed": "Calibrate3constants in dl_layer/fc_credit_ledger.py against64specification shards",
+      "primary_checks": {
+        "issue_open": true,
+        "comments": 0,
+        "repo_size": 0,
+        "repo_created_at": "2026-11-14T09:10:41Z",
+        "license": null,
+        "contents_error": "This repository is empty.",
+        "escrow_evidence": "Only platform homepages linked; no specific funded listing, transaction or escrow contract",
+        "submission_notice": "Manual human PRs not reviewed on this mirror"
+      },
+      "blockers": [
+        "Requested code and validation fixtures absent",
+        "No independently verified funding",
+        "Deadline, AI/operator submission route, Israel eligibility, payout, exclusivity and duplicates unverified"
+      ],
+      "caution": "Incomplete/unverified listing; these facts do not prove fraud",
+      "action": "No code executed, wallet connection, signature, account, claim, comment or submission"
+    },
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "status": "six displayed cards, including one explicitly expired",
+      "observed_counts": {
+        "music": 39,
+        "flapjax_q98": 15,
+        "lumen": 35,
+        "toc": 106,
+        "sales": 95,
+        "flapjax_q97": 18
+      },
+      "expired": {
+        "task": "FLAPJAX Q97",
+        "deadline": "2026-11-14T14:24:44Z"
+      },
+      "action": "No submission to expired task; existing account/free-allowance/payment-readiness blockers remain; token display amounts not counted as cash"
+    }
+  ],
+  "counts": {
+    "new_verified_companies": 0,
+    "fully_qualified_new_paid_opportunities": 0,
+    "new_drafts": 0,
+    "sent_messages": 0,
+    "new_code": 0,
+    "new_tests": 0,
+    "new_prs": 0,
+    "new_merges": 0,
+    "external_technical_submissions": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next": "Continue paid-route qualification and warm-reply handling under cap. Do not work on claimed escrow tasks without accessible source/tests and verifiable payment terms. Pursue Sequoia only with truthful adoption evidence, applicant narrative and payment/form terms."
+}
