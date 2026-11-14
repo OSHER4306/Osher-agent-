@@ -8,6 +8,15 @@ also limits the remaining review budget when other agents have sent messages.
 `review_budget` is a quota calculation, not send permission. No sender imports
 this module yet. No email, draft, API request, reservation, or lock is created.
 
+Run-wide enforcement requires one retained `RunQuota` instance. Its `observe`
+method latches a stop after any valid account-wide count reaches 20. Later
+counts of 19 or 14 cannot reopen that run. Before the cap is reached, decreasing
+intermediate counts, decreasing run-send counters, missing newly reported run
+sends, and backwards observation times are rejected. The pure `review_budget`
+function has no history and must not be used by itself as a run-level guard.
+This checkpoint is in memory only; recreating it loses history. The dispatcher
+must retain it under its shared lock and persist it if a run can resume later.
+
 The caller must hold a shared account lock while fetching all pages, checking
 SENT/INBOX/DRAFT for the recipient, applying failed/refused suppression, the
 72-hour outreach interval, two-business-day follow-up interval, and rate-limit
@@ -20,6 +29,8 @@ continuous page-token chain ending without a continuation, and unique message
 IDs. They expire after 30 seconds (a conservative implementation choice).
 Account mismatches, decreasing counts, missing own sends, date rollovers,
 future timestamps, and incomplete evidence fail closed with ValueError.
+Freshness and chronological comparisons normalize to UTC so the repeated
+autumn hour cannot make an old or future snapshot appear current.
 
 Epoch bounds use Jerusalem local midnight independently for both dates, so DST
 days can be 23 or 25 hours. The query starts one second early to conservatively
@@ -73,3 +84,30 @@ Next: review and integrate with a genuinely shared dispatcher only after its
 locking, recipient history and rate-limit evidence can be verified. Existing
 GitHub billing blocker is not repaired or bypassed by this change. Continue
 qualified paid-route research and existing warm deals without duplicate sends.
+
+## Independent review and correction — 13:16 Israel run
+
+Review of baseline commit f2bc50c3f1b337c5fcb981ceaf8ce48cd51361f0
+reproduced two defects before integration:
+
+1. Same-run observations 20, 19, 14 could return budgets 0, 1, 5. The pure
+   calculation forgot the intermediate count. Retained `RunQuota` now latches
+   a stop for the whole run and rejects decreasing intermediate observations
+   and own-send counts. The pure function remains a calculation only.
+2. On 25 October 2026, captured 01:30 +03:00 (fold=0) and now 01:30 +02:00
+   (fold=1) were 3,600 seconds apart, but Python wall-time subtraction returned
+   zero. UTC normalization now rejects that stale snapshot, a future snapshot
+   across the repeated hour, and a future run start. A genuinely fresh snapshot
+   crossing the repeated hour still passes.
+
+Seven initial regressions against the old code yielded 3 failed assertions and
+4 missing-wrapper import errors (20 total methods). Two further controls were
+added. Final verification: all 22 methods pass, including a separate root-agent
+rerun in 0.055 seconds. No sender integration, shared production lock, persisted
+run checkpoint, deployment or GitHub Actions pass is established. A dispatcher
+must preserve the wrapper state rather than recreating it after a stop.
+
+No new PR was opened in this run; the existing internal draft PR #5 is updated.
+External technical submissions, merges, sends, proposals, contracts, invoices and
+verified collected ILS remain zero. Fresh route screening is recorded separately
+in funding/route-screening-2026-11-14-1316.json.

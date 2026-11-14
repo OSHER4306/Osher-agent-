@@ -1,0 +1,147 @@
+{
+  "run_date": "2026-11-14",
+  "run_label": "1316 Israel",
+  "status": "verified-research-and-tested-internal-fixes",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "account_wide_sent_count": 38,
+    "pages": 1,
+    "complete": true,
+    "sends_attempted": 0,
+    "new_business_replies": 0,
+    "new_delivery_failures_observed": 0,
+    "b2b_coordination": "Read latest B2B recorded result at 12:31 Israel; no new reply, existing CSP drafts not duplicated. Only new message in recent search was a Firecrawl promotion."
+  },
+  "routes": [
+    {
+      "name": "Amazon Research Awards Fall 2026",
+      "source": "https://www.amazon.science/research-awards/call-for-proposals",
+      "status": "closed",
+      "deadline": "2026-11-11",
+      "action": "No application"
+    },
+    {
+      "name": "Anthropic wellbeing grants",
+      "source": "https://www.anthropic.com/news/wellbeing-research-grants",
+      "status": "closed",
+      "deadline": "2026-09-21",
+      "action": "No application; historical $5m total is not currently open applicant funding"
+    },
+    {
+      "name": "Anthropic third-party evaluation initiative",
+      "source": "https://www.anthropic.com/news/a-new-initiative-for-developing-third-party-model-evaluations",
+      "status": "current intake unverified",
+      "blockers": [
+        "2024 announcement not proof of 2026 intake",
+        "Application-form redirect inaccessible in web reader",
+        "Israel eligibility, payment, AI-authorship, IP and duplicate-funding terms unverified"
+      ],
+      "action": "No application or email"
+    },
+    {
+      "name": "AISI evaluation bounty",
+      "source": "https://www.aisi.gov.uk/blog/evals-bounty",
+      "current_program_source": "https://www.aisi.gov.uk/grants",
+      "status": "historical; no verified current intake",
+      "blockers": [
+        "Current AISI grants page says programmes not accepting applications",
+        "Historical bounty portal still has Get Started; not treated as reopening"
+      ],
+      "action": "No account/application"
+    },
+    {
+      "name": "CLR Fund",
+      "source": "https://longtermrisk.org/grantmaking/",
+      "application": "https://docs.google.com/forms/d/e/1FAIpQLScFI4LTTVi5XBphdoMrVI1kAAE7Dei0FLebxDq7dx52r7XgKg/viewform",
+      "status": "rolling intake verified; applicant readiness unverified",
+      "terms_verified": {
+        "applicants": "Individuals, charitable organizations, academic institutions",
+        "deadline": "rolling",
+        "response_target": "within 4 weeks",
+        "scope": "Research reducing s-risks, especially from advanced AI",
+        "linkedin": "CV alternative explicitly accepted",
+        "duplicate_funding": "Application asks whether proposal has been submitted for other funding",
+        "publication": "Application asks planned publication and separate consent choices"
+      },
+      "blockers": [
+        "No verified project fit, personal research commitment or requested budget",
+        "Accurate applicant CV needed; no invented credentials",
+        "Israel eligibility, payment rail, AI-authorship, exclusivity and final grant contract terms unverified"
+      ],
+      "action": "No submission; not counted as fully qualified opportunity"
+    },
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "status": "five displayed tasks",
+      "displayed_counts": {
+        "toc": 104,
+        "sales": 92,
+        "lumen": 34,
+        "flapjax_q98": 13,
+        "flapjax_q97": 18
+      },
+      "blockers": [
+        "Account and free submission allowance unverified",
+        "High competition for $0.50 tasks",
+        "FLAPJAX token rewards not collected cash",
+        "Marketing task requires legitimate external promotion context"
+      ],
+      "action": "No submission"
+    },
+    {
+      "name": "GitHub Bug Bounty",
+      "source": "https://bounty.github.com/",
+      "rules": "https://bounty.github.com/rules",
+      "scope": "https://bounty.github.com/scope",
+      "rewards": "https://bounty.github.com/rewards",
+      "faq": "https://bounty.github.com/faq",
+      "status": "public programme reverified; no qualifying finding",
+      "terms_verified": {
+        "reward": "Public guidelines $250 low, $2000 medium, $5000 high, $10000 critical; discretionary, defense-in-depth swag only",
+        "deadline": "No fixed application cutoff shown",
+        "duplicate": "First received fully reproducible report only",
+        "disclosure": "Keep report on HackerOne; public disclosure coordinated after fix; third-party disclosure before programme submission disqualifies",
+        "eligibility": "No employee/contractor in preceding six months; US sanctions exclusions; individual taxes apply",
+        "scope": "Only explicitly listed targets and own data/accounts; no social engineering, spam or excessive traffic"
+      },
+      "blockers": [
+        "No independently verified eligible vulnerability",
+        "HackerOne applicant identity, Israel payment eligibility, actual payout rail and AI-authorship policy not verified"
+      ],
+      "action": "No testing, probing, account creation or security report; internal PR5 is unrelated to GitHub product vulnerability rewards"
+    }
+  ],
+  "code": {
+    "pr": "https://github.com/OSHER4306/Osher-agent-/pull/5",
+    "type": "existing internal draft PR",
+    "baseline_commit": "f2bc50c3f1b337c5fcb981ceaf8ce48cd51361f0",
+    "independent_review_findings": [],
+    "production_sender_integrated": false,
+    "local_test_methods_passed": 22,
+    "local_test_duration_seconds": 0.055,
+    "new_test_methods": 9,
+    "fixed_findings": [
+      "Run-wide stop can reopen after 20 -> 19 -> 14 observations",
+      "Repeated DST hour admits a snapshot 3600 seconds old under the 30-second freshness policy"
+    ],
+    "disposition": "existing internal draft PR5 updated; not merged, deployed or sender-integrated",
+    "limitations": [
+      "Run state in memory only; resumed runs need persisted checkpoint under real shared account lock",
+      "Offline snapshots cannot prove API provenance",
+      "Recipient checks, cooldowns and rate-limit handling remain caller obligations"
+    ]
+  },
+  "counts": {
+    "new_prs": 0,
+    "external_technical_submissions": 0,
+    "merged_prs": 0,
+    "commercial_sends": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0,
+    "existing_internal_draft_prs_updated": 1
+  },
+  "next": "Preserve run state under real shared dispatcher before sender integration; continue qualified paid routes and existing warm deals without sending while cap is reached"
+}
