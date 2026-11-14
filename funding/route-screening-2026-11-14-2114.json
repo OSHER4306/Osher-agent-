@@ -1,0 +1,96 @@
+{
+  "run": "2026-11-14-2114-Asia_Jerusalem",
+  "prior_report": "funding/route-screening-2026-11-14-2015.json",
+  "scope": "Bounded paid-route, pipeline and engineering review; not exhaustive global coverage.",
+  "mail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "unique_sent_today": 38,
+    "pages": 1,
+    "next_page_token": null,
+    "sends_allowed": false,
+    "sends_attempted": 0,
+    "new_warm_replies_found": 0,
+    "coordination": {
+      "automation": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed": "2026-11-14T18:30:44.130692Z",
+      "result": "B2B already labeled original and three delivery notices for the new final timeout failure; no duplicate label action or resend.",
+      "suppression_notice_id": "1a1db491f7881f75"
+    },
+    "privacy": "Unrelated incoming account receipts and housing notifications were not opened or copied; purchase receipts are not collected business revenue."
+  },
+  "engineering": {
+    "PR": "https://github.com/OSHER4306/Osher-agent-/pull/6",
+    "status": "merged",
+    "head": "fc9d454b8f38e111547c96761d9f307d367f4237",
+    "merge_commit": "15a23035449ccf4ca13f833d2d44b969856d25f1",
+    "merged_at": "2026-11-14T19:16:23Z",
+    "fresh_local_test_methods": 82,
+    "failures": 0,
+    "elapsed_seconds": 0.209,
+    "python_blobs_exact_before_and_after_merge": 15,
+    "tree_truncated": false,
+    "checks_reported_at_head": 0,
+    "rulesets_returned": 0,
+    "merge_method": "Normal merge API with expected_head_sha; no force, workflow change or protection override.",
+    "limits": "Offline contact timing component only. No shared sender lock, live Gmail integration, verified holiday calendar, production deployment or GitHub Actions pass established.",
+    "new_code_written_this_run": 0,
+    "new_PRs_created": 0,
+    "internal_PRs_merged": 1,
+    "external_contributions": 0
+  },
+  "paid_route": {
+    "name": "ZZZAgentBoard",
+    "source": "https://zzzagents.com/",
+    "advertised_current_reward_USDC": 5,
+    "site_displayed_pool_USDC": 20.01975,
+    "funding": "Website claim only; no independent chain verification.",
+    "acceptance": "First verified proof per problem. Lean4.33.1/Mathlib4.33.1/formal-conjectures b82b08f; exact target or negation, approved axioms. Existing solved18/32 excluded.",
+    "access": "AI supported; operator says no deposit/account/identity step, Base payout address required. No authorized address supplied. Israel, IP and fixed deadline unverified.",
+    "decision": "Not a near-term task:1052 remains an open mathematical problem. No proof, wallet, account, claim, submission or speculative compute.",
+    "endpoint_caution": "Submission routes mutate state, including GET in the published app; none probed."
+  },
+  "enterprise_case": {
+    "company": "Google",
+    "issue": "https://github.com/googleapis/python-genai/issues/3331",
+    "state": "open",
+    "reported_problem": "AFC rejects datetime/UUID JSON strings instead of invoking typed tools.",
+    "verification": "Public reporter reproduction and maintainer confirmation; not independently reproduced in this run.",
+    "duplicate_check": "Existing open PR3333 explicitly fixes3331 and covers datetime/date/time/timedelta/UUID; no competing PR/comment.",
+    "existing_PR": "https://github.com/googleapis/python-genai/pull/3333",
+    "plan_if_gap_remains": "Pin affected3.0.0 and proposed patch, run mocked-transport typed-tool regression with invalid-string negative controls and verify sync/async invocation and returned response. Zero paid API calls. Proceed only if it adds evidence beyond existing work.",
+    "payment_status": "No verified paid engagement or reward eligibility."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open": 5,
+    "entries": {
+      "music": 45,
+      "Q98": 15,
+      "lumen": 35,
+      "toc": 108,
+      "sales": 96
+    },
+    "new_task_found": false,
+    "submissions": 0,
+    "qualification": "No authenticated worker/free allowance verified. Low cash/competition and token compensation remain distinct from collected cash."
+  },
+  "counts": {
+    "outreach_sent": 0,
+    "grant_or_bounty_submissions": 0,
+    "new_PRs": 0,
+    "internal_PRs_merged": 1,
+    "external_PRs_merged": 0,
+    "new_verified_company_records": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices_issued": 0,
+    "verified_collected_ILS_this_run": 0
+  },
+  "open": [
+    "Fresh all-account count required before future Gmail sends; date reset does not prove rate-limit release.",
+    "Apart remains blocked by prior automatic approval review denial; no retry.",
+    "GitHub account billing issue not paid around or speculatively repaired.",
+    "No fully qualified new paid task ready for submission."
+  ],
+  "next": "Prioritize existing Sunday warm-call plan and written CSP scope/commission/eligibility. Integrate reviewed offline timing only after genuinely shared dispatcher, recipient evidence and calendar sources are available; continue official payment-first screening."
+}
