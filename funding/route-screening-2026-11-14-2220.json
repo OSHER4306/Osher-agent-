@@ -1,0 +1,106 @@
+{
+  "run": "2026-11-14-2220-Asia_Jerusalem",
+  "prior": "funding/route-screening-2026-11-14-2114.json",
+  "scope": "Bounded new-route and live-pipeline review, not an exhaustive global inventory.",
+  "mail": {
+    "account_wide_sent": 38,
+    "query": "in:sent after:1794607199 before:1794693600",
+    "complete_pages": 1,
+    "next_page_token": null,
+    "sends_allowed": false,
+    "attempts": 0,
+    "new_business_replies_found": 0,
+    "new_delivery_failure_found": 0,
+    "coordination": {
+      "automation": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed": "2026-11-14T19:33:36.274482Z",
+      "no_duplicate_outreach": true
+    },
+    "privacy": "Unrelated incoming consumer/account messages not opened or copied."
+  },
+  "new_opportunity": {
+    "name": "Cognizant Open Agentic Web Challenge",
+    "sources": [
+      "https://cognizant-agenticweb.devpost.com/",
+      "https://cognizant-agenticweb.devpost.com/rules",
+      "https://news.cognizant.com/2026-11-12-The-Open-Agentic-Web-Challenge-building-an-agent-economy-that-works-for-everyone"
+    ],
+    "status": "Active official listing; provisionally relevant, not fully qualified.",
+    "deadline_Israel": "2027-01-11T18:00:00+02:00",
+    "cash_prizes_USD": [
+      5000,
+      3000,
+      2000
+    ],
+    "credits": "Additional credits are separate from cash.",
+    "access": "No purchase required; free Devpost account. Israel not among named excluded jurisdictions, individual eligibility not verified.",
+    "deliverables": "Public spec-conforming browser agent website, JSON network, runtime, UI, screenshots and public YouTube demo under two minutes with human entrant explanation.",
+    "AI": "Demo explanation must not be AI-generated. No explicit AI coding authorization located; no blanket coding ban inferred.",
+    "rights": "Ownership retained, nonexclusive judging license and three-year publicity rights. Multiple entries must differ substantially, one prize per entry.",
+    "payment": "Winner verification/forms, possible W-8BEN; delivery within60days after completed forms, fees/taxes may apply.",
+    "rules_retrieval": "Direct rule URL403; official indexed rule text retrieved with fresh search.",
+    "blockers": [
+      "No verified registration or working qualifying browser site.",
+      "No entrant-recorded human demo.",
+      "AI coding policy and individual payout eligibility need confirmation."
+    ],
+    "official_contact": "Email-manager link resolved only to nonfunctional email-protection URL404; address not guessed.",
+    "prepared_unsent_inquiry": "Subject: Open Agentic Web Challenge — AI-assisted code and individual eligibility. Hello, I am Osher Avraham Toledano, an independent software developer based in Israel. Before building an entry, could you confirm whether AI-assisted code is allowed when the entrant reviews and tests it and personally explains the working project in the demo? Could you also confirm individual participation and cash-prize delivery eligibility for an Israeli resident, and which specification revision governs submissions? This is an eligibility inquiry, not a registration or submission. Thank you.",
+    "inquiry_status": "Text prepared here only; no Gmail draft, contact or registration created.",
+    "priority": "Longer-term contest, not near-term November collected revenue."
+  },
+  "enterprise_case": {
+    "company": "Anthropic",
+    "issue": "https://github.com/anthropics/claude-agent-sdk-python/issues/1506",
+    "problem": "Progress-parent cycle can hang session forking.",
+    "evidence": "Public user report; no independent reproduction in this run. Local correctness issue, not treated as a security finding.",
+    "duplicates": [
+      "https://github.com/anthropics/claude-agent-sdk-python/pull/1512",
+      "https://github.com/anthropics/claude-agent-sdk-python/pull/1539"
+    ],
+    "decision": "Two existing open fixes already cover it; no competing code, PR or comment.",
+    "measurable_plan": "If maintainers identify an uncovered case, pin revision and run synthetic self-cycle/two-node-cycle in a bounded child process plus an acyclic parent-remapping control. Require termination and preserved valid parent mapping before any claim. Not executed here.",
+    "paid_eligibility": "No approved paid engagement or bounty reward established."
+  },
+  "engineering_blocker": {
+    "run_url": "https://github.com/OSHER4306/Osher-agent-/actions/runs/43634821861",
+    "head": "c44859a4c99ac6e9c80881e9bd9027a8de359bdb",
+    "job_id": 132569208234,
+    "status": "failure",
+    "steps": [],
+    "logs": "Purpose-built job-log fetch returned404 BlobNotFound.",
+    "root_cause": "Not verified for this run. Zero steps and missing logs do not prove a code defect or billing cause.",
+    "actions": "No workflow change, rerun, payment, account workaround or test-pass claim."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open": 5,
+    "observed_entries": {
+      "music": 47,
+      "Q98": 16,
+      "lumen": 35,
+      "toc": 111,
+      "sales": 98
+    },
+    "new_task_found": false,
+    "submissions": 0,
+    "blockers": "No authenticated worker/free allowance verified; low cash and competition. Token valuation is not cash collected."
+  },
+  "counts": {
+    "new_provisional_programmes": 1,
+    "new_code_products": 0,
+    "new_tests_executed": 0,
+    "new_PRs": 0,
+    "merged_PRs": 0,
+    "external_technical_submissions": 0,
+    "messages_sent": 0,
+    "grant_or_bounty_submissions": 0,
+    "new_verified_company_records": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "verified_collected_ILS_this_run": 0
+  },
+  "existing_scope": "Apart not retried after prior automatic approval review denial. Previous internal merge/tests not recounted. Remaining revenue tracks preserved.",
+  "next": "Existing warm calls and written CSP commission/eligibility remain higher priority for near-term revenue. Resolve Cognizant policy/account/demo requirements before substantial contest investment; recheck official paid tasks and complete shared SENT count before future sends."
+}
