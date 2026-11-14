@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-14",
+  "run": "1417 Israel",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "count": 38,
+    "unique_messages": true,
+    "pages": 1,
+    "complete": true,
+    "sending_stopped": true,
+    "sends_attempted": 0,
+    "rate_limit_probe_attempted": false,
+    "b2b_coordination": "Read latest B2B result (13:30 Israel). No new B2B reply reported; existing CSP/Archi drafts preserved."
+  },
+  "verified_action": {
+    "type": "delivery-delay suppression labels",
+    "message_count": 2,
+    "notice_id": "1a1d9de9de1cf311",
+    "original_id": "1a1d3e5ee19bb912",
+    "label_id": "Label_95",
+    "label_name": "מסירה מושהית — לא לשלוח שוב",
+    "label_readback_verified": true,
+    "diagnosis": "Action delayed; Status 4.4.1; recipient-server connection timeout. Temporary delay, not final bounce.",
+    "operational_effect": "Message-level visible hold label only; does not cancel Gmail automatic retries or create an atomic sender lock",
+    "recipient": "editor@aiconnecto.com",
+    "gmail_retry_until": "2026-11-15T23:53:45-08:00",
+    "manual_resend_attempted": false
+  },
+  "routes": [
+    {
+      "name": "Sentient Open Source AGI Grants",
+      "source": "https://sentient.foundation/grants",
+      "application": "https://form.typeform.com/to/IRj7WaKH",
+      "terms": "https://sentient.foundation/legal/terms",
+      "intake": "rolling; no cohorts or deadline stated",
+      "scope": "Open AI public goods and infrastructure with measurable value for underserved users",
+      "public_terms": "Grant track advertises no equity, no lockups, no claim on work; separate investment track is different",
+      "budget": "$42m programme commitment, not an applicant award",
+      "ui_verified": {
+        "welcome": "Open Source AGI Grants & Investment Program",
+        "mandatory_fields": [
+          "email",
+          "LinkedIn",
+          "primary role",
+          "current base",
+          "problem and timing",
+          "beneficiaries",
+          "one-line project description",
+          "builder/team qualifications",
+          "what is open and consequences of closing",
+          "demo or trial URL"
+        ],
+        "data_entered": false,
+        "submitted": false
+      },
+      "blockers": [
+        "LinkedIn required; no verified profile supplied",
+        "Working demo/trial and personal builder narrative not established",
+        "Individual amount, cash/token currency, payout rail/schedule, Israel eligibility, applicant AI policy, duplicate-funding and final Grant Terms unverified"
+      ],
+      "action": "No account, application, investment selection or agreement accepted"
+    },
+    {
+      "name": "Cohere Catalyst Grants",
+      "source": "https://cohere.com/research/grants",
+      "intake": "Closed shown on official page",
+      "reward_type": "API credits, not verified cash",
+      "action": "Excluded from current cash submission queue; no notification signup"
+    },
+    {
+      "name": "Apple Security Bounty",
+      "source": "https://security.apple.com/bounty/",
+      "guidelines": "https://security.apple.com/bounty/guidelines/",
+      "terms": "https://security.apple.com/terms-and-conditions/",
+      "intake": "Active public portal, no fixed submission cutoff shown",
+      "scope": "Apple products and public services; Apple Pay, non-public systems, social engineering and third-party services excluded",
+      "requirements": "First complete actionable report, reliable PoC, latest affected versions/standard configuration, Target Flags where required; concise report; human validation of AI-assisted findings",
+      "disclosure": "No disclosure outside Apple before update and security advisory",
+      "payment": "Discretionary. Most award decisions follow fix; Target Flag reports can be accelerated. Awards must be accepted within one year. Individual payout mechanism/schedule and Israel screening unverified.",
+      "eligibility": "18-month exclusion following Apple/vendor employee, contractor or intern work; sanctions restrictions and applicable taxes",
+      "action": "No eligible finding or proof, no tests, probes or report; no Apple Account sign-in"
+    },
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "intake": "five displayed open tasks",
+      "tasks": [
+        {
+          "name": "TOC Python",
+          "reward": "0.50 USDC",
+          "submissions": 105,
+          "deadline": "2026-11-15T06:55:07Z"
+        },
+        {
+          "name": "Sales storytelling",
+          "reward": "0.50 USDC",
+          "submissions": 93,
+          "deadline": "2026-11-15T06:54:38Z"
+        },
+        {
+          "name": "Lumen promotion",
+          "displayed_reward": "$5",
+          "submissions": 34,
+          "deadline": "2026-11-19T18:53:15Z"
+        },
+        {
+          "name": "FLAPJAX Q98",
+          "submissions": 13,
+          "deadline": "2026-11-16T01:59:35Z"
+        },
+        {
+          "name": "FLAPJAX Q97",
+          "submissions": 18,
+          "deadline": "2026-11-14T14:24:44Z"
+        }
+      ],
+      "blockers": [
+        "Submission account and free allowance unverified",
+        "Token rewards are not counted as cash",
+        "High competition in $0.50 tasks; marketing requires legitimate permitted context"
+      ],
+      "action": "No submission, wallet interaction or deposit"
+    }
+  ],
+  "engineering": {
+    "new_code_files": 0,
+    "new_tests": 0,
+    "new_prs": 0,
+    "existing_pr5": "https://github.com/OSHER4306/Osher-agent-/pull/5",
+    "pr5_status": "Previously tested internal draft remains unintegrated; no new merge or deployment claimed",
+    "reason": "Avoid internal changes solely to hit activity target; paid-route intake/eligibility and actual sender integration remain unresolved"
+  },
+  "counts": {
+    "new_route_screenings": 3,
+    "taskmarket_rescans": 1,
+    "fully_qualified_new_paid_opportunities": 0,
+    "new_verified_companies": 0,
+    "outreach_prepared": 0,
+    "sent_messages": 0,
+    "technical_submissions": 0,
+    "merged_prs": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next": "Respect delay suppression and shared cap. Continue qualifying no-fee cash routes; Sentient requires verified LinkedIn, real demo, project fit and Grant Terms before submission. Continue existing warm deals only after fresh reply and all send gates."
+}
