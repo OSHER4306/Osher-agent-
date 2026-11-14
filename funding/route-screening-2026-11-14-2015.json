@@ -1,0 +1,108 @@
+{
+  "run": "2026-11-14-2015-Asia_Jerusalem",
+  "prior_report": "funding/route-screening-2026-11-14-1917.json",
+  "scope": "Bounded review, not an exhaustive worldwide opportunity inventory.",
+  "mail": {
+    "account_wide_sent": 38,
+    "query": "in:sent after:1794607199 before:1794693600",
+    "complete_pages": 1,
+    "next_page_token": null,
+    "sending_stopped": true,
+    "attempts": 0,
+    "new_replies_since_prior_run": 0,
+    "new_bounces_found": 0,
+    "coordination": {
+      "automation": "Automation_559b66e77c388191b5c68a1655b94665",
+      "latest_result_completed_at": "2026-11-14T17:33:50.397306Z",
+      "previous_unsuitable_recipient_suppression_already_verified": true
+    }
+  },
+  "engineering": {
+    "component": "Offline recipient timing review",
+    "draft_internal_PR": "https://github.com/OSHER4306/Osher-agent-/pull/6",
+    "head": "fc9d454b8f38e111547c96761d9f307d367f4237",
+    "files": [
+      "automation/contact_timing.py",
+      "automation/test_contact_timing.py",
+      "automation/contact-timing.md"
+    ],
+    "all_three_readback_exact": true,
+    "new_test_methods": 13,
+    "existing_quota_test_methods": 22,
+    "combined_tests_passed": 35,
+    "root_elapsed_seconds": 0.061,
+    "independent_elapsed_seconds": 0.055,
+    "change": "Adds recipient timing blockers for 72 elapsed hours and two business days using an explicitly supplied calendar. Quota calculations alone did not review recipient timing.",
+    "adversarial_review": "Initial 33 tests passed but independent review found Thursday23:59->Monday00:00 counted a just-started second business day. Corrected conservatively to preserve original local clock, added midnight and later-closed-day regressions. Final35/35.",
+    "limitations": [
+      "Standalone offline component; no sender imports it.",
+      "Complete cross-agent recipient history and real calendar provenance are caller responsibilities.",
+      "Tests use fictional Sun-Thu calendars; no real holiday calendar verified.",
+      "No shared sender lock, suppression/rate-limit adapter, production deployment or Actions pass claimed.",
+      "Draft internal PR is not an external contribution or bounty qualification."
+    ]
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "displayed_open": 5,
+    "observed_entries": {
+      "music": 41,
+      "Q98": 15,
+      "lumen": 35,
+      "toc": 107,
+      "sales": 95
+    },
+    "delta": "Music entries increased from40 to41; no new task observed.",
+    "entries_submitted": 0,
+    "blockers": [
+      "No authenticated worker or free submission allowance verified.",
+      "Very low cash amounts and strong competition; token display values not cash collected."
+    ]
+  },
+  "new_route": {
+    "name": "BCH BLAZE2026",
+    "sources": [
+      "https://bchblaze.com/",
+      "https://bchblaze.com/bounties/"
+    ],
+    "submission_deadline": "2026-11-22T16:00:00+02:00",
+    "registration_closed": "2026-11-13, despite open-registration banner",
+    "eligibility": "No prior registration/late-entry exception, Israel eligibility or payout identity verified.",
+    "terms": "Sponsor-discretionary awards; bounty submissions waive IP rights. No agreement accepted.",
+    "tracks": "XO feedback must be personally written and rejects AI-written submissions. This is not an event-wide AI ban: SolidCash explicitly expects AI-assisted work, but requires mainnet execution. FoldingCash advertises0.5BCH for verifiable pull-based rewards with a chipnet demo; public technical need documented, no contract or guaranteed award.",
+    "actions": "No registration, wallet, mainnet transaction, submission or outreach."
+  },
+  "enterprise_cases": [
+    {
+      "company": "Microsoft",
+      "issue": "https://github.com/microsoft/typespec/issues/12360",
+      "evidence": "Public user report, not independently reproduced here.",
+      "duplicate": "Existing open unmerged reproduction PR https://github.com/microsoft/typespec/pull/12359 already covers list/dict reference detachment.",
+      "plan": "If new evidence needed, pin generated-runtime revision, run existing list/dict reproduction and access-order controls; require retained mutations in serialized output. Avoid competing reproduction/PR.",
+      "actions": 0
+    },
+    {
+      "company": "Cloudflare",
+      "issue": "https://github.com/cloudflare/cloudflare-python/issues/2745",
+      "evidence": "Public report and comment link six api_version test failures after implementation revert; not independently run here.",
+      "plan": "Confirm maintainer intent before changing generated client code. Pin5.7.0 and current revision, run six api_version cases with mocked transport; measure expected header behavior and failure counts. Do not infer production API failure or restore reverted functionality speculatively.",
+      "payment_path": "No approved paid engagement established.",
+      "actions": 0
+    }
+  ],
+  "counts": {
+    "new_code_components": 1,
+    "new_internal_draft_PRs": 1,
+    "external_technical_submissions": 0,
+    "merged_PRs": 0,
+    "outreach_sent": 0,
+    "grant_or_bounty_submissions": 0,
+    "new_verified_company_records": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ILS_this_run": 0
+  },
+  "blocked_existing_tracks": "No Apart retry after previous automatic approval review denial. No billing workaround, speculative deployment edit, rerun or spending.",
+  "next": "Review timing component before real dispatcher integration with verified shared state. Prioritize existing warm-call plan and written CSP commission/eligibility evidence; recheck complete Gmail count before any future send. Continue payment-first research only where scope, access, duplicate status and reward conditions support execution."
+}
