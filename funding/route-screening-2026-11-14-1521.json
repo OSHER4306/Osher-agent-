@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-14",
+  "run": "1521 Israel",
+  "gmail": {
+    "query": "in:sent after:1794607199 before:1794693600",
+    "count": 38,
+    "pages": 1,
+    "complete": true,
+    "new_incoming_last_hour": 0,
+    "sends_attempted": 0,
+    "new_drafts": 0,
+    "rate_limit_probed": false,
+    "b2b_coordination": "Latest B2B recorded result read: no new B2B reply, existing drafts and suppression remain; no duplicate outreach"
+  },
+  "completed": {
+    "type": "internal engineering merge",
+    "pr": "https://github.com/OSHER4306/Osher-agent-/pull/5",
+    "head_sha": "a541a92bca949aaa88dedb1e7362a69d61257a3d",
+    "merge_sha": "042511ef9a403fbfd771fdcd5f6787778c11bf0b",
+    "merged_at": "2026-11-14T13:24:55Z",
+    "merged_at_israel": "2026-11-14T15:24:55+02:00",
+    "validation": {
+      "methods_passed": 69,
+      "duration_seconds": 0.121,
+      "includes": "47 existing automation tests plus 22 quota tests; no new test methods written this run",
+      "source_files": 13,
+      "exact_git_blob_hashes_verified": true,
+      "post_merge_tree_matches_tested_sources": true,
+      "local_only": true
+    },
+    "scope": "Offline shared Gmail quota preflight, run-wide stop latch, UTC elapsed-time freshness, tests, documentation and prior route report",
+    "limitations": [
+      "No sender imports this module; no live integration",
+      "Run checkpoint remains in memory and requires real shared-lock/persistence integration",
+      "Does not independently validate Gmail snapshot provenance, suppress recipients, enforce cooldowns or solve rate limits",
+      "No deployment, Actions rerun, billing workaround or GitHub Actions pass claimed"
+    ],
+    "review": "Independent review and corrections completed in previous run; combined suite and exact merged-source checks completed now",
+    "rulesets_read": "[]; normal GitHub merge API enforced its branch requirements; no override or protection changes"
+  },
+  "routes": [
+    {
+      "name": "Taskmarket",
+      "source": "https://taskmarket.dev/tasks?status=open",
+      "status": "five displayed open tasks; rescan",
+      "submissions": {
+        "toc": 106,
+        "sales": 94,
+        "lumen": 34,
+        "flapjax_q98": 13,
+        "flapjax_q97": 18
+      },
+      "deadlines": {
+        "toc": "2026-11-15T06:55:07Z",
+        "sales": "2026-11-15T06:54:38Z",
+        "flapjax_q97": "2026-11-14T14:24:44Z"
+      },
+      "action": "No account, wallet, deposit or submission; previous eligibility/free-allowance blockers remain"
+    },
+    {
+      "name": "OpenSSF Technical Initiative Funding",
+      "source": "https://openssf.org/about/tac/technical-initiative-funding/",
+      "process": "https://github.com/ossf/tac/blob/main/process/TI%20Funding%20Request%20Process.md",
+      "status": "not eligible on available evidence; published 2026 rounds elapsed",
+      "eligibility": "Existing OpenSSF TI with documented lifecycle phase required",
+      "deadline": "Latest listed 2026 submission deadline 2026-10-16, recommendation by 2026-10-30; no later round verified",
+      "payment": "Staff disbursement follows approval; subsequent milestones can gate further funding; not a fixed individual coding bounty",
+      "action": "No submission or representation as an OpenSSF TI"
+    },
+    {
+      "name": "Alpha-Omega",
+      "source": "https://alpha-omega.dev/grants/how-to-apply/",
+      "status": "Q4 intake explicitly closed; next season January 2027",
+      "deadline": "Quarterly intake: Oct1-31; next Jan1-31 2027 under published calendar",
+      "scope": "Security of critical OSS, direct maintainer engagement, OSI-approved license required",
+      "process": "Month1 intake, Month2 collaborative SOW, Month3 decision/disbursement; monthly public reporting",
+      "blockers": [
+        "Not currently accepting Q4 submissions",
+        "No applicant project criticality/maintainer role or individual payment terms verified"
+      ],
+      "action": "No form, out-of-band application or disclosure of security findings"
+    },
+    {
+      "name": "BountyOS claimed $91 BountyHub task",
+      "source": "https://bountyos.rovidev.com/en/github-bounty-board/",
+      "status": "third-party aggregate claim only, not a verified opportunity",
+      "blockers": [
+        "Exact repository/issue not public; Pro unlock required",
+        "No scope, payer, deadline, AI permission or applicant eligibility verified"
+      ],
+      "action": "No purchase, signup, paywall bypass or claim"
+    },
+    {
+      "name": "BountyHub",
+      "source": "https://github.com/Bounty-Hub/.github/blob/main/profile/README.md",
+      "listing": "https://www.bountyhub.dev/en/bounties",
+      "status": "platform mechanics verified, individual live task not verified",
+      "payment": "Official README: submit/import merged PR; bounty creator approves; payments through Stripe",
+      "blockers": [
+        "Official listing fetch returned403; cause not classified as bot detection",
+        "Israel payout onboarding, AI policy, fees, duplicate rules and actual task terms not verified"
+      ],
+      "action": "No sign-in, app installation, claim or PR"
+    },
+    {
+      "name": "Algora indexed open pages",
+      "source": "https://algora.io/coder/bounties?status=open",
+      "status": "search results mostly1-2months old; insufficient to establish current availability",
+      "action": "No claim that all Algora opportunities are absent; no submission"
+    }
+  ],
+  "counts": {
+    "new_code_files": 0,
+    "new_test_methods": 0,
+    "new_prs": 0,
+    "internal_prs_merged": 1,
+    "external_technical_submissions": 0,
+    "vendor_bounty_eligible_fixes": 0,
+    "fully_qualified_new_paid_opportunities": 0,
+    "new_verified_companies": 0,
+    "commercial_sends": 0,
+    "paid_proposals": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next": "Continue live paid-route qualification and warm replies. Integrate the preflight only through a genuinely shared dispatcher with retained checkpoints and recipient/rate-limit checks; do not enable sending merely because the code is merged."
+}
