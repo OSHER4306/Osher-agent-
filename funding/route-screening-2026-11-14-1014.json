@@ -1,0 +1,82 @@
+{
+  "verified_at": "2026-11-14T08:16:42Z",
+  "completed": [
+    "Read latest B2B result and fresh inbox; no new warm reply requiring response. Existing failure labels remain present. No send-limit probe.",
+    "Corrected the existing Google ADK proposal to defer to open upstream PR #2264; no duplicate implementation or submission."
+  ],
+  "routes": [
+    {
+      "id": "microsoft-aiei-cohort4",
+      "source": "https://www.microsoft.com/en-us/research/group/aiei/aiei-open-call-4/",
+      "status": "open_call_individual_eligibility_unverified",
+      "deadline_official": "2026-12-31 18:00 Pacific",
+      "deadline_israel": "2027-01-01 04:00",
+      "award_usd": 75000,
+      "qualification": "Each PI must have an accredited university/research-institution affiliation and PhD or equivalent terminal degree. Neither is verified for this applicant.",
+      "limitations": "The official page now states December 31, unlike third-party November 30 listings. Research starts May 2027; not rapid collection. Application materials and institutional gift/payment/IP details need verification; no submission. No LinkedIn requirement observed."
+    },
+    {
+      "id": "freecad-q4-2026",
+      "sources": [
+        "https://freecad.github.io/Website/pl/news/q4-2026-grant-program-deadline-approaching/",
+        "https://fpa.freecad.org/programs/fpadf-announcement",
+        "https://fpa.freecad.org/handbook/process/grant-program-rules"
+      ],
+      "status": "open_round_scope_and_track_record_missing",
+      "deadline_official": "2026-11-15; cutoff time/timezone not specified on reviewed pages",
+      "round_budget_eur": 10000,
+      "decision_expected": "2026-12-19",
+      "limits": "One application per developer per quarter. Staged payment, planning payment within ten days after the voting announcement; bank, PayPal or OpenCollective. Individual legal/payment eligibility remains unverified.",
+      "scope": "FreeCAD and ecosystem; documentation, testing and release work prioritized. Requires hands-on scope experience, public qualification evidence, milestones and justified cost estimates; ecosystem work additionally needs maintainer agreement. No applicant fee or LinkedIn requirement observed. AI contribution policy, contractual IP/exclusivity and duplicate funding conditions not yet verified.",
+      "readiness": "Local freecadcmd --version returned FreeCAD 1.0.0. This is installation evidence only, not contributor experience or an executed project test. Similar Python documentation/testing proposal #132 already exists; do not copy it. No grant application prepared or submitted."
+    },
+    {
+      "id": "anjoman-h2",
+      "source": "https://anjoman.ai/dashboard/hackathon/season-2/rules",
+      "status": "candidate_prize_payment_terms_unverified",
+      "deadline_utc": "2026-12-01T23:59:00Z",
+      "deadline_israel": "2026-12-02 01:59",
+      "main_pool_usd": 7000,
+      "later_challenges_reserved_usd": 3000,
+      "scope": "Apps, providers or evaluators require real Telegraph integration and repeatable evidence. Supported testnet can qualify; no real-funds purchase authorized. November 14 is a progress check, not final deadline. Separate December awards do not extend main entry. No double payment for the same result.",
+      "rights": "Original work retained, third-party licenses respected; submission review permission needed.",
+      "missing": "Rules refer to separate country/KYC/tax/payment-method/schedule terms that were not located in reviewed page. Israel eligibility, no-fee entry and AI-authorship conditions remain unverified. No account, star, wallet, payment or entry created."
+    }
+  ],
+  "engineering": {
+    "issue": "https://github.com/google/adk-go/issues/2263",
+    "source_fix": "https://github.com/google/adk-go/pull/2264",
+    "status": "open_unmerged_duplicate_avoided",
+    "independent_reproduction": false,
+    "tests_run": 0,
+    "compiler_check": "go version failed with Unknown option; compatible Go toolchain not verified.",
+    "proposal": "fixer-outreach/sprints/google-adk-usage-metadata-proposal.md",
+    "acceptance_if_revisited": "Only pursue a novel demonstrated gap: final-response usage preserved exactly, absent usage safe, classification unchanged, JSON round-trips covered with deterministic fake model. Read current PR before any new work.",
+    "paid_route": "Not verified; public product issue is not a paid order or bounty."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "visible_cards": 6,
+    "toc_entries": 102,
+    "sales_data_entries": 91,
+    "submission_count": 0,
+    "readiness": "Actual account permission/free allowance and payout readiness still unverified. No token valuation counted as cash."
+  },
+  "metrics": {
+    "new_candidates_researched": 3,
+    "new_fully_qualified_paid_routes": 0,
+    "new_verified_companies": 0,
+    "new_code_artifacts": 0,
+    "new_tests": 0,
+    "technical_submissions": 0,
+    "prs_submitted": 0,
+    "prs_merged": 0,
+    "commercial_sent": 0,
+    "grant_contest_submissions": 0,
+    "contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "open": "Paid route prerequisites and actual research/engineering scope. No new client demand justified Audit/Sprint/Enterprise pricing or a commercial proposal.",
+  "next": "Prioritize new warm replies and eligible paid tasks; verify candidate-specific payment/AI terms before investing in a submission. Existing tracks preserved; no exhaustive worldwide-coverage claim."
+}
