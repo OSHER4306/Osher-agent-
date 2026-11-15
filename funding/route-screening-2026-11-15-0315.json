@@ -1,0 +1,91 @@
+{
+  "run_id": "2026-11-15-0315-Asia_Jerusalem",
+  "verified_at_utc": "2026-11-15T01:19:36Z",
+  "gmail": {
+    "all_account_day": "2026-11-15",
+    "query": "in:sent after:1794693599 before:1794780000",
+    "sent_count_at_check": 6,
+    "complete_pages": 1,
+    "next_page_token": null,
+    "sent_this_run": 0,
+    "numeric_run_cap": 5,
+    "rate_limit_release_verified": false,
+    "parallel_activity_observed": true,
+    "b2b_latest_run": "e8312f55-1e88-8322-83db-ea3eeb517e91",
+    "b2b_positive_new_replies": 0,
+    "bimc_failure": "Already Label_60 and reported handled by B2B; no duplicate label mutation"
+  },
+  "ugreen": {
+    "official": "https://ugreenhackathon.devpost.com/",
+    "deadline_israel": "2026-11-16T09:45:00+02:00",
+    "browser_verified": "Live overview showed Log in/Sign up; My projects showed Register for this hackathon; login page showed email/password and OAuth methods. No authenticated account established.",
+    "outcome": "Authentication required; no credential entry, method choice, account creation, legal acceptance, upload or registration performed.",
+    "duplicate_entry_absence_proven": false,
+    "private_submission_fields_verified": false,
+    "submission_count": 0,
+    "proposal_updated": "Test count corrected to13;374 substantive words;onepage PDF visually inspected",
+    "local_fix": {
+      "component": "Separate Python acceptance oracle; not NAS runtime",
+      "reproduced": "Whitespace-only citation classified no-discrepancy-observed. Truthy nontext citations could establish an unsupported discrepancy.",
+      "regression_before": "13 test methods executed;5 failing subcases across2new methods",
+      "fix": "Shared has_citation predicate accepts only nonblank strings, applied to both completeness and discrepancy evidence selection.",
+      "after": "13 test methods pass;official checker static-pass0errors0warnings",
+      "boundary": "Nonblank text alone does not prove source authenticity. Document expert must verify actual source locations. No NAS/model execution."
+    },
+    "library_file_id": "libfile_fde3_f-91dd032985608191a26b0e382b712127_f86c2c6994088191aa1df47b98e4c836",
+    "replaces_version": 0
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "observed_open": 5,
+    "new_tasks": 0,
+    "entries": {
+      "music": 50,
+      "flapjax": 17,
+      "lumen": 42,
+      "python_toc": 114,
+      "sales": 100
+    },
+    "submissions": 0,
+    "authentication_worker_free_allowance_verified": false
+  },
+  "other_research": {
+    "bounded_queries": 3,
+    "new_verified_routes": 0,
+    "kiroween": {
+      "source": "https://kiroween.devpost.com/rules",
+      "already_known": true,
+      "clarification": "Current cash-labelled table rows total94000USD; student awards are four1500USD subscriptions, plus other noncash bonuses. Not a verified change in terms. Do not treat advertised100000 as wholly cash.",
+      "cash_sum_expression": "30000+20000+10000+4*5000+10000+2000+1000+1000=94000",
+      "execution": "No actual Kiro use or qualifying entry; not a new qualified opportunity"
+    }
+  },
+  "preserved_blocks": {
+    "apart": "No retry or access after prior action-specific review rejection",
+    "github_actions": "No speculative code change or rerun; prior billing blocker not bypassed",
+    "outreach": "No duplicate warm follow-up or unsanctioned commercial issue comment"
+  },
+  "counts": {
+    "new_verified_programmes": 0,
+    "existing_draft_updated": 1,
+    "local_code_fixes": 1,
+    "new_regression_test_methods": 2,
+    "total_local_test_methods_passed": 13,
+    "emails_sent": 0,
+    "external_technical_submissions": 0,
+    "external_prs": 0,
+    "merged_prs": 0,
+    "new_verified_companies": 0,
+    "contracts": 0,
+    "payments": 0,
+    "collected_ils": 0,
+    "spend": 0
+  },
+  "next": "UGREEN entry needs authenticated Devpost participant, duplicate-entry verification and action-time entrant declarations; maintain draft until these gates are satisfied. Continue permitted fresh research and warm reply handling.",
+  "saved_deliverable": {
+    "library_file_id": "libfile_fde3_f-91dd032985608191a26b0e382b712127_f86c2c6994088191aa1df47b98e4c836",
+    "version": 1,
+    "size_bytes": 24384,
+    "sha256": "02a638fa14859ea81580a8b13753a38f9e3145ff867c8e713375c6ca4ca02251"
+  }
+}
