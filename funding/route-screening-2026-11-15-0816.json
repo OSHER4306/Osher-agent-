@@ -1,0 +1,109 @@
+{
+  "observed_at_utc": "2026-11-15T06:17:29Z",
+  "date_israel": "2026-11-15",
+  "mail": {
+    "sent_query": "in:sent after:1794693599 before:1794780000",
+    "account_sent": 11,
+    "complete_pagination": true,
+    "inbox_query": "in:inbox after:1794718800 -category:promotions -category:social",
+    "inbox_results": 3,
+    "business_replies": 0,
+    "description": "Three newsletter messages, no new business reply or delivery failure.",
+    "b2b_coordination": "Read latest completed B2B result at05:29UTC; same11SENT, no sends or positive replies, failed address previously handled.",
+    "send_attempts": 0,
+    "sent": 0,
+    "numeric_run_cap": 5,
+    "limits": "Not a production send lock. Fresh account SENT/INBOX/DRAFT and recipient checks required before any future send; no failed/refused recipients, 72h and two business days minimum. Rate-limit release not established."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open": 5,
+    "new": 0,
+    "entries": {
+      "title": 51,
+      "flapjax": 17,
+      "lumen": 44,
+      "toc": 120,
+      "sales": 105
+    },
+    "deadlines_utc": {
+      "toc": "2026-11-15T06:55:07Z",
+      "sales": "2026-11-15T06:54:38Z"
+    },
+    "blocker": "Worker/authentication/free allowance and payout terms remain unverified. No submission or deposit."
+  },
+  "paid_routes": [
+    {
+      "name": "Google Firebase #BuildHybridAI2026",
+      "source": "https://firebasehybridaihackathon.devpost.com/rules",
+      "status": "Active, personal eligibility/runtime prerequisites unverified",
+      "cash_pool_usd": 30000,
+      "individual_award": null,
+      "deadline_israel": "2026-12-01T00:00:00+02:00",
+      "scope": "Working Firebase AI Logic hybrid application; App Check required, debug tokens accepted. Web/Android local Gemini Nano4 or iOS Apple Foundation Models integration.",
+      "eligibility": "Israel not excluded; majority age, internet access asofNov11, sanctions/conflict gates apply. No purchase; mandatory tools stated available through free tiers.",
+      "ai": "Coding assistants allowed. Actual runtime SDK calls required.",
+      "cost_boundary": "Optional four-day quota access can incur charges outside its allowance; do not enable billing or request paid quota.",
+      "submission": "Public open-source repository, working app/test build and public YouTube demo up to3minutes. Existing code needs significant event-period update/disclosure; additional entries must differ substantially.",
+      "ip": "Creator owns work; perpetual irrevocable nonexclusive judging/promotional license to Google.",
+      "payment": "Identity/forms verification; cash mailed/electronically paid, within60days after completed required forms.",
+      "blockers": [
+        "Authenticated Devpost/Firebase accounts not verified.",
+        "Firebase project/App Check and supported local-model device not verified.",
+        "No real SDK/model run, public demo, video or approved project license."
+      ],
+      "action": "Qualify the free Web/device setup before building or submitting; no signup, model call, quota request or legal acceptance performed."
+    },
+    {
+      "name": "DOE GEMS Prize",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/",
+      "rules": "https://www.nlr.gov/docs/fy26osti/96647.pdf",
+      "status": "Not qualified for user; do not enroll",
+      "cash_pool_usd": 300000,
+      "deadline_utc": "2026-12-03T22:00:00Z",
+      "eligibility_gate": "Rulessection1.3,page5: solo entrant must be US citizen/permanent resident; team captain same, other individuals need US work authorization. US entity conditions and majority US activity also apply.",
+      "blocker": "No qualifying US citizenship/residency/work authorization or eligible team/entity verified. Do not assume eligibility from online access.",
+      "action": "No registration, data-download agreement, training or entry."
+    },
+    {
+      "name": "BWS November coding competition",
+      "source": "https://businesswebsolutions.in/competitions/",
+      "status": "Excluded by no-spend condition",
+      "evidence": "Official indexed page advertises USD9entryfee. Not an eligible free cash route.",
+      "action": "No payment or entry."
+    }
+  ],
+  "engineering": {
+    "source": "https://github.com/OSHER4306/Osher-agent-/actions/runs/43655683541",
+    "job_id": 132633547760,
+    "job_name": "discover",
+    "steps": [],
+    "runner_id": 0,
+    "runner_name": "",
+    "verified": "Job metadata shows failure and zero recorded steps.",
+    "caveat": "Name discover does not prove Python discovery code ran. Source does exit1 on any search failure, but that behavior is not evidence of this run's cause.",
+    "source_blob": "e2957ac7a0d3a8380765fbea23253376670c6da4",
+    "annotations_access": "Connector rejected check-runs/annotations URL as unsupported. Public action page fetch unavailable. No alternative auth, rerun or speculative patch.",
+    "root_cause": "Not established for this run; previously confirmed billing lock was for a different run.",
+    "code_changes": 0,
+    "tests": 0
+  },
+  "counters": {
+    "routes_screened": 3,
+    "new_fully_qualified_paid_routes": 0,
+    "verified_companies_added": 0,
+    "new_enterprise_bug_cases": 0,
+    "drafts": 0,
+    "sent_messages": 0,
+    "code_changes": 0,
+    "tests": 0,
+    "technical_submissions": 0,
+    "prs": 0,
+    "merged_prs": 0,
+    "applications": 0,
+    "contracts": 0,
+    "collected_ils": 0
+  },
+  "preserved": "Apart approval rejection, UGREEN authentication, wservices unsent draft and zeroeye no-execution boundary remain unchanged. No duplicate submission or outreach.",
+  "next": "Verify free Firebase runtime/account prerequisites when access is available; handle new warm replies first. Research remains possible, so the recurring task remains enabled."
+}
