@@ -1,0 +1,139 @@
+{
+  "run_id": "2026-11-15-0414-Asia_Jerusalem",
+  "verification_clock_utc": "2026-11-15T02:16:52Z",
+  "priorities_completed": [
+    "Checked all-account mail count, new inbox and B2B coordination.",
+    "Verified an additional official paid procurement demand and screened qualification.",
+    "Checked one SDK case for duplicate implementation; no duplicate patch or comment."
+  ],
+  "gmail": {
+    "day": "2026-11-15",
+    "timezone": "Asia/Jerusalem",
+    "query": "in:sent after:1794693599 before:1794780000",
+    "complete_pages": 1,
+    "next_page_token": null,
+    "sent_count_at_check": 6,
+    "sent_this_run": 0,
+    "numeric_run_cap": 5,
+    "inbox_after_epoch": 1794705600,
+    "new_inbox_messages": 0,
+    "b2b_run_id": "fd7e4566-a560-8322-aa51-3672ec226286",
+    "b2b_new_positive_reply": false,
+    "rate_limit_release_verified": false,
+    "notes": "No send probe, duplicate warm follow-up, draft send or parallel outreach."
+  },
+  "paid_demand": {
+    "organization": "Girl Effect",
+    "website": "https://girleffect.org",
+    "project_market": "Kenya",
+    "headquarters_country_verified": false,
+    "official_source": "https://job-boards.greenhouse.io/girleffect/jobs/8930071002",
+    "status": "Official current RFP; not a qualified or submitted bid",
+    "qualification_summary": "Proposal due18Nov2026; exact hour/timezone unspecified. Remote10-week independent consultancy, staging/synthetic personas only; no production testing. USD fixed-price proposal, payment after written deliverable acceptance. ForegroundIP client-owned. Named technical/safeguarding/language competence, three client references and redacted comparable report required. Kiswahili/Sheng capability may pair with client team. Independence and24-month relationships disclosed. Material subcontracting needs written consent. Submit separate technical/financial attachments by email. Clarification deadline10Nov passed; no late questions sent. IndividualIsrael eligibility, fee absence and AI-written-bid policy not explicit. No guarantee of award.",
+    "official_submission_channel": "suppliers@girleffect.org",
+    "submission_subject": "Independent Red-Teaming and AI Safety Evaluation",
+    "email_dedupe": {
+      "query": "in:anywhere (\"suppliers@girleffect.org\" OR \"Girl Effect\" OR \"WAZZII\")",
+      "results": 0,
+      "next_page_token": null
+    },
+    "repo_dedupe": {
+      "query": "repo:OSHER4306/Osher-agent- \"girleffect\" path:funding",
+      "total_count": 0,
+      "incomplete_results": true,
+      "complete_cross_run_dedupe_proven": false
+    },
+    "pipeline_stage": "Identified public paid demand; qualification blocked. No outreach/proposal/contract.",
+    "personal_gaps": [
+      "Verified specialist delivery experience",
+      "Three consenting client references",
+      "Authentic comparable redacted report",
+      "Named safeguarding and language capability or approved client pairing",
+      "Independence/conflict declaration",
+      "Supplier eligibility from Israel",
+      "Costs, person-days, tax and USD quote",
+      "OfficialFAQ and any tender updates before bidding"
+    ],
+    "service_packaging": {
+      "classification": "Internal nonbinding scoping hypotheses; not submitted, priced bid or contract. Generic ILS ranges below came from user's standing service menu and are not this client's budget.",
+      "audit": {
+        "user_test_range_ils": "5000–15000",
+        "scope": "Bounded readiness review of a client-approved evaluation policy and evidence inventory",
+        "acceptance": "Traceable list of tested assumptions, missing evidence, reproducibility gaps and scoped next step",
+        "schedule": "Agree after material volume and reviewer availability are verified",
+        "payment": "Discuss milestone acceptance; no advance or payment commitment assumed",
+        "fit": "Could inform orientation; does not replace the required full-scope bid"
+      },
+      "sprint": {
+        "user_test_range_ils": "20000–80000",
+        "scope": "Approved staging-only pilot of a narrowly selected scenario family",
+        "acceptance": "Rerunnable synthetic case set with trace references and reviewed outcome criteria",
+        "schedule": "Depends on approved access, qualified reviewers and agreed case count",
+        "payment": "Separate setup and accepted-deliverable milestones for negotiation only",
+        "fit": "No test execution or clinical/safeguarding judgment before authorization and expertise"
+      },
+      "enterprise": {
+        "user_test_range_ils": "100000–500000+",
+        "scope": "Potential full engagement plus separately agreed re-test extension",
+        "acceptance": "Buyer-approved deliverables and independent review; scope must follow tender",
+        "schedule": "Subject to awarded scope and verified delivery capacity",
+        "payment": "Unpriced; no proposal sent. Need person-days and total costs inUSD before quote",
+        "fit": "No team, qualification or delivery capacity represented as already established"
+      }
+    },
+    "outreach": 0,
+    "submissions": 0,
+    "financial_offer": 0,
+    "approved_test_access": false,
+    "system_tests": 0
+  },
+  "technical_case": {
+    "source": "https://github.com/anthropics/anthropic-sdk-python/issues/1975",
+    "claim": "Reporter describes Bedrock decoder failure on missing bytes. Not independently reproduced by this run.",
+    "existing_fix": "https://github.com/anthropics/anthropic-sdk-python/pull/1976",
+    "fix_state": "open",
+    "merged": false,
+    "head_sha": "02aa9a197ab1a474bdac27d14f3a0b92022ea1df",
+    "additional_related_pr": "https://github.com/anthropics/anthropic-sdk-python/pull/1996",
+    "decision": "Do not duplicate known patch. No external comment, code or bounty claim.",
+    "scope": "Public SDK reliability issue; no security testing or paid entitlement inferred.",
+    "possible_future_validation": "Only if new value appears: offline framed sync/async regression against actual SDK, valid messages preserved, missing payload outcomes matched to documented AWS parser contract. No AWS or model calls authorized."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open_observed": 5,
+    "new_tasks": 0,
+    "entries": {
+      "music": 50,
+      "flapjax": 17,
+      "lumen": 42,
+      "python_toc": 114,
+      "sales": 100
+    },
+    "submissions": 0,
+    "blockers": "Authenticated worker/free allowance/payout not verified. No fee, deposit, wallet or submission."
+  },
+  "preserved": {
+    "ugreen": "Existing draft version1 unchanged; observed Devpost sign-in blocker persists without new authenticated evidence. No repeated browser sign-in probe.",
+    "apart": "No retry after action-specific approval rejection; no submission.",
+    "github": "No speculative Actions change, rerun or spending."
+  },
+  "counts": {
+    "candidate_paid_demands_verified": 1,
+    "new_fully_qualified_routes": 0,
+    "new_globally_deduplicated_company_records": 0,
+    "commercial_outreach": 0,
+    "emails_sent": 0,
+    "new_code_fixes": 0,
+    "tests_executed": 0,
+    "technical_submissions": 0,
+    "external_prs": 0,
+    "merged_prs": 0,
+    "contest_submissions": 0,
+    "contracts": 0,
+    "payments": 0,
+    "collected_ils": 0,
+    "spend": 0
+  },
+  "next": "Qualify real delivery credentials before a bid; do not substitute fabricated references, team or price. Continue official paid opportunities and reply handling; preserve prepared UGREEN materials pending authentication/declarations."
+}
