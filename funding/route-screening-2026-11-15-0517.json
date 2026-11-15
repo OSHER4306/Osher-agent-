@@ -1,0 +1,182 @@
+{
+  "observed_at_utc": "2026-11-15T03:22:16Z",
+  "observed_date_asia_jerusalem": "2026-11-15",
+  "purpose": "Evidence-backed paid-route qualification and duplicate-safe account review. This record is research, not a bid, award, contract or receipt.",
+  "priorities_completed": [
+    "Reviewed complete all-account SENT snapshot, recent inbox and latest recorded B2B result.",
+    "Inspected one newly found advertised code bounty and stopped before its unreviewed binary/diagnostic workflow.",
+    "Verified Neon cash sponsorship against official terms and checked current project prerequisites."
+  ],
+  "mail": {
+    "sent_query": "in:sent after:1794693599 before:1794780000",
+    "timezone": "Asia/Jerusalem",
+    "day_start_inclusive": "2026-11-15T00:00:00+02:00",
+    "day_end_exclusive": "2026-11-16T00:00:00+02:00",
+    "account_wide_sent_messages_at_check": 6,
+    "complete_pagination": true,
+    "numeric_run_ceiling": 5,
+    "inbox_query": "in:inbox after:1794709200 -category:promotions -category:social",
+    "inbox_results": 0,
+    "send_attempts": 0,
+    "sent_this_run": 0,
+    "limitations": [
+      "Snapshot is not a production-wide send lock.",
+      "No evidence that the previously observed Gmail rate limit has cleared.",
+      "Before any future send, repeat complete SENT and recipient SENT/INBOX/DRAFT checks, respect 72 hours and two business days, and failed/refused recipient suppression."
+    ],
+    "b2b_coordination": "Read latest completed B2B result: it recorded the same six account-wide sent messages, no new B2B replies or sends and previously handled delivery failures. No additional contact was initiated."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open_tasks": 5,
+    "new_tasks_since_prior_run": 0,
+    "task_summaries": [
+      {
+        "title": "Music title display",
+        "displayed_reward": "0.70 Tempo",
+        "entries": 50,
+        "deadline_utc": "2026-11-17T12:34:47Z"
+      },
+      {
+        "title": "FlapJax Q98 first-timers",
+        "displayed_reward": "100,000 FLAPJAX (displayed $1)",
+        "entries": 17,
+        "deadline_utc": "2026-11-16T01:59:35Z"
+      },
+      {
+        "title": "Lumen promotion",
+        "displayed_reward": "$5",
+        "entries": 44,
+        "deadline_utc": "2026-11-19T18:53:15Z"
+      },
+      {
+        "title": "Python TOC",
+        "displayed_reward": "0.50 USDC",
+        "entries": 115,
+        "deadline_utc": "2026-11-15T06:55:07Z"
+      },
+      {
+        "title": "Sales",
+        "displayed_reward": "0.50 USDC",
+        "entries": 100,
+        "deadline_utc": "2026-11-15T06:54:38Z"
+      }
+    ],
+    "status": "Not qualified for authenticated submission: worker/account, remaining free allowance, AI permissions and payout details not verified. No fee, deposit, wallet action or entry."
+  },
+  "opportunities": [
+    {
+      "id": "neon-open-source-cash-sponsorship",
+      "source": "https://neon.com/programs/open-source",
+      "official_page_updated": "2026-10-23",
+      "status": "Active public application; user/project eligibility not verified",
+      "programme_cash_pool_usd_minimum_annual": 200000,
+      "award_to_user_usd": null,
+      "individual_amount": "Case-by-case; no guaranteed amount",
+      "payment": "Fixed monthly amount via GitHub Sponsors for a six-month term; renewal reviewed, not automatic.",
+      "optional_credits": "Separate optional Neon/AI Gateway credits are not cash.",
+      "scope": "Actively maintained public project released under an OSI-approved license and active GitHub Sponsors profile.",
+      "israel": "Israel is a supported GitHub Sponsors receiving region; personal account, tax, payout and programme acceptance remain unverified.",
+      "israel_source": "https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors",
+      "terms": "Agreed sponsor-logo/link placement for full term. No exclusivity, requirement to use Neon/Postgres, or control of roadmap/license.",
+      "application_fields": [
+        "Project website",
+        "GitHub repository",
+        "Contact email"
+      ],
+      "deadline": "No deadline stated on inspected official page",
+      "fee_and_linkedin": "No application fee or LinkedIn field shown on inspected page; this is not a broader assurance about all third-party account requirements.",
+      "ai_policy": "Not stated on inspected page",
+      "duplicate_policy": "Not stated on inspected page",
+      "current_project": {
+        "repository": "https://github.com/OSHER4306/Osher-agent-",
+        "active_development": true,
+        "metadata_pushed_at": "2026-11-15T02:17:03Z",
+        "github_detected_license": null,
+        "root_license_file_found": false,
+        "homepage": null,
+        "stars": 0,
+        "sponsors_profile_status": "Not verified: public fetch failed with DisabledError; failure does not prove profile absence.",
+        "readme_blob": "ed2e3709adc21947eb0a971bfd6ffe82166b098a",
+        "project_description": "Installable iPhone PWA command center for WhatsApp, Facebook and Instagram using official Meta APIs and user-approved actions."
+      },
+      "blockers": [
+        "OSI-approved project license not established.",
+        "Active GitHub Sponsors profile and payout/tax setup not verified.",
+        "Project website and evidence of community use not established."
+      ],
+      "action": "Do not apply as eligible, invent adoption, choose a project license or accept payout/legal terms without the necessary verified inputs.",
+      "submissions": 0
+    },
+    {
+      "id": "shaiananvari8-zeroeye-1",
+      "source": "https://github.com/shaiananvari8/zeroeye/issues/1",
+      "title": "[$35 BOUNTY] [TypeScript] Add single-flight token refresh handling",
+      "advertised_amount": "$35 (LT)",
+      "status": "Open advertised bounty, payment and eligibility unverified; not execution-ready",
+      "scope": "frontend/src/services/auth.ts: single-flight token refresh, failure cleanup, cross-tab coordination and focused tests without raw token logging.",
+      "reproduction": "Source inspection only; no independent runtime reproduction.",
+      "duplicates": "No external contribution made; assignment and complete duplicate-fix clearance not established.",
+      "payment": "Currency meaning of LT, escrow, payment method and ability to pay unverified.",
+      "ai_policy": "Not verified",
+      "israel_eligibility": "Not verified",
+      "exclusivity": "Not verified",
+      "submission_deadline": "Not verified",
+      "mandatory_validation": "Repository instructions require python3 build.py and public PR inclusion of generated .logd/JSON diagnostic artifacts.",
+      "inspection_findings": [
+        "build.py invokes the bundled encryptly binary; binary behavior was not reviewed.",
+        "collect_system_info includes hostname, username, platform/runtime/processor, CPU/memory/disk and selected environment values.",
+        "Creates a diagnostic workspace under the home cache, packs it and stages/commits diagnostic artifacts."
+      ],
+      "evidence": {
+        "build_blob": "cf51696c6758dffad268eec1c80a1b844104fe56",
+        "source_lines": {
+          "collect_system_info": 444,
+          "hostname": 449,
+          "username": 450,
+          "environment_lookup": 477,
+          "git_add": 569,
+          "workspace_path": 627
+        },
+        "auth_blob": "c3c4d579bdcec27ae0febf2b5dbec376401a6513",
+        "readme_blob": "0b4a5c6105a964e62fdcb5bc0f87c09beb9a521c",
+        "pr_template_blob": "93679b4ddabb0ba9a4062e3594bfc2c9f78b0f61"
+      },
+      "stop_conditions": [
+        "Do not execute/import/install/build this repository under the current unreviewed-binary and diagnostic-upload requirements.",
+        "Do not upload workspace diagnostics or bypass required validation in order to claim completion."
+      ],
+      "caveat": "These observations do not establish malware or exfiltration. GitHub license metadata was null while README included multiple license texts; no definitive licensing conclusion.",
+      "executed": false,
+      "cloned": false,
+      "diagnostics_collected": false,
+      "uploaded": false,
+      "tests_run": 0,
+      "prs": 0
+    }
+  ],
+  "technical_cases_new": 1,
+  "current_blockers_preserved": [
+    "Apart: prior automatic approval review rejected upload and continuation; no retry or alternative route attempted.",
+    "UGREEN: existing prepared bundle unchanged; authenticated Devpost submission remains unavailable.",
+    "Known earlier Deploy Osher Agent billing lock must be resolved by account owner. Later unavailable job logs do not prove the same cause.",
+    "No externally eligible, independently verified security report was produced."
+  ],
+  "counters": {
+    "new_advertised_paid_routes_screened": 2,
+    "new_fully_qualified_user_opportunities": 0,
+    "companies_added_to_verified_outreach_database": 0,
+    "outreach_ready": 0,
+    "code_changes": 0,
+    "tests_run": 0,
+    "technical_submissions": 0,
+    "external_prs": 0,
+    "merged_prs": 0,
+    "applications": 0,
+    "sent_messages": 0,
+    "contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next_action": "Advance an existing authenticated, eligible submission or warm reply when evidence changes. Neon requires verified project licensing and Sponsors/payout prerequisites; zeroeye remains on hold under the inspected validation requirements."
+}
