@@ -1,0 +1,146 @@
+{
+  "observed_at_utc": "2026-11-15T05:20:17Z",
+  "date_asia_jerusalem": "2026-11-15",
+  "completed": [
+    "Verified complete account SENT snapshot and recent inbox, then reviewed latest completed B2B result.",
+    "Screened two additional official cash routes.",
+    "Created and read back one unsent scope/eligibility enquiry draft for a published security-program registration channel.",
+    "Rejected duplicate work on an already closed Cloudflare issue."
+  ],
+  "mail": {
+    "sent_query": "in:sent after:1794693599 before:1794780000",
+    "count_all_account_messages": 11,
+    "complete_pagination": true,
+    "inbox_query": "in:inbox after:1794715200 -category:promotions -category:social",
+    "results": 0,
+    "b2b": "Latest completed result at 04:30 UTC reports same eleven-message SENT count, no sends or new positive replies, and recognizes the previously suppressed failed mailbox. Existing phone requests remain outside verified completed calls.",
+    "sent_this_run": 0,
+    "send_attempts": 0,
+    "numeric_run_ceiling": 5,
+    "limits": "Snapshot is not a shared send lock or proof of rate-limit release. Recheck complete SENT/INBOX/DRAFT before each future send; apply failed/refused suppression, 72 hours and two business days, and max min(5,20-count). Unknown count means no send."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open_tasks": 5,
+    "new_tasks": 0,
+    "entry_counts": {
+      "title": 50,
+      "flapjax_q98": 17,
+      "lumen": 44,
+      "python_toc": 117,
+      "sales": 102
+    },
+    "imminent_deadlines_utc": {
+      "sales": "2026-11-15T06:54:38Z",
+      "python_toc": "2026-11-15T06:55:07Z"
+    },
+    "blockers": "Signed worker/authentication, free allowance and full payout/AI conditions remain unverified. No submission, deposit, wallet action or fee."
+  },
+  "opportunities": [
+    {
+      "id": "ai-builder-challenge-2026",
+      "sources": [
+        "https://www.aibuilderchallenge.bg/rules",
+        "https://www.aibuilderchallenge.bg/faq"
+      ],
+      "status": "Active public challenge; user/product qualification missing",
+      "cash_prize_eur": 1000,
+      "education_donation_eur": 1000,
+      "distinction": "Donation goes directly to an educational institution, not to the entrant.",
+      "eligibility": "Worldwide including Israel; age16+; solo or team up to three; free online entry.",
+      "scope": "Original product built from scratch in April–1 December 2026; existing products and derivatives excluded. Meaningful AI use required, any AI tool permitted.",
+      "gate": "At least one genuine paying customer with redacted evidence; even EUR1 qualifies, free trials do not.",
+      "deadline_as_published": "1 December 2026, 23:59; timezone unspecified",
+      "ip": "Builder retains IP. Top five case studies published; other interesting submissions may be highlighted.",
+      "payment": "Cash collection described at awards event; remote prize delivery and transfer method not established.",
+      "exclusivity": "Not explicitly stated on inspected rules/FAQ",
+      "duplicate_entry_policy": "Not explicitly stated",
+      "prerequisites": [
+        "Product description and link",
+        "Redacted revenue evidence",
+        "Build-process documentation",
+        "AI-tool disclosure",
+        "Obstacles and lessons",
+        "Educational institution selection"
+      ],
+      "blockers": [
+        "No independently verified eligible product/payment evidence.",
+        "Registration form and full Terms not yet reviewed.",
+        "Timezone and remote prize receipt not resolved."
+      ],
+      "action": "Do not register a pre-existing product, invent revenue or create a token/self-payment. Qualify an original product with real customer evidence before submission.",
+      "applications": 0
+    },
+    {
+      "id": "wservices-security-program",
+      "source": "https://wservices.ch/en/bug-bounty/",
+      "status": "Registrations open; testing not authorized for this user",
+      "official_schedule_updated": "2026-11-05",
+      "new_registrants_start": "No earlier than 1 December 2026, subject to approval and assigned date.",
+      "scope": "Provider-operated systems only. Customer systems, excluded domains, social engineering, DoS and mass scans are prohibited. Use an approved own test account; do not access others' data.",
+      "rewards": "High EUR250; Critical EUR500, discretionary and after verification. Low/Medium reward hosting only.",
+      "duplicates": "First reporter only.",
+      "disclosure": "Coordinate disclosure; recommended90days and agreement before publication.",
+      "payment_method": "Not specified",
+      "israel_eligibility": "Not explicitly confirmed",
+      "ai_policy": "Not explicitly confirmed",
+      "fee": "No registration fee shown; free test-account availability not established.",
+      "draft": {
+        "id": "r2049916957788346085",
+        "message_id": "1a1dda5d79692bbc",
+        "to": "security@wservices.ch",
+        "subject": "Bug bounty registration enquiry — Israel-based, AI-assisted research",
+        "verified_label": "DRAFT",
+        "read_back": true,
+        "content_summary": "Introduces handle/name; asks Israel/AI eligibility, payout/KYC/tax, free approved test account, exact targets/start date and reference. Explicitly says no testing or vulnerability claim.",
+        "sent": false,
+        "registration_confirmed": false
+      },
+      "next_action": "Review the draft and resolve programme prerequisites before any send or testing. No vulnerability report or live security probe was produced.",
+      "tests": 0,
+      "reports": 0
+    }
+  ],
+  "enterprise_fixer_cases": [
+    {
+      "company": "Cloudflare",
+      "source": "https://github.com/cloudflare/workers-sdk/issues/15087",
+      "title": "Malformed container key/config values crash config validation",
+      "observed_state": "closed",
+      "state_reason": "completed",
+      "closed_at": "2026-08-13T14:45:23Z",
+      "report": "Public reporter describes malformed values causing TypeError instead of field diagnostics; not independently reproduced here.",
+      "duplicate_boundary": "Already closed. No repair, comment or PR submitted. Closed/completed metadata alone is not independent verification of a released fix.",
+      "automated_triage": "Advisory bot text explicitly disclaims official maintainer response; not treated as current authorization.",
+      "acceptance_if_regression": "Reproduce malformed and valid cases on current revision, establish regression and linked fixes first; field diagnostics without throw, preserved valid behavior.",
+      "paid_route": "No bounty tied to this issue verified",
+      "code_changes": 0,
+      "tests_run": 0
+    }
+  ],
+  "existing_blockers_preserved": [
+    "No Apart continuation/retry after earlier approval rejection.",
+    "No UGREEN account or submission retry.",
+    "No zeroeye binary or diagnostic-upload workflow.",
+    "No speculative deployment/billing bypass."
+  ],
+  "counters": {
+    "new_routes_screened": 2,
+    "new_fully_qualified_paid_opportunities": 0,
+    "verified_companies_added": 0,
+    "new_technical_cases_screened": 1,
+    "drafts_created_and_verified": 1,
+    "sent_messages": 0,
+    "code_changes": 0,
+    "tests_run": 0,
+    "technical_submissions": 0,
+    "prs": 0,
+    "merged_prs": 0,
+    "applications": 0,
+    "paid_proposals_sent": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next_action": "Advance new warm replies or an authenticated eligible submission when prerequisites change; maintain draft and no-testing boundary for wservices. Research remains available."
+}
