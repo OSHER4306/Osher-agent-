@@ -1,0 +1,136 @@
+{
+  "run_id": "2026-11-15-0218-Asia_Jerusalem",
+  "verified_at_utc": "2026-11-15T00:25:18Z",
+  "gmail": {
+    "sent_day": "2026-11-15",
+    "query": "in:sent after:1794693599 before:1794780000",
+    "all_account_sent": 0,
+    "pages": 1,
+    "next_page_token": null,
+    "sent_this_run": 0,
+    "rate_limit_release_verified": false,
+    "warm_reply_results": 0,
+    "b2b_run": "e21b2ed1-436c-8322-87ec-9d846f82cd8a",
+    "suppression": {
+      "recipient": "info@oles.co.il",
+      "action": "failed",
+      "status": "4.4.1",
+      "reason": "Recipient server connection timed out; not proof mailbox nonexistent",
+      "label": "Label_60",
+      "message_ids": [
+        "1a1cc0605823dc7a",
+        "1a1d1d13f7cab314",
+        "1a1d6c305d199649",
+        "1a1dc6676bff1ea9"
+      ],
+      "mutation": "Added existing do-not-contact delivery-failure label to four messages; all four read back verified"
+    }
+  },
+  "programme": {
+    "name": "UGREEN Hackathon 2026 on AI NAS",
+    "official": "https://ugreenhackathon.devpost.com/",
+    "rules": "https://ugreenhackathon.devpost.com/rules",
+    "starter": "https://ai.ugreen.com/pages/hackathon-starter-kit",
+    "summary": "Israel explicitly eligible; adult individual or team up to three, one project. Free entry; AI assistance allowed; no NAS needed Round1. Deadline 2026-11-16 09:45 Israel. Submit new event-developed Markdown Skill ZIP and <=500-word PDF. Cash pool $46,000, not income. Identity/forms required for prizes; forms due within ten business days; delivery within sixty days after forms. Bank/FX/tax fees may apply. Ownership retained, nonexclusive judging license, three-year publicity rights. Existing work/duplicate entries prohibited; Round2 continues same project.",
+    "personal_eligibility_and_account_verified": false,
+    "gmail_duplicate_check": "Only unrelated 2019 promotional mail; no contest entry found. Email search does not establish Devpost entry absence.",
+    "submission_count": 0,
+    "blockers": [
+      "Devpost account/session not verified",
+      "Confirm no existing individual/team entry on Devpost",
+      "Entrant must review and make actual registration/submission declarations; none signed",
+      "Any required private form fields remain uninspected"
+    ],
+    "kit_version": "0.7.7-en",
+    "kit_catalog": "2.2.0 generated2026-11-05",
+    "kit_sha256": "e3a9c6a7b80b5790865aa1eea310a942904993693a021888b5f9d580f35d8a67",
+    "kit_redistributed": false
+  },
+  "deliverable": {
+    "name": "Handover Revision Gate",
+    "status": "Pre-test draft; not submitted, installed or executed on NAS",
+    "created_during_event": "2026-11-15",
+    "zip": "Handover_Revision_Gate_Pretest.zip",
+    "zip_bytes": 4114,
+    "zip_members": [
+      "SKILL.md",
+      "references/decision-rules.md"
+    ],
+    "pdf": "UGREEN_Round1_Proposal.pdf",
+    "pdf_bytes": 4145,
+    "pdf_pages": 1,
+    "pdf_substantive_words_including_labels": 374,
+    "pdf_visual_review": "Rendered page inspected; no clipping or overlap",
+    "official_checker": {
+      "status": "static-pass",
+      "errors": 0,
+      "warnings": 0,
+      "info": 0
+    },
+    "local_test_methods": 11,
+    "local_test_result": "11 passed",
+    "experiment": {
+      "kind": "Four synthetic counterexamples; separate Python acceptance oracle, not Skill execution",
+      "transport_status_only_false_clears": 4,
+      "evidence_gate_false_clears": 0
+    },
+    "independent_review_fixes": [
+      "Disable business deduplication; require full scope with explicit coverage and body-cap reporting",
+      "Limit reinspection to selected files; remove unsupported new-file discovery claim",
+      "Replace byte-binding assurance with two observations bracketing extraction; retain change/revert limitation"
+    ],
+    "third_party_disclosure": "Official kit used for development/check only. No third-party code embedded in Skill. Codex AI assistance disclosed. Local PDF generator uses ReportLab BSD; outside Skill ZIP."
+  },
+  "taskmarket": {
+    "url": "https://taskmarket.dev/tasks?status=open",
+    "observed_open": 5,
+    "new_vs_previous": 0,
+    "entries": {
+      "music": 50,
+      "flapjax": 17,
+      "lumen": 42,
+      "python_toc": 113,
+      "sales": 100
+    },
+    "submission_count": 0,
+    "blockers": "Authenticated worker, free allowance and payout not verified; no wallet, fee or deposit action"
+  },
+  "github": {
+    "run_id": 43655683541,
+    "job_id": 132633547760,
+    "url": "https://github.com/OSHER4306/Osher-agent-/actions/runs/43655683541",
+    "conclusion": "failure",
+    "steps": [],
+    "job_log_error": "404 BlobNotFound",
+    "cause": "Unverified for this run; prior billing finding not assumed",
+    "code_changes_to_fix_actions": 0,
+    "reruns": 0
+  },
+  "preserved_blocks": {
+    "apart": "No retry after prior action-specific automatic approval rejection; no upload or submission",
+    "jigjoy": "Existing draft left unsent",
+    "shared_lock": "No live account-wide send lock deployed"
+  },
+  "counts": {
+    "new_programmes_identified": 1,
+    "prepared_contest_drafts": 1,
+    "new_local_code_components": 1,
+    "local_test_methods_passed": 11,
+    "technical_submissions": 0,
+    "external_prs": 0,
+    "merged_prs": 0,
+    "emails_sent": 0,
+    "new_company_records": 0,
+    "contracts": 0,
+    "payments": 0,
+    "collected_ils": 0,
+    "spend": 0
+  },
+  "next": "Resolve Devpost identity, duplicate-entry and entrant-declaration gates before actual Round1 submission; deadline16Nov09:45Israel. Preserve PDF and ZIP separately; never upload the full evidence bundle as the Skill.",
+  "saved_deliverable": {
+    "library_file_id": "libfile_fde3_f-91dd032985608191a26b0e382b712127_f86c2c6994088191aa1df47b98e4c836",
+    "filename": "UGREEN_Handover_Revision_Gate_Draft_2026_11_15.zip",
+    "size_bytes": 21703,
+    "sha256": "e63075ccb5c0f52c506132f8a0815fc24c557e463670e133b5582bc2b550c3e3"
+  }
+}
