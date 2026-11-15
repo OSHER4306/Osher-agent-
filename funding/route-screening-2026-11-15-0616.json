@@ -1,0 +1,173 @@
+{
+  "observed_at_utc": "2026-11-15T04:17:51Z",
+  "date_asia_jerusalem": "2026-11-15",
+  "completed": [
+    "Counted all-account SENT with complete pagination, read recent inbox and latest completed B2B result.",
+    "Verified a new permanent delivery failure, applied both existing do-not-contact labels to the original message and DSN, and verified both labels on both messages.",
+    "Screened two newly encountered advertised paid routes against primary pages; examined one Microsoft API issue and duplicate search."
+  ],
+  "mail": {
+    "sent_query": "in:sent after:1794693599 before:1794780000",
+    "account_wide_sent_count": 11,
+    "pagination_complete": true,
+    "snapshot_not_live_send_lock": true,
+    "run_numeric_ceiling": 5,
+    "send_attempts": 0,
+    "sent_this_run": 0,
+    "inbox_query": "in:inbox after:1794711600 -category:promotions -category:social",
+    "recent_inbox_results": 1,
+    "new_positive_business_replies": 0,
+    "b2b_latest_result": "Read completed B2B result from 03:34 UTC: no new positive replies or sends; calls remain unverified. Its six-message SENT snapshot is older than this run's eleven-message snapshot.",
+    "delivery_failure": {
+      "recipient": "One business mailbox contacted by the moving-services workflow; exact address retained in Gmail, not reproduced in this public report.",
+      "original_message_id": "1a1dd4c57a46ca31",
+      "dsn_message_id": "1a1dd4c5e178ebae",
+      "status": "5.1.1",
+      "action": "failed",
+      "diagnostic": "550: email account does not exist",
+      "labels_applied": [
+        "Label_60",
+        "Label_125"
+      ],
+      "verified_on_original_and_dsn": true,
+      "messages_changed": 2,
+      "unique_recipient_suppressed": 1,
+      "limitation": "Shared Gmail suppression labels are not proof of a production-wide enforcement lock. No retry, alternate address or contact attempt."
+    },
+    "next_send_requirements": "Refresh complete account SENT plus recipient SENT/INBOX/DRAFT, observe failed/refused suppression, 72 hours and two business days, maximum min(5,20-count). Unknown count means no send; rate limit must not be bypassed."
+  },
+  "taskmarket": {
+    "source": "https://taskmarket.dev/tasks?status=open",
+    "open_tasks": 5,
+    "new_tasks": 0,
+    "entries": {
+      "title_bounty": 50,
+      "flapjax_q98": 17,
+      "lumen": 44,
+      "python_toc": 115,
+      "sales": 100
+    },
+    "earliest_deadlines_utc": {
+      "sales": "2026-11-15T06:54:38Z",
+      "python_toc": "2026-11-15T06:55:07Z"
+    },
+    "qualification": "Authentication, signed worker, free allowance and payout/AI terms remain unverified. No payment, deposit, wallet operation or submission."
+  },
+  "screened_routes": [
+    {
+      "id": "hackyard-build-2026-byteask",
+      "source": "https://hackyard.org/build2026/byteask",
+      "status": "Closed; do not enter or create contest work",
+      "deadline_as_published": "2026-10-18 23:59 IST",
+      "results": "Official page says results are out.",
+      "cash_prize_pool": "INR 20,000 across three prizes; headline up to USD 30,000 includes other rewards, not guaranteed cash to a participant.",
+      "contract_option": "Up to ten selected remote fellowship contracts, initially three months at INR 30,000/month; top-ten interviews are not contract offers.",
+      "scope": "Use ByteAsk during the contest for a PR to an eligible third-party public repository with 100+ stars, respecting repository AI/contribution policies. One PR can count for one team.",
+      "israel": "Not established from inspected terms",
+      "ip": "Individual contract terms not established",
+      "free_entry": "Not explicitly established",
+      "submission": 0,
+      "decision": "Closed despite registration/submission links still being shown; no registration or late submission."
+    },
+    {
+      "id": "tscircuit-schematic-trace-solver-34",
+      "source": "https://github.com/tscircuit/schematic-trace-solver/issues/34",
+      "status": "Open issue, advertised reward not verified payable",
+      "advertised_bounty_usd": 100,
+      "issue_body": "/bounty $100",
+      "duplicate_search": {
+        "query": "repo:tscircuit/schematic-trace-solver is:pr \"34\"",
+        "total_text_matches": 197,
+        "incomplete_results": false,
+        "results_page_inspected": 1,
+        "caveat": "Text matches are not 197 independently verified equivalent fixes. Many inspected PR titles directly propose the same feature, including open PR 830."
+      },
+      "latest_comment": {
+        "url": "https://github.com/tscircuit/schematic-trace-solver/issues/34#issuecomment-6869963934",
+        "date_utc": "2026-11-14T02:10:34Z",
+        "author": "chaodous",
+        "author_association": "NONE",
+        "statement": "Claims the USD 100 bounty is no longer available and new PRs are not eligible.",
+        "authority": "Not verified as a maintainer, owner or authorized payer; do not label withdrawal as confirmed official policy."
+      },
+      "technical_scope": "Align nearby same-net parallel schematic trace lines while preserving connectivity and avoiding component/label/other-net collisions.",
+      "reproduction": "No independent reproduction performed; existing reports and competing patches only.",
+      "paid_eligibility": {
+        "scope": "Advertised scope identified",
+        "funding": "Unverified and disputed",
+        "payment_method": "Unverified",
+        "israel": "Unverified",
+        "ai_policy": "Unverified",
+        "deadline": "Not stated",
+        "exclusivity_and_assignment": "Not established"
+      },
+      "related_contributor_program": {
+        "source": "https://github.com/tscircuit/tscircuit/blob/main/docs/CONTRIBUTOR_PROGRAM.md",
+        "stated_range": "USD 5-400/month discretionary sponsorship",
+        "eligibility": "At least four contributions plus Discord membership; consistency over a month for maximum, limited budget and cancellable sponsorship.",
+        "limitation": "No user qualification, current available budget or accepted contribution/payment verified."
+      },
+      "decision": "Do not create another competing PR or post another payment question. Payment and a distinct accepted scope must be established first.",
+      "claims": 0,
+      "comments_posted": 0,
+      "prs": 0
+    }
+  ],
+  "enterprise_fixer_cases": [
+    {
+      "company": "Microsoft",
+      "source": "https://github.com/microsoft/typespec/issues/12524",
+      "title": "[http-client-csharp] Expose extensible discriminator values on output models",
+      "classification": "Public feature/API-design request, not an independently reproduced defect",
+      "evidence": "Issue states discriminator values remain available through JSON persistence; current internal visibility is intentional. Repository's automated triage also classifies it as a feature request; this is not a human maintainer approval.",
+      "duplicate_search": {
+        "query": "repo:microsoft/typespec is:pr \"12524\"",
+        "total": 0,
+        "incomplete_results": false,
+        "limitation": "No exact issue-number PR hit does not establish absence of all related work."
+      },
+      "related_issues": [
+        10932,
+        10996
+      ],
+      "acceptance_plan": [
+        "Obtain maintainer design choice for opt-in vs automatic public exposure.",
+        "Add generator/API-surface tests for both known and unknown discriminator values.",
+        "Verify subtype dispatch, JSON persistence, wire serialization and compatibility remain unchanged."
+      ],
+      "blocker": "Design not approved and exact emitter package source revision not independently mapped; no paid route tied to this request.",
+      "code_changed": 0,
+      "tests_run": 0,
+      "comments_posted": 0,
+      "prs": 0
+    }
+  ],
+  "preserved_boundaries": [
+    "No Apart upload, continuation or alternative tool retry after earlier automatic approval rejection.",
+    "No UGREEN resubmission, new account or sign-in attempt.",
+    "No retry of zeroeye unreviewed binary/diagnostic-upload workflow.",
+    "No speculative deployment fix or billing bypass."
+  ],
+  "counters": {
+    "verified_actions": 1,
+    "mail_messages_suppression_verified": 2,
+    "new_suppressed_recipient": 1,
+    "new_paid_routes_screened": 2,
+    "new_qualified_paid_routes": 0,
+    "new_enterprise_cases_reviewed": 1,
+    "verified_companies_added_to_outreach_database": 0,
+    "code_changes": 0,
+    "tests_run": 0,
+    "drafts_created": 0,
+    "sent_messages": 0,
+    "technical_submissions": 0,
+    "prs": 0,
+    "merged_prs": 0,
+    "applications": 0,
+    "paid_proposals_sent": 0,
+    "signed_contracts": 0,
+    "invoices": 0,
+    "collected_ils": 0
+  },
+  "next_action": "Prioritize a new warm reply or an authenticated eligible paid submission when inputs change. Research remains possible; no recurring workflow was created or disabled."
+}
